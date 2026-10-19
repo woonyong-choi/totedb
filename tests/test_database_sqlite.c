@@ -550,6 +550,36 @@ static void build_steps(void)
     add_step(STEP_REOPEN, NULL);
     add_step(STEP_SELECT, "SELECT * FROM text_keys");
 
+    add_step(STEP_OK, "INSERT INTO text_keys VALUES ('a', 'prefix'), ('aa', 'longer'), ('ab', 'next'), ('z', 'last')");
+    static const char *const text_conditions[] = {
+        "k >= 'a'", "k > 'a'", "k <= 'ab'", "k < 'ab'", "'a' <= k AND 'z' > k",
+        "k >= ''", "k > ''", "k <= ''", "k < ''", "k >= '가' AND k < '😀'",
+        "k >= 'a' AND k <= 'a'", "k > 'a' AND k <= 'a'", "k >= 'z' AND k <= 'a'",
+        "k > 'a' AND k >= 'a' AND k <= 'z' AND k < 'z'", "k >= 'a' AND v <> 'next'"
+    };
+    for (size_t i = 0; i < sizeof(text_conditions) / sizeof(text_conditions[0]); i++) {
+        add_step(STEP_SELECT, "SELECT k, v FROM text_keys WHERE %s ORDER BY k LIMIT 3 OFFSET 1", text_conditions[i]);
+        add_step(STEP_SELECT, "SELECT k FROM text_keys WHERE %s ORDER BY k DESC LIMIT 2", text_conditions[i]);
+    }
+    add_step(STEP_SELECT, "SELECT k FROM text_keys WHERE k >= '' ORDER BY k LIMIT 0");
+    add_step(STEP_SELECT, "SELECT k FROM text_keys WHERE k >= 'a' ORDER BY v, k LIMIT 3");
+    add_step(STEP_SELECT, "SELECT a.k, b.k FROM text_keys a JOIN text_keys b ON b.k > a.k AND b.k <= 'z' WHERE a.k >= 'a' ORDER BY a.k, b.k");
+    add_step(STEP_SELECT, "SELECT a.k, b.k FROM text_keys a LEFT JOIN text_keys b ON b.k > a.k WHERE a.k >= 'z' ORDER BY a.k, b.k");
+    add_step(STEP_OK, "UPDATE text_keys SET v = 'ranged' WHERE k > 'a' AND k <= 'z'");
+    add_step(STEP_OK, "DELETE FROM text_keys WHERE k > 'aa' AND k < 'z'");
+    add_step(STEP_OK, "UPDATE text_keys SET k = 'aaa' WHERE k >= 'aa' AND k < 'ab'");
+    add_step(STEP_REOPEN, NULL);
+    add_step(STEP_SELECT, "SELECT k, v FROM text_keys WHERE k >= '' ORDER BY k");
+
+    add_step(STEP_OK, "CREATE TABLE aliases (k TEXT PRIMARY KEY, v TEXT)");
+    add_step(STEP_OK, "INSERT INTO aliases VALUES ('az', 'z'), ('ba', 'a')");
+    add_step(STEP_SELECT, "SELECT substr(k, 2) AS k FROM aliases WHERE k >= '' ORDER BY k LIMIT 1");
+    add_step(STEP_SELECT, "SELECT v AS k FROM aliases WHERE k >= '' ORDER BY k LIMIT 1");
+    add_step(STEP_SELECT, "SELECT substr(k, 2) AS k FROM aliases WHERE k >= '' ORDER BY aliases.k LIMIT 1");
+    add_step(STEP_SELECT, "SELECT k AS k FROM aliases WHERE k >= '' ORDER BY k LIMIT 1");
+    add_step(STEP_SELECT, "SELECT substr(k, 2) AS k FROM aliases WHERE k >= '' ORDER BY 1 LIMIT 1");
+    add_step(STEP_SELECT, "SELECT k AS name FROM aliases WHERE k >= '' ORDER BY name LIMIT 1");
+
     add_step(STEP_OK, "CREATE TABLE indexed (id INTEGER PRIMARY KEY, email TEXT, group_name TEXT)");
     add_step(STEP_OK, "INSERT INTO indexed VALUES (1, 'a@x', 'same')");
     add_step(STEP_OK, "INSERT INTO indexed VALUES (2, 'b@x', 'same')");

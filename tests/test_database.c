@@ -719,6 +719,164 @@ static void test_result_column_metadata(void)
     clean_dir();
 }
 
+static void expect_same_order(database_t *db, const char *fast, const char *slow);
+
+static bool cancel_text_range(void *context)
+{
+    size_t *calls = context;
+    return ++*calls >= 5;
+}
+
+static void check_text_range_resources(database_t *db)
+{
+    const char *sql = "SELECT k FROM t WHERE k > 'k0000' AND k >= 'k0001' AND k < 'k1199' ORDER BY k LIMIT 20";
+    projection_memory_t memory = {0};
+    mem_ledger_t ledger = {&PROJECTION_MEMORY, &memory};
+    database_exec_options_t options = {.ledger = &ledger};
+    result_t *result = NULL;
+    assert(database_exec_ex(db, &options, (const uint8_t *)sql, strlen(sql), NULL, &result) == DATABASE_EXEC_OK);
+    CHECK(result_kind(result) == RESULT_KIND_ROWS, "TEXT 범위 메모리 계상 조회 성공");
+    result_release(&result);
+    CHECK(memory.used == 0, "TEXT 범위 값과 결과 메모리 해제");
+    size_t peak = memory.peak;
+    for (size_t part = 1; part < 8; part++) {
+        memory = (projection_memory_t){.limit = peak * part / 8};
+        database_exec_status_t status = database_exec_ex(db, &options, (const uint8_t *)sql, strlen(sql), NULL, &result);
+        CHECK(status == DATABASE_EXEC_NOMEM || (result != NULL && result_kind(result) == RESULT_KIND_ERROR),
+              "TEXT 범위 메모리 한도 거절");
+        result_release(&result);
+        CHECK(memory.used == 0, "TEXT 범위 한도 거절 뒤 메모리 해제");
+    }
+    memory = (projection_memory_t){0};
+    size_t calls = 0;
+    database_cancel_t cancel = {cancel_text_range, &calls};
+    options.cancel = &cancel;
+    assert(database_exec_ex(db, &options, (const uint8_t *)sql, strlen(sql), NULL, &result) == DATABASE_EXEC_OK);
+    CHECK(result_kind(result) == RESULT_KIND_ERROR && result_outcome(result).error->error_class == RESULT_E_CANCELLED,
+          "TEXT 범위 순회 중 취소는 취소 오류");
+    result_release(&result);
+    CHECK(memory.used == 0, "TEXT 범위 취소 뒤 메모리 해제");
+}
+
+static void check_long_text_bounds(database_t *db)
+{
+    uint8_t key[TEXT_TREE_KEY_MAX_BYTES + 1];
+    memset(key, 'x', sizeof(key));
+    value_view_t bound = {VALUE_TEXT, 0, 0, key, sizeof(key)};
+    database_scan_stats_t before, after;
+    database_scan_stats(db, &before);
+    result_t *result = run_bound(db, "SELECT count(*) FROM t WHERE k < ?", &bound, 1);
+    result_row_t row;
+    assert(result_next(result, &row) == RESULT_NEXT_ROW);
+    CHECK(row.cells[0].integer == 1201, "1024바이트 초과 경계는 잘리지 않고 전체 조건 평가");
+    result_release(&result);
+    database_scan_stats(db, &after);
+    CHECK(after.rows_scanned - before.rows_scanned == 1204, "긴 경계만 있으면 전체 스캔으로 전환");
+    bound.size_bytes = TEXT_TREE_KEY_MAX_BYTES;
+    result = run_bound(db, "SELECT count(*) FROM t WHERE k < ?", &bound, 1);
+    assert(result_next(result, &row) == RESULT_NEXT_ROW);
+    CHECK(row.cells[0].integer == 1201, "1024바이트 경계를 색인 순회에 사용");
+    result_release(&result);
+    bound.size_bytes = sizeof(key);
+    result = run_bound(db, "SELECT k FROM t WHERE k >= 'k1199' AND k < ? ORDER BY k LIMIT 1", &bound, 1);
+    assert(result_next(result, &row) == RESULT_NEXT_ROW);
+    CHECK(row.cells[0].size_bytes == 5 && memcmp(row.cells[0].bytes, "k1199", 5) == 0,
+          "사용 가능한 한쪽 경계와 긴 반대 경계의 필터를 함께 보존");
+    result_release(&result);
+}
+
+static void check_text_ranges(database_t *db)
+{
+    static const char *const conditions[] = {
+        "k >= 'k1190'", "k > 'k1190'", "k <= 'k0010'", "k < 'k0010'",
+        "k > 'k0250' AND k <= 'k0540'", "'k0250' <= k AND 'k0540' > k",
+        "k >= 'k1199' AND k <= 'k1199'", "k > 'k1199' AND k <= 'k1199'",
+        "k >= 'k0700' AND k < 'k0500'", "k > 'k1200'", "k < ''",
+        "k >= ''", "k > '' AND k <= '가'", "k >= '가' AND k < '😀'",
+        "k >= 'k0250' AND k > 'k0250' AND k <= 'k0300' AND k < 'k0300'",
+        "k >= 'k0250' AND k >= 'k0200' AND k <= 'k0300' AND k <= 'k0400'"
+    };
+    for (size_t i = 0; i < sizeof(conditions) / sizeof(conditions[0]); i++) {
+        char indexed[512], scanned[512];
+        snprintf(indexed, sizeof(indexed), "SELECT k, v FROM t WHERE %s ORDER BY k", conditions[i]);
+        snprintf(scanned, sizeof(scanned), "SELECT k, v FROM plain WHERE %s ORDER BY k", conditions[i]);
+        expect_same_order(db, indexed, scanned);
+    }
+}
+
+static void check_text_order_aliases(database_t *db)
+{
+    exec_ok(db, "CREATE TABLE aliases (k TEXT PRIMARY KEY, v TEXT)");
+    exec_ok(db, "INSERT INTO aliases VALUES ('az', 'z'), ('ba', 'a')");
+    expect_text(db, "SELECT substr(k, 2) AS k FROM aliases WHERE k >= '' ORDER BY k LIMIT 1", "[1] 'a'");
+    expect_text(db, "SELECT v AS k FROM aliases WHERE k >= '' ORDER BY k LIMIT 1", "[1] 'a'");
+    expect_text(db, "SELECT substr(k, 2) AS k FROM aliases WHERE k >= '' ORDER BY aliases.k LIMIT 1", "[1] 'z'");
+    expect_text(db, "SELECT k AS k FROM aliases WHERE k >= '' ORDER BY k LIMIT 1", "[1] 'az'");
+    expect_text(db, "SELECT substr(k, 2) AS k FROM aliases WHERE k >= '' ORDER BY 1 LIMIT 1", "[1] 'a'");
+    expect_text(db, "SELECT k AS name FROM aliases WHERE k >= '' ORDER BY name LIMIT 1", "[1] 'az'");
+}
+
+static void test_text_primary_key_ranges(void)
+{
+    printf("\n[test_text_primary_key_ranges]\n");
+    database_t *db = fresh_db();
+    exec_ok(db, "CREATE TABLE t (k TEXT PRIMARY KEY, v INTEGER)");
+    exec_ok(db, "CREATE TABLE plain (k TEXT, v INTEGER)");
+    for (unsigned batch = 0; batch < 12; batch++) {
+        char sql[4096];
+        size_t used = (size_t)snprintf(sql, sizeof(sql), "INSERT INTO t VALUES ");
+        for (unsigned i = 0; i < 100; i++) {
+            unsigned id = 1199u - (batch * 100u + i);
+            used += (size_t)snprintf(sql + used, sizeof(sql) - used, "%s('k%04u', %u)", i ? "," : "", id, id);
+        }
+        exec_ok(db, sql);
+        char plain[4100];
+        snprintf(plain, sizeof(plain), "INSERT INTO plain VALUES %s", sql + strlen("INSERT INTO t VALUES "));
+        exec_ok(db, plain);
+    }
+    exec_ok(db, "INSERT INTO t VALUES ('', -1), ('가', -2), ('가나', -3), ('😀', -4)");
+    exec_ok(db, "INSERT INTO plain VALUES ('', -1), ('가', -2), ('가나', -3), ('😀', -4)");
+    database_scan_stats_t before, after;
+    database_scan_stats(db, &before);
+    expect_text(db, "SELECT k FROM t WHERE k >= 'k0000' ORDER BY k LIMIT 3 OFFSET 2", "[3] 'k0002'/ 'k0003'/ 'k0004'");
+    database_scan_stats(db, &after);
+    CHECK(after.rows_scanned == before.rows_scanned && after.index_lookups == before.index_lookups + 1 &&
+              after.index_pages_read - before.index_pages_read <= 3,
+          "TEXT ASC LIMIT은 전체 행 스캔과 나머지 색인 페이지 방문 없이 중단");
+    printf("  text range: scanned=%llu lookups=%llu index_pages=%llu\n",
+           (unsigned long long)(after.rows_scanned - before.rows_scanned),
+           (unsigned long long)(after.index_lookups - before.index_lookups),
+           (unsigned long long)(after.index_pages_read - before.index_pages_read));
+    database_scan_stats(db, &before);
+    expect_text(db, "SELECT count(*) FROM plain WHERE k >= 'k1190'", "[1] 13");
+    database_scan_stats(db, &after);
+    CHECK(after.rows_scanned - before.rows_scanned == 1204, "색인 없는 TEXT 범위는 전체 스캔");
+    check_text_ranges(db);
+    check_text_order_aliases(db);
+    check_text_range_resources(db);
+    check_long_text_bounds(db);
+    expect_same_order(db, "SELECT k FROM t WHERE k > 'k0000' AND v % 3 = 0 ORDER BY k LIMIT 4 OFFSET 2",
+                            "SELECT k FROM plain WHERE k > 'k0000' AND v % 3 = 0 ORDER BY k LIMIT 4 OFFSET 2");
+    expect_same_order(db, "SELECT k FROM t WHERE k >= 'k1190' ORDER BY k DESC LIMIT 4 OFFSET 2",
+                            "SELECT k FROM plain WHERE k >= 'k1190' ORDER BY k DESC LIMIT 4 OFFSET 2");
+    expect_same_order(db, "SELECT k FROM t WHERE k >= 'k1190' ORDER BY v, k LIMIT 4",
+                            "SELECT k FROM plain WHERE k >= 'k1190' ORDER BY v, k LIMIT 4");
+    expect_text(db, "SELECT k FROM t WHERE k >= '' ORDER BY k LIMIT 0", "[0]");
+    database_scan_stats(db, &before);
+    exec_ok(db, "UPDATE t SET v = 7 WHERE k > 'k1100' AND k < 'k1110'");
+    exec_ok(db, "DELETE FROM t WHERE k >= 'k0800' AND k <= 'k0810'");
+    database_scan_stats(db, &after);
+    CHECK(after.rows_scanned == before.rows_scanned, "TEXT 범위 UPDATE와 DELETE는 전체 스캔 없음");
+    exec_ok(db, "UPDATE plain SET v = 7 WHERE k > 'k1100' AND k < 'k1110'");
+    exec_ok(db, "DELETE FROM plain WHERE k >= 'k0800' AND k <= 'k0810'");
+    exec_ok(db, "UPDATE t SET k = 'renamed' WHERE k = 'k0900'");
+    exec_ok(db, "UPDATE plain SET k = 'renamed' WHERE k = 'k0900'");
+    db = reopen(db, true);
+    check_text_ranges(db);
+    assert(database_close(db) == DATABASE_OK);
+    clean_dir();
+}
+
 static void test_text_primary_key_index(void)
 {
     printf("\n[test_text_primary_key_index]\n");
@@ -1296,6 +1454,7 @@ int main(void)
     test_many_rows_updates_and_deletes_across_pages();
     test_identity_and_primary_key_rules();
     test_text_primary_key_index();
+    test_text_primary_key_ranges();
     test_result_column_metadata();
     test_primary_key_range();
     test_secondary_index_crud();

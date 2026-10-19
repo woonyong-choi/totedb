@@ -1,0 +1,2 @@
+$ RUN_ID=20261019T031416Z-b590d61 ./run.sh analyze
+{"status": "analyzed", "run_id": "20261019T031416Z-b590d61"}

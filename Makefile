@@ -307,3 +307,14 @@ clean:
 
 # 기본 대상: DB와 큐를 묶은 공유 라이브러리(파이썬 바인딩이 쓴다)
 all: $(TOTEDB_SHARED_LIB)
+
+.PHONY: ycsb-build ycsb-test
+ycsb-build:
+	$(PYTHON) bench/ycsb/run.py build
+
+ycsb-test:
+	$(PYTHON) bench/ycsb/run.py test
+
+.PHONY: queue-contention-test
+queue-contention-test: $(TOTEDB_SHARED_LIB)
+	$(PYTHON) -m unittest discover -s tests -p test_queue_contention.py -v

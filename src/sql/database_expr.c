@@ -102,6 +102,10 @@ bool compile_expr(database_t *db, const sqlexpr_t *expr, const resolver_t *resol
 void where_clear(database_t *db, where_t *where)
 {
     for (size_t i = 0; i < where->probe_count; i++) owned_clear(db, &where->probes[i].literal, 1);
+    for (size_t i = 0; i < where->text_range_count; i++) {
+        owned_clear(db, &where->text_ranges[i].low.value, 1);
+        owned_clear(db, &where->text_ranges[i].high.value, 1);
+    }
     sqleval_free(where->prog);
     memset(where, 0, sizeof(*where));
 }
@@ -138,8 +142,8 @@ sqlexpr_op_t flip_comparison(sqlexpr_op_t op)
     }
 }
 
-/* 정수 컬럼과 정수 상수의 대소 비교를 구간으로 모은다. 다른 꼴은 구간 없이 전체 조건 평가에 맡긴다 */
-static void collect_range(const sqlexpr_t *expr, const resolver_t *resolver, where_t *where)
+static database_exec_status_t collect_range(database_t *db, const sqlexpr_t *expr,
+                                             const resolver_t *resolver, where_t *where)
 {
     sqlexpr_op_t op = expr->op;
     const sqlexpr_t *column = expr->args[0], *constant = expr->args[1];
@@ -148,16 +152,20 @@ static void collect_range(const sqlexpr_t *expr, const resolver_t *resolver, whe
         constant = expr->args[0];
         op = flip_comparison(op);
     }
-    if (column->kind != SQLEXPR_COLUMN || constant->kind != SQLEXPR_LITERAL) return;
+    if (column->kind != SQLEXPR_COLUMN || constant->kind != SQLEXPR_LITERAL) return DATABASE_EXEC_OK;
     value_type_t type;
     size_t index = resolve_column((void *)resolver, &column->qualifier, &column->name, &type);
-    if (index == SQLEVAL_NO_COLUMN || index == SQLEVAL_AMBIGUOUS) return;
+    if (index == SQLEVAL_NO_COLUMN || index == SQLEVAL_AMBIGUOUS) return DATABASE_EXEC_OK;
     if (constant->value.view.type == VALUE_NULL) {
         where->never = true;
-        return;
+        return DATABASE_EXEC_OK;
     }
-    if (type != VALUE_INTEGER || constant->value.view.type != VALUE_INTEGER) return;
+    if (type == VALUE_TEXT && constant->value.view.type == VALUE_TEXT) {
+        return narrow_text_range(db, where, index, op, &constant->value.view);
+    }
+    if (type != VALUE_INTEGER || constant->value.view.type != VALUE_INTEGER) return DATABASE_EXEC_OK;
     narrow_range(where, index, op, constant->value.view.integer);
+    return DATABASE_EXEC_OK;
 }
 
 /* 컬럼 op bound(op는 컬럼 쪽에서 본 대소 비교)로 그 컬럼의 구간을 좁힌다. 빈 구간이면 where->never */
@@ -191,7 +199,51 @@ void narrow_range(where_t *where, size_t index, sqlexpr_op_t op, int64_t bound)
     if (range->low > range->high) where->never = true;
 }
 
-/* 최상위 AND를 따라 내려가며 컬럼 = 상수 조건과 정수 대소 비교를 모은다 */
+static database_exec_status_t narrow_text_bound(database_t *db, text_bound_t *target,
+                                                const value_view_t *value, sqlexpr_op_t op)
+{
+    bool inclusive = op == SQLEXPR_OP_GE || op == SQLEXPR_OP_LE;
+    bool is_low = op == SQLEXPR_OP_GE || op == SQLEXPR_OP_GT;
+    if (target->value.view.type != VALUE_NULL) {
+        int order;
+        if (value_compare(value, &target->value.view, &order) != VALUE_OK) return DATABASE_EXEC_OK;
+        if ((is_low && order < 0) || (!is_low && order > 0)) return DATABASE_EXEC_OK;
+        if (order == 0) {
+            target->inclusive = target->inclusive && inclusive;
+            return DATABASE_EXEC_OK;
+        }
+    }
+    value_t copy = {0};
+    if (q_clone(db, value, &copy) != VALUE_OK) return DATABASE_EXEC_NOMEM;
+    owned_clear(db, &target->value, 1);
+    *target = (text_bound_t){copy, inclusive};
+    return DATABASE_EXEC_OK;
+}
+
+database_exec_status_t narrow_text_range(database_t *db, where_t *where, size_t index,
+                                        sqlexpr_op_t op, const value_view_t *bound)
+{
+    if (bound->size_bytes > TEXT_TREE_KEY_MAX_BYTES) return DATABASE_EXEC_OK;
+    text_range_t *range = NULL;
+    for (size_t i = 0; i < where->text_range_count && range == NULL; i++) {
+        if (where->text_ranges[i].column == index) range = &where->text_ranges[i];
+    }
+    if (range == NULL) {
+        if (where->text_range_count == WHERE_MAX_PROBES) return DATABASE_EXEC_OK;
+        range = &where->text_ranges[where->text_range_count++];
+        range->column = index;
+    }
+    bool is_low = op == SQLEXPR_OP_GE || op == SQLEXPR_OP_GT;
+    database_exec_status_t status = narrow_text_bound(db, is_low ? &range->low : &range->high, bound, op);
+    if (status != DATABASE_EXEC_OK) return status;
+    if (range->low.value.view.type != VALUE_NULL && range->high.value.view.type != VALUE_NULL) {
+        int order;
+        if (value_compare(&range->low.value.view, &range->high.value.view, &order) != VALUE_OK) return DATABASE_EXEC_OK;
+        if (order > 0 || (order == 0 && !(range->low.inclusive && range->high.inclusive))) where->never = true;
+    }
+    return DATABASE_EXEC_OK;
+}
+
 static bool collect_probes(database_t *db, const sqlexpr_t *expr, const resolver_t *resolver, where_t *where,
                            database_exec_status_t *status)
 {
@@ -200,8 +252,8 @@ static bool collect_probes(database_t *db, const sqlexpr_t *expr, const resolver
                collect_probes(db, expr->args[1], resolver, where, status);
     }
     if (expr->kind == SQLEXPR_BINARY && expr->op >= SQLEXPR_OP_LT && expr->op <= SQLEXPR_OP_GE) {
-        collect_range(expr, resolver, where);
-        return true;
+        *status = collect_range(db, expr, resolver, where);
+        return *status == DATABASE_EXEC_OK;
     }
     if (expr->kind != SQLEXPR_BINARY || expr->op != SQLEXPR_OP_EQ) return true;
     const sqlexpr_t *column = expr->args[0], *constant = expr->args[1];

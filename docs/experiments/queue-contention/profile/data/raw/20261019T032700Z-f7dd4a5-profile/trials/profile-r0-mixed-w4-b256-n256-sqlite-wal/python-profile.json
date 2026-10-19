@@ -1,0 +1,5 @@
+{
+  "excludes": "worker Python calls and native engine stacks",
+  "native_evidence": "native-sample.txt",
+  "scope": "controller-thread"
+}

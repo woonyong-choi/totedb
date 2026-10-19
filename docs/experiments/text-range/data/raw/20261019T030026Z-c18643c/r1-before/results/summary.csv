@@ -1,0 +1,3 @@
+records,workload,threads,engine,comparable,successful,total,throughput_median_ops_sec,throughput_min_ops_sec,throughput_max_ops_sec,ratio_median,ratio_ci95_low,ratio_ci95_high,timeouts,non_ok,busy_retries
+10000,E,1,totedb,False,1,1,5.987629557334547,5.987629557334547,5.987629557334547,,,,0,0,0
+10000,E,1,sqlite,False,1,1,73.04601899196494,73.04601899196494,73.04601899196494,,,,0,0,0

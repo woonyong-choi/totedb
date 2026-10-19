@@ -1,0 +1,362 @@
+{
+  "bootstrap_note": "paired median ratio; 10000 resamples; seed 226; n=5 intervals are imprecise; no multiplicity correction",
+  "collection": {
+    "expected_measured_runs": 2,
+    "expected_preflight_runs": 2,
+    "filesystem_cache": "uncontrolled; full audit read immediately before each measured process",
+    "fresh_jvm": true,
+    "jit_warmup": false,
+    "operations": 1000,
+    "request_trace": "independent ThreadLocalRandom",
+    "run_id": "20261019T030026Z-c18643c-r1-before",
+    "sizes": [
+      10000
+    ],
+    "threads": [
+      1
+    ],
+    "timeout_seconds": 180,
+    "workloads": [
+      "E"
+    ]
+  },
+  "conditions": [
+    {
+      "comparable": false,
+      "engines": {
+        "sqlite": {
+          "audit": {
+            "added_rows": {
+              "max": 43,
+              "median": 43,
+              "min": 43,
+              "n": 1
+            },
+            "changed_fields": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "n": 1
+            },
+            "missing_rows": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "n": 1
+            },
+            "payload_bytes": {
+              "max": 10043000,
+              "median": 10043000,
+              "min": 10043000,
+              "n": 1
+            },
+            "rows": {
+              "max": 10043,
+              "median": 10043,
+              "min": 10043,
+              "n": 1
+            }
+          },
+          "exhausted": 0,
+          "logical_operations": 1000.0,
+          "native_attempts": 1000,
+          "non_ok": 0,
+          "operations": {
+            "INSERT": {
+              "50thPercentileLatency(us)": {
+                "max": 2003.0,
+                "median": 2003.0,
+                "min": 2003.0,
+                "n": 1
+              },
+              "95thPercentileLatency(us)": {
+                "max": 19679.0,
+                "median": 19679.0,
+                "min": 19679.0,
+                "n": 1
+              },
+              "99thPercentileLatency(us)": {
+                "max": 366847.0,
+                "median": 366847.0,
+                "min": 366847.0,
+                "n": 1
+              },
+              "Operations": {
+                "max": 43.0,
+                "median": 43.0,
+                "min": 43.0,
+                "n": 1
+              }
+            },
+            "SCAN": {
+              "50thPercentileLatency(us)": {
+                "max": 1100.0,
+                "median": 1100.0,
+                "min": 1100.0,
+                "n": 1
+              },
+              "95thPercentileLatency(us)": {
+                "max": 46687.0,
+                "median": 46687.0,
+                "min": 46687.0,
+                "n": 1
+              },
+              "99thPercentileLatency(us)": {
+                "max": 181759.0,
+                "median": 181759.0,
+                "min": 181759.0,
+                "n": 1
+              },
+              "Operations": {
+                "max": 957.0,
+                "median": 957.0,
+                "min": 957.0,
+                "n": 1
+              }
+            }
+          },
+          "retries": 0,
+          "returned_bytes": 49006000,
+          "returned_rows": 49006,
+          "runtime_seconds": {
+            "max": 15.119314250000059,
+            "median": 15.119314250000059,
+            "min": 15.119314250000059,
+            "n": 1
+          },
+          "successful": 1,
+          "throughput": {
+            "max": 73.04601899196494,
+            "median": 73.04601899196494,
+            "min": 73.04601899196494,
+            "n": 1
+          },
+          "timeouts": 0,
+          "total": 1
+        },
+        "totedb": {
+          "audit": {
+            "added_rows": {
+              "max": 55,
+              "median": 55,
+              "min": 55,
+              "n": 1
+            },
+            "changed_fields": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "n": 1
+            },
+            "missing_rows": {
+              "max": 0,
+              "median": 0,
+              "min": 0,
+              "n": 1
+            },
+            "payload_bytes": {
+              "max": 10055000,
+              "median": 10055000,
+              "min": 10055000,
+              "n": 1
+            },
+            "rows": {
+              "max": 10055,
+              "median": 10055,
+              "min": 10055,
+              "n": 1
+            }
+          },
+          "exhausted": 0,
+          "logical_operations": 1000.0,
+          "native_attempts": 1000,
+          "non_ok": 0,
+          "operations": {
+            "INSERT": {
+              "50thPercentileLatency(us)": {
+                "max": 1460.0,
+                "median": 1460.0,
+                "min": 1460.0,
+                "n": 1
+              },
+              "95thPercentileLatency(us)": {
+                "max": 10519.0,
+                "median": 10519.0,
+                "min": 10519.0,
+                "n": 1
+              },
+              "99thPercentileLatency(us)": {
+                "max": 56223.0,
+                "median": 56223.0,
+                "min": 56223.0,
+                "n": 1
+              },
+              "Operations": {
+                "max": 55.0,
+                "median": 55.0,
+                "min": 55.0,
+                "n": 1
+              }
+            },
+            "SCAN": {
+              "50thPercentileLatency(us)": {
+                "max": 79103.0,
+                "median": 79103.0,
+                "min": 79103.0,
+                "n": 1
+              },
+              "95thPercentileLatency(us)": {
+                "max": 658431.0,
+                "median": 658431.0,
+                "min": 658431.0,
+                "n": 1
+              },
+              "99thPercentileLatency(us)": {
+                "max": 1110015.0,
+                "median": 1110015.0,
+                "min": 1110015.0,
+                "n": 1
+              },
+              "Operations": {
+                "max": 945.0,
+                "median": 945.0,
+                "min": 945.0,
+                "n": 1
+              }
+            }
+          },
+          "retries": 0,
+          "returned_bytes": 47794000,
+          "returned_rows": 47794,
+          "runtime_seconds": {
+            "max": 167.58560079199998,
+            "median": 167.58560079199998,
+            "min": 167.58560079199998,
+            "n": 1
+          },
+          "successful": 1,
+          "throughput": {
+            "max": 5.987629557334547,
+            "median": 5.987629557334547,
+            "min": 5.987629557334547,
+            "n": 1
+          },
+          "timeouts": 0,
+          "total": 1
+        }
+      },
+      "failures": [
+        {
+          "phase": "preflight",
+          "reasons": [
+            "timeout",
+            "nonzero_exit",
+            "logical_operation_count",
+            "worker_cleanup_count",
+            "row_count",
+            "key_set"
+          ],
+          "trial_id": "10000-E-t1-preflight-0-totedb"
+        }
+      ],
+      "h2": "inconclusive",
+      "paired_throughput_ratio": {
+        "ci95": null,
+        "median": null,
+        "n": 0,
+        "resamples": 10000,
+        "seed": 226
+      },
+      "records": 10000,
+      "threads": 1,
+      "workload": "E"
+    }
+  ],
+  "failed_runs": 1,
+  "git_sha": "6938a6b06918b673c9168e990f255146dc743c99",
+  "measured_runs": 2,
+  "native_versions": {
+    "sqlite": "3.51.0",
+    "sqlite_compile_options": [
+      "ATOMIC_INTRINSICS=1",
+      "BUG_COMPATIBLE_20160819",
+      "CCCRYPT256",
+      "CODEC=see-cccrypt",
+      "COMPILER=clang-21.0.0",
+      "DEFAULT_AUTOVACUUM",
+      "DEFAULT_CACHE_SIZE=2000",
+      "DEFAULT_CKPTFULLFSYNC",
+      "DEFAULT_FILE_FORMAT=4",
+      "DEFAULT_JOURNAL_SIZE_LIMIT=32768",
+      "DEFAULT_LOOKASIDE=1200,102",
+      "DEFAULT_MEMSTATUS=0",
+      "DEFAULT_MMAP_SIZE=0",
+      "DEFAULT_PAGE_SIZE=4096",
+      "DEFAULT_PCACHE_INITSZ=20",
+      "DEFAULT_RECURSIVE_TRIGGERS",
+      "DEFAULT_SECTOR_SIZE=4096",
+      "DEFAULT_SYNCHRONOUS=2",
+      "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+      "DEFAULT_WAL_SYNCHRONOUS=1",
+      "DEFAULT_WORKER_THREADS=0",
+      "DIRECT_OVERFLOW_READ",
+      "DQS=3",
+      "ENABLE_API_ARMOR",
+      "ENABLE_BYTECODE_VTAB",
+      "ENABLE_COLUMN_METADATA",
+      "ENABLE_DBSTAT_VTAB",
+      "ENABLE_FTS3",
+      "ENABLE_FTS3_PARENTHESIS",
+      "ENABLE_FTS3_TOKENIZER",
+      "ENABLE_FTS4",
+      "ENABLE_FTS5",
+      "ENABLE_LOCKING_STYLE=1",
+      "ENABLE_MATH_FUNCTIONS",
+      "ENABLE_NORMALIZE",
+      "ENABLE_PREUPDATE_HOOK",
+      "ENABLE_RTREE",
+      "ENABLE_SESSION",
+      "ENABLE_SETLK_TIMEOUT",
+      "ENABLE_SNAPSHOT",
+      "ENABLE_SQLLOG",
+      "ENABLE_STMT_SCANSTATUS",
+      "ENABLE_UNKNOWN_SQL_FUNCTION",
+      "ENABLE_UPDATE_DELETE_LIMIT",
+      "HAS_CODEC_RESTRICTED",
+      "HAVE_ISNAN",
+      "MALLOC_SOFT_LIMIT=1024",
+      "MAX_ATTACHED=10",
+      "MAX_COLUMN=2000",
+      "MAX_COMPOUND_SELECT=500",
+      "MAX_DEFAULT_PAGE_SIZE=8192",
+      "MAX_EXPR_DEPTH=1000",
+      "MAX_FUNCTION_ARG=127",
+      "MAX_LENGTH=2147483645",
+      "MAX_LIKE_PATTERN_LENGTH=50000",
+      "MAX_MMAP_SIZE=1073741824",
+      "MAX_PAGE_COUNT=1073741823",
+      "MAX_PAGE_SIZE=65536",
+      "MAX_SQL_LENGTH=1000000000",
+      "MAX_TRIGGER_DEPTH=1000",
+      "MAX_VARIABLE_NUMBER=500000",
+      "MAX_VDBE_OP=250000000",
+      "MAX_WORKER_THREADS=8",
+      "MUTEX_UNFAIR",
+      "OMIT_AUTORESET",
+      "OMIT_LOAD_EXTENSION",
+      "STMTJRNL_SPILL=131072",
+      "SYSTEM_MALLOC",
+      "TEMP_STORE=1",
+      "THREADSAFE=2",
+      "USE_URI"
+    ],
+    "totedb": "0.1.0"
+  },
+  "preflight_runs": 2,
+  "repetitions": 1,
+  "schema_version": 1,
+  "total_busy_retries": 0,
+  "total_logical_operations": 2000.0,
+  "total_native_attempts": 2000,
+  "total_non_ok": 0
+}

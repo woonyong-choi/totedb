@@ -1,0 +1,13 @@
+{
+  "condition": {
+    "jobs": 256,
+    "payload_bytes": 4096,
+    "workers": 8,
+    "workload": "drain"
+  },
+  "directory": "/home/runner/work/totedb/totedb.wt/queue-contention/build/queue-contention/runs/20261019T031416Z-b590d61/measured-r0-drain-w8-b4096-n256-sqlite-delete/database",
+  "engine": "sqlite-delete",
+  "evidence_directory": "/home/runner/work/totedb/totedb.wt/queue-contention/docs/experiments/queue-contention/data/raw/20261019T031416Z-b590d61/trials/measured-r0-drain-w8-b4096-n256-sqlite-delete",
+  "fault": "",
+  "timeout_s": 180
+}

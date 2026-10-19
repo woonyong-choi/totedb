@@ -1,0 +1,38 @@
+{
+  "command": [
+    "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "-Xms256m",
+    "-Xmx1g",
+    "-Dycsb.native=/home/runner/work/totedb/totedb/build/ycsb/libycsb.so",
+    "-cp",
+    "/home/runner/work/totedb/totedb/build/ycsb/classes:/home/runner/work/totedb/totedb/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+    "org.totedb.ycsb.Tool",
+    "audit",
+    "totedb",
+    "/home/runner/work/totedb/totedb/build/ycsb/runs/20261019T031416Z-b590d61-r3-after/10000-E-t1-preflight-0-totedb.db",
+    "/home/runner/work/totedb/totedb/build/ycsb/runs/20261019T031416Z-b590d61-r3-after/10000-E-t1-preflight-0-totedb.snapshot",
+    "/home/runner/work/totedb/totedb/build/ycsb/runs/20261019T031416Z-b590d61-r3-after/10000-totedb.snapshot"
+  ],
+  "cpu_system_seconds": 0.508126,
+  "cpu_user_seconds": 1.10111,
+  "elapsed_seconds": 0.907144035999977,
+  "exit_code": 0,
+  "load_after": [
+    1.138671875,
+    0.8310546875,
+    0.39453125
+  ],
+  "load_before": [
+    1.15087890625,
+    0.828125,
+    0.39111328125
+  ],
+  "major_faults": 0,
+  "max_rss_bytes": 140148736,
+  "minor_faults": 18451,
+  "profiler_wait_seconds": 1.986699999179109e-05,
+  "sample_available": false,
+  "sample_exit_code": null,
+  "timeout": false,
+  "ts_utc": "2026-10-19T03:19:35.176920+00:00"
+}

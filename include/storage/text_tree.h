@@ -13,6 +13,13 @@
 #define TEXT_TREE_KEY_MAX_BYTES 1024u
 #define TEXT_TREE_HEADER_BYTES 24u
 
+/* NULL 경계는 무한대이며 빈 키와 구별한다. callback의 키는 호출 동안만 유효하며 false는 정상 중단이다. */
+pk_status_t text_tree_visit_range(const pk_tree_io_t *io, uint32_t table_id, uint32_t root,
+                                   text_key_range_t range,
+                                   bool (*visit)(void *context, const uint8_t *key, size_t key_bytes,
+                                                 heap_locator_t locator),
+                                   void *context, bool *stopped);
+
 pk_status_t text_tree_create(const pk_tree_io_t *io, uint32_t table_id, uint32_t *root);
 pk_status_t text_tree_stamp(const pk_tree_io_t *io, uint32_t table_id, uint32_t root, uint32_t *stamp);
 pk_status_t text_tree_restamp(const pk_tree_io_t *io, uint32_t table_id, uint32_t *root, uint32_t stamp);

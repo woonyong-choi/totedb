@@ -240,6 +240,14 @@ static database_exec_status_t collect_matches(database_t *db, const catalog_tabl
         if (scan.status != DATABASE_EXEC_OK) return scan.status;
         return visited == HEAP_OK ? DATABASE_EXEC_OK : heap_failure(db, visited, "index range");
     }
+    size_t by_text = force_scan ? SIZE_MAX : text_key_range(view, heap, where);
+    if (by_text != SIZE_MAX) {
+        range_match_t scan = {db, heap, where, row, matches, keep_values, DATABASE_EXEC_OK};
+        bool stopped = false;
+        heap_status_t visited = visit_text_range(heap, &where->text_ranges[by_text], collect_range_match, &scan, &stopped);
+        if (scan.status != DATABASE_EXEC_OK) return scan.status;
+        return visited == HEAP_OK ? DATABASE_EXEC_OK : heap_failure(db, visited, "index range");
+    }
     heap_cursor_t *cursor = NULL;
     heap_status_t made = heap_cursor_open(heap, &cursor);
     if (made != HEAP_OK) return heap_failure(db, made, "cursor");

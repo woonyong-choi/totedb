@@ -36,6 +36,15 @@ typedef struct {
     uint32_t count;
 } change_t;
 
+typedef struct {
+    const pk_tree_io_t *io;
+    uint32_t table_id;
+    text_key_range_t range;
+    bool (*visit)(void *context, const uint8_t *key, size_t key_bytes, heap_locator_t locator);
+    void *context;
+    bool stopped;
+} range_visit_t;
+
 static int compare_keys(text_key_t left, text_key_t right)
 {
     size_t common = left.size < right.size ? left.size : right.size;
@@ -479,4 +488,70 @@ pk_status_t text_tree_visit_prefix(const pk_tree_io_t *io, uint32_t table_id, ui
         (prefix_bytes > 0 && prefix == NULL)) return PK_LIMIT;
     return visit_prefix_node(io, table_id, root, LEVEL_ANY,
                              (text_key_t){prefix, (uint16_t)prefix_bytes}, visit, context);
+}
+
+static text_key_t bound_key(const text_key_bound_t *bound)
+{
+    return (text_key_t){bound->bytes, (uint16_t)bound->size_bytes};
+}
+
+static bool exceeds_high(text_key_t key, const text_key_bound_t *high)
+{
+    if (high == NULL) return false;
+    int order = compare_keys(key, bound_key(high));
+    return order > 0 || (order == 0 && !high->inclusive);
+}
+
+static pk_status_t visit_range_node(range_visit_t *scan, uint32_t page, int expected_level)
+{
+    node_t node;
+    pk_status_t status = load_node(scan->io, scan->table_id, page, expected_level, &node);
+    if (status != PK_OK) return status;
+    const text_key_bound_t *low = scan->range.low;
+    uint32_t start = 0;
+    if (low != NULL) {
+        if (node.level > 0) start = child_index(&node, bound_key(low));
+        else {
+            bool found;
+            start = leaf_search(&node, bound_key(low), &found);
+            if (found && !low->inclusive) start++;
+        }
+    }
+    for (uint32_t i = start; i < node.count && !scan->stopped; i++) {
+        entry_t entry = entry_at(&node, i);
+        if ((node.level == 0 || i > 0) && exceeds_high(entry.key, scan->range.high)) break;
+        if (node.level > 0) {
+            status = visit_range_node(scan, entry.target, node.level - 1);
+            if (status != PK_OK) return status;
+        } else {
+            heap_locator_t locator = {entry.target, entry.slot};
+            scan->stopped = !scan->visit(scan->context, entry.key.bytes, entry.key.size, locator);
+        }
+    }
+    return PK_OK;
+}
+
+static bool is_valid_bound(const text_key_bound_t *bound)
+{
+    if (bound == NULL) return true;
+    return bound->size_bytes <= TEXT_TREE_KEY_MAX_BYTES && (bound->size_bytes == 0 || bound->bytes != NULL);
+}
+
+pk_status_t text_tree_visit_range(const pk_tree_io_t *io, uint32_t table_id, uint32_t root,
+                                   text_key_range_t range,
+                                   bool (*visit)(void *context, const uint8_t *key, size_t key_bytes,
+                                                 heap_locator_t locator),
+                                   void *context, bool *stopped)
+{
+    if (visit == NULL || stopped == NULL) return PK_LIMIT;
+    *stopped = false;
+    if (!is_valid_bound(range.low) || !is_valid_bound(range.high)) return PK_LIMIT;
+    if (range.low != NULL && range.high != NULL) {
+        int order = compare_keys(bound_key(range.low), bound_key(range.high));
+        if (order > 0 || (order == 0 && !(range.low->inclusive && range.high->inclusive))) return PK_OK;
+    }
+    range_visit_t scan = {io, table_id, range, visit, context, false};
+    pk_status_t status = visit_range_node(&scan, root, LEVEL_ANY);
+    *stopped = scan.stopped;
+    return status;
 }

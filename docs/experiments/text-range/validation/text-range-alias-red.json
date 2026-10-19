@@ -1,0 +1,18 @@
+{
+  "sqlite_expected": [
+    [
+      "a"
+    ]
+  ],
+  "native_protocol": "OK\nEND\nOK\nEND\nCMD 435245415445205441424c45 0\nTXN 0 0\nEND\nCMD 494e53455254 2\nTXN 0 0\nEND\nROWS 1\nCOL 6b T\nROW T7a\nTXN 0 0\nEND\nOK\nEND\nOK\nEND\n",
+  "stderr": "",
+  "returncode": 0,
+  "setup": [
+    "CREATE TABLE t (k TEXT PRIMARY KEY)",
+    "INSERT INTO t VALUES ('az'),('ba')"
+  ],
+  "queries": [
+    "SELECT substr(k,2) AS k FROM t WHERE k >= '' ORDER BY k LIMIT 1"
+  ],
+  "plan_output_guard_present": false
+}

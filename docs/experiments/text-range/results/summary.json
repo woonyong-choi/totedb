@@ -1,0 +1,3062 @@
+{
+  "H1": "\ucc44\ud0dd",
+  "H2": "\ucc44\ud0dd",
+  "collection": {
+    "baseline_product_sha": "04f9f2d14d94da7284b90b60370ded5ebefab65c",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 228,
+    "child_environments": {
+      "r1-after": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb/build/ycsb/classes:/home/runner/work/totedb/totedb/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91821969408,
+        "git_sha": "b590d614fa20e7e6bd44f2dbbb6caabb5a1d36b1",
+        "git_status": "?? docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/\n?? docs/experiments/text-range/logs/all-20261019T031416Z-b590d61.log\n?? docs/experiments/text-range/machine.json\n",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:16:04.892912+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r1-before": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/classes:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb.wt/text-range-before/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91868274688,
+        "git_sha": "04f9f2d14d94da7284b90b60370ded5ebefab65c",
+        "git_status": "",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:14:49.351861+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r2-after": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb/build/ycsb/classes:/home/runner/work/totedb/totedb/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91775668224,
+        "git_sha": "b590d614fa20e7e6bd44f2dbbb6caabb5a1d36b1",
+        "git_status": "?? docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/\n?? docs/experiments/text-range/logs/all-20261019T031416Z-b590d61.log\n?? docs/experiments/text-range/machine.json\n",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:16:29.495979+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r2-before": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/classes:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb.wt/text-range-before/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91729362944,
+        "git_sha": "04f9f2d14d94da7284b90b60370ded5ebefab65c",
+        "git_status": "",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:16:53.481050+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r3-after": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb/build/ycsb/classes:/home/runner/work/totedb/totedb/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91636604928,
+        "git_sha": "b590d614fa20e7e6bd44f2dbbb6caabb5a1d36b1",
+        "git_status": "?? docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/\n?? docs/experiments/text-range/logs/all-20261019T031416Z-b590d61.log\n?? docs/experiments/text-range/machine.json\n",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:19:20.662270+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r3-before": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/classes:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb.wt/text-range-before/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91683061760,
+        "git_sha": "04f9f2d14d94da7284b90b60370ded5ebefab65c",
+        "git_status": "",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:18:07.531978+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r4-after": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb/build/ycsb/classes:/home/runner/work/totedb/totedb/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91590324224,
+        "git_sha": "b590d614fa20e7e6bd44f2dbbb6caabb5a1d36b1",
+        "git_status": "?? docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/\n?? docs/experiments/text-range/logs/all-20261019T031416Z-b590d61.log\n?? docs/experiments/text-range/machine.json\n",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:19:44.746317+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r4-before": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/classes:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb.wt/text-range-before/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91544027136,
+        "git_sha": "04f9f2d14d94da7284b90b60370ded5ebefab65c",
+        "git_status": "",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:20:09.030672+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r5-after": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb/build/ycsb/classes:/home/runner/work/totedb/totedb/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91451420672,
+        "git_sha": "b590d614fa20e7e6bd44f2dbbb6caabb5a1d36b1",
+        "git_status": "?? docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/\n?? docs/experiments/text-range/logs/all-20261019T031416Z-b590d61.log\n?? docs/experiments/text-range/machine.json\n",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:22:36.986773+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      },
+      "r5-before": {
+        "build": {
+          "classpath": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/classes:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+          "compiler": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "dependency_lock": {
+            "artifacts": [
+              {
+                "kind": "jar",
+                "name": "core-0.17.0.jar",
+                "sha256": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+                "url": "https://repo.maven.apache.org/maven2/site/ycsb/core/0.17.0/core-0.17.0.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "htrace-core4-4.1.0-incubating.jar",
+                "sha256": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+                "url": "https://repo.maven.apache.org/maven2/org/apache/htrace/htrace-core4/4.1.0-incubating/htrace-core4-4.1.0-incubating.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-mapper-asl-1.9.4.jar",
+                "sha256": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.4/jackson-mapper-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "jackson-core-asl-1.9.4.jar",
+                "sha256": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+                "url": "https://repo.maven.apache.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.4/jackson-core-asl-1.9.4.jar"
+              },
+              {
+                "kind": "jar",
+                "name": "HdrHistogram-2.1.4.jar",
+                "sha256": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+                "url": "https://repo.maven.apache.org/maven2/org/hdrhistogram/HdrHistogram/2.1.4/HdrHistogram-2.1.4.jar"
+              },
+              {
+                "kind": "source",
+                "name": "LICENSE.txt",
+                "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/LICENSE.txt"
+              },
+              {
+                "kind": "source",
+                "name": "workloada",
+                "sha256": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloada"
+              },
+              {
+                "kind": "source",
+                "name": "workloadb",
+                "sha256": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadb"
+              },
+              {
+                "kind": "source",
+                "name": "workloadc",
+                "sha256": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadc"
+              },
+              {
+                "kind": "source",
+                "name": "workloadd",
+                "sha256": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadd"
+              },
+              {
+                "kind": "source",
+                "name": "workloade",
+                "sha256": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloade"
+              },
+              {
+                "kind": "source",
+                "name": "workloadf",
+                "sha256": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/workloads/workloadf"
+              },
+              {
+                "kind": "source",
+                "name": "NOTICE.txt",
+                "sha256": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+                "url": "https://raw.githubusercontent.com/brianfrankcooper/YCSB/4b19340e3bab5e4c88eda75ad56e83dc4d5cc503/NOTICE.txt"
+              }
+            ],
+            "ycsb_commit": "4b19340e3bab5e4c88eda75ad56e83dc4d5cc503",
+            "ycsb_version": "0.17.0"
+          },
+          "java": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+          "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)\n",
+          "native": "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so",
+          "native_build_command": [
+            "cc",
+            "-O2",
+            "-g",
+            "-fPIC",
+            "-shared",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            "-I/home/runner/work/totedb/totedb.wt/text-range-before/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include",
+            "-I/usr/lib/jvm/temurin-21-jdk-amd64/include/linux",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/bench/ycsb/native/bridge.c",
+            "-L/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-ltotedb",
+            "-lsqlite3",
+            "-Wl,-rpath,/home/runner/work/totedb/totedb.wt/text-range-before/build/lib",
+            "-o",
+            "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so"
+          ]
+        },
+        "cpu_count": 4,
+        "disk_free_bytes": 91497725952,
+        "git_sha": "04f9f2d14d94da7284b90b60370ded5ebefab65c",
+        "git_status": "",
+        "machine": "x86_64",
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "source_sha256": {
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df"
+        },
+        "ts_utc": "2026-10-19T03:21:22.451124+00:00",
+        "versions": {
+          "sqlite": "3.45.1",
+          "sqlite_compile_options": [
+            "ATOMIC_INTRINSICS=1",
+            "COMPILER=gcc-13.3.0",
+            "DEFAULT_AUTOVACUUM",
+            "DEFAULT_CACHE_SIZE=-2000",
+            "DEFAULT_FILE_FORMAT=4",
+            "DEFAULT_JOURNAL_SIZE_LIMIT=-1",
+            "DEFAULT_MMAP_SIZE=0",
+            "DEFAULT_PAGE_SIZE=4096",
+            "DEFAULT_PCACHE_INITSZ=20",
+            "DEFAULT_RECURSIVE_TRIGGERS",
+            "DEFAULT_SECTOR_SIZE=4096",
+            "DEFAULT_SYNCHRONOUS=2",
+            "DEFAULT_WAL_AUTOCHECKPOINT=1000",
+            "DEFAULT_WAL_SYNCHRONOUS=2",
+            "DEFAULT_WORKER_THREADS=0",
+            "DIRECT_OVERFLOW_READ",
+            "ENABLE_COLUMN_METADATA",
+            "ENABLE_DBSTAT_VTAB",
+            "ENABLE_FTS3",
+            "ENABLE_FTS3_PARENTHESIS",
+            "ENABLE_FTS3_TOKENIZER",
+            "ENABLE_FTS4",
+            "ENABLE_FTS5",
+            "ENABLE_LOAD_EXTENSION",
+            "ENABLE_MATH_FUNCTIONS",
+            "ENABLE_PREUPDATE_HOOK",
+            "ENABLE_RTREE",
+            "ENABLE_SESSION",
+            "ENABLE_STMTVTAB",
+            "ENABLE_UNLOCK_NOTIFY",
+            "ENABLE_UPDATE_DELETE_LIMIT",
+            "HAVE_ISNAN",
+            "LIKE_DOESNT_MATCH_BLOBS",
+            "MALLOC_SOFT_LIMIT=1024",
+            "MAX_ATTACHED=10",
+            "MAX_COLUMN=2000",
+            "MAX_COMPOUND_SELECT=500",
+            "MAX_DEFAULT_PAGE_SIZE=32768",
+            "MAX_EXPR_DEPTH=1000",
+            "MAX_FUNCTION_ARG=127",
+            "MAX_LENGTH=1000000000",
+            "MAX_LIKE_PATTERN_LENGTH=50000",
+            "MAX_MMAP_SIZE=0x7fff0000",
+            "MAX_PAGE_COUNT=0xfffffffe",
+            "MAX_PAGE_SIZE=65536",
+            "MAX_SCHEMA_RETRY=25",
+            "MAX_SQL_LENGTH=1000000000",
+            "MAX_TRIGGER_DEPTH=1000",
+            "MAX_VARIABLE_NUMBER=250000",
+            "MAX_VDBE_OP=250000000",
+            "MAX_WORKER_THREADS=8",
+            "MUTEX_PTHREADS",
+            "SECURE_DELETE",
+            "SOUNDEX",
+            "SYSTEM_MALLOC",
+            "TEMP_STORE=1",
+            "THREADSAFE=1",
+            "USE_URI"
+          ],
+          "totedb": "0.1.0"
+        }
+      }
+    },
+    "collections": [
+      {
+        "child": "r1-before",
+        "exit_code": 0,
+        "repetition": 1,
+        "source_phase": "before"
+      },
+      {
+        "child": "r1-after",
+        "exit_code": 0,
+        "repetition": 1,
+        "source_phase": "after"
+      },
+      {
+        "child": "r2-after",
+        "exit_code": 0,
+        "repetition": 2,
+        "source_phase": "after"
+      },
+      {
+        "child": "r2-before",
+        "exit_code": 0,
+        "repetition": 2,
+        "source_phase": "before"
+      },
+      {
+        "child": "r3-before",
+        "exit_code": 0,
+        "repetition": 3,
+        "source_phase": "before"
+      },
+      {
+        "child": "r3-after",
+        "exit_code": 0,
+        "repetition": 3,
+        "source_phase": "after"
+      },
+      {
+        "child": "r4-after",
+        "exit_code": 0,
+        "repetition": 4,
+        "source_phase": "after"
+      },
+      {
+        "child": "r4-before",
+        "exit_code": 0,
+        "repetition": 4,
+        "source_phase": "before"
+      },
+      {
+        "child": "r5-before",
+        "exit_code": 0,
+        "repetition": 5,
+        "source_phase": "before"
+      },
+      {
+        "child": "r5-after",
+        "exit_code": 0,
+        "repetition": 5,
+        "source_phase": "after"
+      }
+    ],
+    "expected_baseline_loads": 20,
+    "expected_measured": 20,
+    "expected_preflight": 20,
+    "run_id": "20261019T031416Z-b590d61",
+    "schedule": [
+      {
+        "child": "r1-before",
+        "repetition": 1,
+        "source_phase": "before"
+      },
+      {
+        "child": "r1-after",
+        "repetition": 1,
+        "source_phase": "after"
+      },
+      {
+        "child": "r2-after",
+        "repetition": 2,
+        "source_phase": "after"
+      },
+      {
+        "child": "r2-before",
+        "repetition": 2,
+        "source_phase": "before"
+      },
+      {
+        "child": "r3-before",
+        "repetition": 3,
+        "source_phase": "before"
+      },
+      {
+        "child": "r3-after",
+        "repetition": 3,
+        "source_phase": "after"
+      },
+      {
+        "child": "r4-after",
+        "repetition": 4,
+        "source_phase": "after"
+      },
+      {
+        "child": "r4-before",
+        "repetition": 4,
+        "source_phase": "before"
+      },
+      {
+        "child": "r5-before",
+        "repetition": 5,
+        "source_phase": "before"
+      },
+      {
+        "child": "r5-after",
+        "repetition": 5,
+        "source_phase": "after"
+      }
+    ],
+    "sources": {
+      "after": {
+        "build_sha256": {
+          "build/lib/libtotedb.so": "46c6c48e8c5a1fce66e2aa4ff7cdcefc59096de406327c2fd9ac0f7e6c856872",
+          "build/ycsb/build.json": "a51864ecbb5ce084415086dd7d75746017e89d371d81d42afbb95315c3ba3ddb",
+          "build/ycsb/classes/org/totedb/ycsb/Audit.class": "11a0f8623d4455b094ad8c0afc328420be31ef98ed306feb06144630aeb92a28",
+          "build/ycsb/classes/org/totedb/ycsb/Connection.class": "5290852e3de777b82d25b5c1642dccd43a8f516adb5d8f03c5a1e6ee1b04438a",
+          "build/ycsb/classes/org/totedb/ycsb/Native.class": "9472209bb934f0d93ab20f79396945f80a2dcd2e48e946b7e0a66a1dea368902",
+          "build/ycsb/classes/org/totedb/ycsb/NativeReply.class": "47be6884c731af3bcf4b9948ae042307723b7adfcab305c7b0c123b857793cdc",
+          "build/ycsb/classes/org/totedb/ycsb/Smoke.class": "f9fb450332910c88fa2bf9c63995e44f13a856197e5f7a4176c83f5e4907f1b4",
+          "build/ycsb/classes/org/totedb/ycsb/SqlBinding.class": "c26062af86850ab6506db7f0e3b7dfc2432449660ab3480c1efcfb3bdb5adc16",
+          "build/ycsb/classes/org/totedb/ycsb/Tool.class": "028f691c6c75f5829a62553ce38e9da92d00fed170aea3183a5bead3015bf775",
+          "build/ycsb/deps/HdrHistogram-2.1.4.jar": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+          "build/ycsb/deps/core-0.17.0.jar": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+          "build/ycsb/deps/htrace-core4-4.1.0-incubating.jar": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+          "build/ycsb/deps/jackson-core-asl-1.9.4.jar": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+          "build/ycsb/deps/jackson-mapper-asl-1.9.4.jar": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+          "build/ycsb/libycsb.so": "2e48ac5558f6944e95c4ae4cb41e354979bbbe57f1aefcef715d5c0a826d429e"
+        },
+        "root": "~/work/totedb/totedb",
+        "source_sha": "b590d614fa20e7e6bd44f2dbbb6caabb5a1d36b1",
+        "source_sha256": {
+          "Makefile": "d710d343d9bfaae879e41db38b836e9a23945183b264704f2d131c294c9794a6",
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+          "include/queue/ack_queue.h": "64a67064971555ff2ed3d1a92cae465205eecbf56ee0da26f624902f4a5ed9c8",
+          "include/sql/database.h": "84019aa7bed0718b9f17ba6d865bb8ef626fb58dfb6644bb1fc4bd4d4454e070",
+          "include/sql/database_txn.h": "d9dfd2b6206056e7f5d83200c72fd50981f06fddeb325044f119220b122e2d8b",
+          "include/sql/lexer.h": "4fcd13a8340962ad89ae32f3f655fe6c1ab8406a1d2328eaacdc8d9c35afa1fc",
+          "include/sql/mem_ledger.h": "fb85e8ec6633b07419df8c1557641e88d3973669d550e3a1d07a748b066a22d7",
+          "include/sql/result.h": "ec14f8f6df13e1d8c3cfbd04fc1a38fd481572b57b0753ec338ced527173fe2d",
+          "include/sql/session.h": "824999d11a52f2f01b9503c5f673d097d3064e2e6fe83b7589de9c457580eb58",
+          "include/sql/sql_eval.h": "317537a4b75f5881682dfe7d5c3272860f2a2aeb140847e5f7189795cb9f35ce",
+          "include/sql/sql_statement.h": "b6baac1e65df01e74062204a7cf17a378242cb42b882adf743d9c0df5bca36d3",
+          "include/storage/catalog.h": "fbf7ca7138ef08a8fbb4d58a296f902d558ad2464d98cce3a982b90778347655",
+          "include/storage/catalog_store.h": "23596de447c052d9a5a9520450ee71637fb5946f22a250fa422783374f8fa8b8",
+          "include/storage/checksum.h": "eb7f780a86202f22df3368a87ad29d72eb1a1b3a6cbf9700c5038a00a7c7d10d",
+          "include/storage/heap_store.h": "2b3c7934bfacc48281d6f56217c1e1eae57f7208b25530c7415de447aca01128",
+          "include/storage/le.h": "cb433dd493556622749a90cfd0585808e9738ca28b32272be3f76ae5fcd29ca1",
+          "include/storage/overflow.h": "aa6cc88cdd08f5609c27752a6f31e4b7e6d3c99a6b3bf2efc24a78e38b2e68e6",
+          "include/storage/page_file.h": "a1ec9b9c5665cbcaef5235b6b23ebe431168ce2dc9342225946013d117324fcf",
+          "include/storage/pk_tree.h": "6f0ccac7549cda7ba35f564b303d3803cbe6aeb24d66beb7b185eb41464a987c",
+          "include/storage/record.h": "70740cda79a666f6d53590c3bd7e137bdb3db89f9fa20a377d666f713f14dbc9",
+          "include/storage/record_page.h": "18331769c83dfdf01b09b77408d29ad6793cd0caeed6f77247e5e654d0c56eb4",
+          "include/storage/text_tree.h": "9888a3cae84184831b4b453dae20db7125e99e21681f9f5089f38aff35d3a535",
+          "include/storage/transaction.h": "960c0ba31c17809a3acaf663702e3b4d341527993ea73b92158131f522aa1610",
+          "include/storage/value.h": "3ae359c12870345c0e3404988e409f98dfae375278f2e103291c7c0dd93607fa",
+          "include/totedb.h": "f940334e05a1a20eee95b226fe722cfc8044ce8ea5fe8dbff7d909201d5c3e3e",
+          "src/capi/totedb.c": "f24e98002bf99cb1cb00bfd5e3eb418da68bee0c6fc96437a81b4e7ebc07f1d0",
+          "src/queue/ack_queue.c": "f3e3b201d54f43579aa5f6b760bf2577f00f926cb1c202eafc414adbcc5d525a",
+          "src/queue/ack_queue_internal.h": "ed56b7d6c1c9383d62bfae5289550fae277e16a159c99e31bdd79382de3d2bae",
+          "src/queue/ack_queue_sql.c": "ee858e9712a06eea86939402a07285a32ff8e526ddd4df12be0ced59bdde0328",
+          "src/queue/queue.mk": "81647ab96cb1fa952ac02b3bae61e20e4882f1fd6cc349338319fea4adb995c7",
+          "src/sql/database.c": "e4ff4a8d2644163f84cf3747da137fbe309663ef84479ad6d81380434a403259",
+          "src/sql/database_check.c": "2f2b01099a887979825dbf45cf7c5b0c2fb06f307ffe8f1dd2e7a3fe136c9651",
+          "src/sql/database_ddl.c": "83a31f573c420a26a6ed5cf91df330849c1cb809d10090b89a08d6d88e9e8c2f",
+          "src/sql/database_exec.h": "296b98a69739efa009210a31cdaca5ed798fdd15794d8eafc294c052ef184df1",
+          "src/sql/database_expr.c": "a1073827d584e971bdba6b0dcdda32fb984ec79f37406bd73cab3f39499b2547",
+          "src/sql/database_group.c": "d62a66578b14efa2eb33ec8b2a4605092ade1e2a7850e45c8dc6c88042fcb379",
+          "src/sql/database_insert.c": "8ee6b2b4c18ca68d44f61130e246d4fe42ddb338c45c0f08b0bce5b40ee4ae2c",
+          "src/sql/database_internal.h": "f5f2d43e83781e16b2f65cb72dea7fcffb2e99f80d9177cfd24f19fa666d644c",
+          "src/sql/database_join.c": "c2c9401c351140a399fb701f2b6236a59bde069bc3acfd65e46e5af2e1e0154a",
+          "src/sql/database_select.c": "06bc8743cdd8a502669d46357d458410a73d3ff95c29fc7efca6fab27a76e5c4",
+          "src/sql/database_subquery.c": "417b7096de4182d99d54659fa53de9a0d0fceae722a377681600bff8faa1231d",
+          "src/sql/database_txn.c": "c164d2efe941207482f56a65228265f121ae9a76b608fee19c75fc42c4b14a55",
+          "src/sql/database_update.c": "2a03509fd072b2f56eddfded3049aab4d603dcce64f409c62b00dd8e7b0f0b54",
+          "src/sql/lexer.c": "e513af1f4a57fbb97f4283c14db81fbcbc02587a5f1178f66f352e120abd3116",
+          "src/sql/result.c": "3c19dbebd3d85d405afa6a6e208d1bd2c6b8fb64191d62fa574a41bc6020227f",
+          "src/sql/session.c": "cd3109a0e216aa93fa88297bd81d0a9e9e0ffcbedc511a454856b45df44a4c7f",
+          "src/sql/sql_eval.c": "bc6ca1fac5507120b311c6de5c4475d3c87572e92d5e8375e8d4ef503451f12e",
+          "src/sql/sql_statement.c": "0eee1aa895a0a634193dbc15f53e26ea5d1860c7d9b038494074c8b3f34ac26f",
+          "src/storage/catalog.c": "fa092aa7dd65e0c4cceb05efdb645246cbcc43bd4a61e30b505cb46cdb3ebc03",
+          "src/storage/catalog_store.c": "a4a51fd620dd14122b9a8b9c74506ed61afc2da1929a1728bf0e3f48fa33a49e",
+          "src/storage/checksum.c": "8b96807e8cd00f9d6936dc612dee646b123fac13fb0ce69fbf01155bec5fae40",
+          "src/storage/heap_store.c": "872bb60ec5b4c790460190449bd9d2e2ba8d0ce009a48da6b704ac1e39a177ca",
+          "src/storage/overflow.c": "70f98b6d26a24c781a069bbe9b8b7507732818a0bf026da874bca864e471728f",
+          "src/storage/page_cache.c": "0bb274a6d6ac60f3433139d03ffa1cfe74246e981ab4c8bd8bce8dd0465f38cb",
+          "src/storage/page_cache.h": "1671e73da0dbb137b5fcf79ef7280131e9ecbaf8cf811da194b622b6cd045722",
+          "src/storage/page_file.c": "f4149e4a1c547d912bc6d71b13bf3f06bc6a70d59506de44f5692edc60bd81fc",
+          "src/storage/pk_tree.c": "69b844850ec109ce129f5179586c49e01b4fac83562e1520872b7ad96c4a4a08",
+          "src/storage/record.c": "02d319efb3d40e0eab04da6a5251cbc279241bac112eaf0a71a95ae7df922f55",
+          "src/storage/record_page.c": "5d3066838e2b44dd0af05561b2f531cc3fcb7a67d581197f03c75771dc73eb3c",
+          "src/storage/text_tree.c": "0a5072e0fc36ff55356c0cf0482d724d3211dd6bec3ea6777f5c2150bbf17174",
+          "src/storage/transaction.c": "07247749b1793ec70459207314504f75c54acff3151bd61777860a4fed4c33b1",
+          "src/storage/value.c": "7be837f5ffa899e959fc4271e3a6903bc662786f6d018c83650444e19d446c03"
+        }
+      },
+      "before": {
+        "build_sha256": {
+          "build/lib/libtotedb.so": "c5244da30dd5f6878618d58cd2145a75bcbd8b71702be4ebdff34b37720faab4",
+          "build/ycsb/build.json": "0ec01b2d8fd22f4864b0de50cd35c79e1eba903babc596503222974d8149c72b",
+          "build/ycsb/classes/org/totedb/ycsb/Audit.class": "11a0f8623d4455b094ad8c0afc328420be31ef98ed306feb06144630aeb92a28",
+          "build/ycsb/classes/org/totedb/ycsb/Connection.class": "5290852e3de777b82d25b5c1642dccd43a8f516adb5d8f03c5a1e6ee1b04438a",
+          "build/ycsb/classes/org/totedb/ycsb/Native.class": "9472209bb934f0d93ab20f79396945f80a2dcd2e48e946b7e0a66a1dea368902",
+          "build/ycsb/classes/org/totedb/ycsb/NativeReply.class": "47be6884c731af3bcf4b9948ae042307723b7adfcab305c7b0c123b857793cdc",
+          "build/ycsb/classes/org/totedb/ycsb/Smoke.class": "f9fb450332910c88fa2bf9c63995e44f13a856197e5f7a4176c83f5e4907f1b4",
+          "build/ycsb/classes/org/totedb/ycsb/SqlBinding.class": "c26062af86850ab6506db7f0e3b7dfc2432449660ab3480c1efcfb3bdb5adc16",
+          "build/ycsb/classes/org/totedb/ycsb/Tool.class": "028f691c6c75f5829a62553ce38e9da92d00fed170aea3183a5bead3015bf775",
+          "build/ycsb/deps/HdrHistogram-2.1.4.jar": "8e68b9608ab107690350b904eab24087785f69218e5c6acd860d28116eded708",
+          "build/ycsb/deps/core-0.17.0.jar": "e1c64d09bfc642715428c2e53ec129b0a98a0e634ee32bf0ae77e5b4eebb3cda",
+          "build/ycsb/deps/htrace-core4-4.1.0-incubating.jar": "5d45b7904857c3e4ad36b3bcc57be2d2c5f308c69b5f6a58bd86aa7d48a25ef6",
+          "build/ycsb/deps/jackson-core-asl-1.9.4.jar": "6129e1b91d7850ba250b1375094c8ca215a0f7cf234b6f60a2f4a88d5b1272c9",
+          "build/ycsb/deps/jackson-mapper-asl-1.9.4.jar": "f013389c3eb92aa997df801e4a352464925af634a4af3e5bd77c6c0763dc9c99",
+          "build/ycsb/libycsb.so": "760b4ef25d04e711f9cbcbbae4cfdb78382f0ec60a13888922c2c4a64837bd5b"
+        },
+        "root": "~/work/totedb/totedb.wt/text-range-before",
+        "source_sha": "04f9f2d14d94da7284b90b60370ded5ebefab65c",
+        "source_sha256": {
+          "Makefile": "2897b95beca3f742820aa61f2d097cb820081dd1921b32212e51c8c1a9620b4c",
+          "bench/ycsb/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "bench/ycsb/NOTICE.txt": "12065d5ced6f594e9254309b110b6e2024e260ea8b8d5fafba680b94bc38454c",
+          "bench/ycsb/README.md": "e01775400a55f7a29fb61f57a52d5a4848bc35faf9353a0c96afd0e8bc6756c2",
+          "bench/ycsb/analysis.py": "edcb9d5f879cc22044376da5961a62634f27728a1ec5b9d5c7cf98d33dbcbf63",
+          "bench/ycsb/build.py": "d15a81999e20e26b489fa86a65b8077422a38da674dc287e43c69d7a5f4b8b25",
+          "bench/ycsb/dependencies.lock.json": "da409ff162fc9ce0f5ab5e2b817855285d86cc34b44c6dde3f07e390be38520f",
+          "bench/ycsb/java/org/totedb/ycsb/Audit.java": "dfa6ee9dde59a8cb2d8f95cc6ad1000bab306b7feda3cf103a06e7998c751da6",
+          "bench/ycsb/java/org/totedb/ycsb/Connection.java": "1e5a0f68fc325c8d95bb8809819371d0b513bbce5d25e26cb21d87f69ed59c50",
+          "bench/ycsb/java/org/totedb/ycsb/Native.java": "a0cec324736c8f9db2f97a92c2d592f6170fdf4ce456205f4d6e7f1178e5dcc5",
+          "bench/ycsb/java/org/totedb/ycsb/NativeReply.java": "593e317c08ed80fe1d70f67cbc84a40f33f9bb782a9e3003cd9b0289f1f8f555",
+          "bench/ycsb/java/org/totedb/ycsb/Smoke.java": "d2bb2f9c19e85805c344bc41d28fb547c89f22f8581b72ab8c0e5883aff695c7",
+          "bench/ycsb/java/org/totedb/ycsb/SqlBinding.java": "38e5262c39eb9468f51752861c482484f393ce50e1e902d3e0d823b320a50cab",
+          "bench/ycsb/java/org/totedb/ycsb/Tool.java": "df3d65fbb8d81647cee0f77d73a2c697ce853c9b96ed0f42027961fec8eeda83",
+          "bench/ycsb/native/bridge.c": "16fae75f79cf6404a7e6d681a4e0e2ca7509f16618a1176c53df1113f48b34e3",
+          "bench/ycsb/run.py": "1d45e0cfb5869245e381895265627ca959204b5a4b40d831d78a599a7989bf44",
+          "bench/ycsb/runner.py": "7e70ec4aaf2a3d6174c5aa9840cfefed3e5692d6bc147f479dff3b3c610b9c24",
+          "bench/ycsb/testing.py": "37ac7d36a5fb29df3f3f1277ad20016df552e423cc75a56a288af8ed7f880ebc",
+          "bench/ycsb/tests/test_analysis.py": "c544076e0894c3f39719e1ddf8ec4baa9fe2bf4f5fa2b48d8ad113cc131b4749",
+          "bench/ycsb/workloads/workloada": "54b8ef52cd6056b4192377f80e557caf73ccf9eed22a471c217a3864ba26e80f",
+          "bench/ycsb/workloads/workloadb": "3211561099a1e7bf52fbe6e5899b056e6afdfecf1e83e10b71e0601eea84463a",
+          "bench/ycsb/workloads/workloadc": "c5c6019eb1e8959a5ab3cb9058b34b0a8869e47cb74718630094b69ccf3f09e1",
+          "bench/ycsb/workloads/workloadd": "c0b951b190f14ae5a669ddb0f18cd9931648ef86347e27a6a9cea30481700e9e",
+          "bench/ycsb/workloads/workloade": "0e75eea21df10bc1304f25c8daa6e16c2bfbfcb83f9b5a4d794260f470cf7dd1",
+          "bench/ycsb/workloads/workloadf": "d9c9dfcf5065b026a881c357eebb653cf40efa0098dd57d861062ab8856157df",
+          "include/queue/ack_queue.h": "64a67064971555ff2ed3d1a92cae465205eecbf56ee0da26f624902f4a5ed9c8",
+          "include/sql/database.h": "84019aa7bed0718b9f17ba6d865bb8ef626fb58dfb6644bb1fc4bd4d4454e070",
+          "include/sql/database_txn.h": "d9dfd2b6206056e7f5d83200c72fd50981f06fddeb325044f119220b122e2d8b",
+          "include/sql/lexer.h": "4fcd13a8340962ad89ae32f3f655fe6c1ab8406a1d2328eaacdc8d9c35afa1fc",
+          "include/sql/mem_ledger.h": "fb85e8ec6633b07419df8c1557641e88d3973669d550e3a1d07a748b066a22d7",
+          "include/sql/result.h": "ec14f8f6df13e1d8c3cfbd04fc1a38fd481572b57b0753ec338ced527173fe2d",
+          "include/sql/session.h": "824999d11a52f2f01b9503c5f673d097d3064e2e6fe83b7589de9c457580eb58",
+          "include/sql/sql_eval.h": "317537a4b75f5881682dfe7d5c3272860f2a2aeb140847e5f7189795cb9f35ce",
+          "include/sql/sql_statement.h": "b6baac1e65df01e74062204a7cf17a378242cb42b882adf743d9c0df5bca36d3",
+          "include/storage/catalog.h": "fbf7ca7138ef08a8fbb4d58a296f902d558ad2464d98cce3a982b90778347655",
+          "include/storage/catalog_store.h": "23596de447c052d9a5a9520450ee71637fb5946f22a250fa422783374f8fa8b8",
+          "include/storage/checksum.h": "eb7f780a86202f22df3368a87ad29d72eb1a1b3a6cbf9700c5038a00a7c7d10d",
+          "include/storage/heap_store.h": "11f49f9c39edf786db6ab4db9f63114e45a40d4c9b5e0ea2a0861c28048ecc0f",
+          "include/storage/le.h": "cb433dd493556622749a90cfd0585808e9738ca28b32272be3f76ae5fcd29ca1",
+          "include/storage/overflow.h": "aa6cc88cdd08f5609c27752a6f31e4b7e6d3c99a6b3bf2efc24a78e38b2e68e6",
+          "include/storage/page_file.h": "a1ec9b9c5665cbcaef5235b6b23ebe431168ce2dc9342225946013d117324fcf",
+          "include/storage/pk_tree.h": "6f0ccac7549cda7ba35f564b303d3803cbe6aeb24d66beb7b185eb41464a987c",
+          "include/storage/record.h": "70740cda79a666f6d53590c3bd7e137bdb3db89f9fa20a377d666f713f14dbc9",
+          "include/storage/record_page.h": "18331769c83dfdf01b09b77408d29ad6793cd0caeed6f77247e5e654d0c56eb4",
+          "include/storage/text_tree.h": "a47ae413e90d82566e0f23ed64628d78a8f725d1944e3f8e32376e4361209c4a",
+          "include/storage/transaction.h": "960c0ba31c17809a3acaf663702e3b4d341527993ea73b92158131f522aa1610",
+          "include/storage/value.h": "3ae359c12870345c0e3404988e409f98dfae375278f2e103291c7c0dd93607fa",
+          "include/totedb.h": "f940334e05a1a20eee95b226fe722cfc8044ce8ea5fe8dbff7d909201d5c3e3e",
+          "src/capi/totedb.c": "f24e98002bf99cb1cb00bfd5e3eb418da68bee0c6fc96437a81b4e7ebc07f1d0",
+          "src/queue/ack_queue.c": "f3e3b201d54f43579aa5f6b760bf2577f00f926cb1c202eafc414adbcc5d525a",
+          "src/queue/ack_queue_internal.h": "ed56b7d6c1c9383d62bfae5289550fae277e16a159c99e31bdd79382de3d2bae",
+          "src/queue/ack_queue_sql.c": "ee858e9712a06eea86939402a07285a32ff8e526ddd4df12be0ced59bdde0328",
+          "src/queue/queue.mk": "81647ab96cb1fa952ac02b3bae61e20e4882f1fd6cc349338319fea4adb995c7",
+          "src/sql/database.c": "e4ff4a8d2644163f84cf3747da137fbe309663ef84479ad6d81380434a403259",
+          "src/sql/database_check.c": "2f2b01099a887979825dbf45cf7c5b0c2fb06f307ffe8f1dd2e7a3fe136c9651",
+          "src/sql/database_ddl.c": "83a31f573c420a26a6ed5cf91df330849c1cb809d10090b89a08d6d88e9e8c2f",
+          "src/sql/database_exec.h": "a0f5d8b0866ef991faed1484d07527eea410839a9c671f843921f492bba41e86",
+          "src/sql/database_expr.c": "5e3ebe66c313e4e953d174633e2d02d453cb5b502566498e55cc4965444db254",
+          "src/sql/database_group.c": "d62a66578b14efa2eb33ec8b2a4605092ade1e2a7850e45c8dc6c88042fcb379",
+          "src/sql/database_insert.c": "8ee6b2b4c18ca68d44f61130e246d4fe42ddb338c45c0f08b0bce5b40ee4ae2c",
+          "src/sql/database_internal.h": "f5f2d43e83781e16b2f65cb72dea7fcffb2e99f80d9177cfd24f19fa666d644c",
+          "src/sql/database_join.c": "d84755bf896abef18c6d16e9262d2e31bcae5c2b49732f8414c34509a496e53d",
+          "src/sql/database_select.c": "8257bca18470d79c540bd201b3d2ac6015a9a7b31b4f1835ba93dbf22d320c0c",
+          "src/sql/database_subquery.c": "417b7096de4182d99d54659fa53de9a0d0fceae722a377681600bff8faa1231d",
+          "src/sql/database_txn.c": "c164d2efe941207482f56a65228265f121ae9a76b608fee19c75fc42c4b14a55",
+          "src/sql/database_update.c": "bfcfcbfeb9943be5370c8d363e1f8da2b882462c4b6ab217e996b70807cf19b7",
+          "src/sql/lexer.c": "e513af1f4a57fbb97f4283c14db81fbcbc02587a5f1178f66f352e120abd3116",
+          "src/sql/result.c": "3c19dbebd3d85d405afa6a6e208d1bd2c6b8fb64191d62fa574a41bc6020227f",
+          "src/sql/session.c": "cd3109a0e216aa93fa88297bd81d0a9e9e0ffcbedc511a454856b45df44a4c7f",
+          "src/sql/sql_eval.c": "bc6ca1fac5507120b311c6de5c4475d3c87572e92d5e8375e8d4ef503451f12e",
+          "src/sql/sql_statement.c": "0eee1aa895a0a634193dbc15f53e26ea5d1860c7d9b038494074c8b3f34ac26f",
+          "src/storage/catalog.c": "fa092aa7dd65e0c4cceb05efdb645246cbcc43bd4a61e30b505cb46cdb3ebc03",
+          "src/storage/catalog_store.c": "a4a51fd620dd14122b9a8b9c74506ed61afc2da1929a1728bf0e3f48fa33a49e",
+          "src/storage/checksum.c": "8b96807e8cd00f9d6936dc612dee646b123fac13fb0ce69fbf01155bec5fae40",
+          "src/storage/heap_store.c": "a18842cffede24286f3d288e71676f764acd263540aca27eaa84947f1c279863",
+          "src/storage/overflow.c": "70f98b6d26a24c781a069bbe9b8b7507732818a0bf026da874bca864e471728f",
+          "src/storage/page_cache.c": "0bb274a6d6ac60f3433139d03ffa1cfe74246e981ab4c8bd8bce8dd0465f38cb",
+          "src/storage/page_cache.h": "1671e73da0dbb137b5fcf79ef7280131e9ecbaf8cf811da194b622b6cd045722",
+          "src/storage/page_file.c": "f4149e4a1c547d912bc6d71b13bf3f06bc6a70d59506de44f5692edc60bd81fc",
+          "src/storage/pk_tree.c": "69b844850ec109ce129f5179586c49e01b4fac83562e1520872b7ad96c4a4a08",
+          "src/storage/record.c": "02d319efb3d40e0eab04da6a5251cbc279241bac112eaf0a71a95ae7df922f55",
+          "src/storage/record_page.c": "5d3066838e2b44dd0af05561b2f531cc3fcb7a67d581197f03c75771dc73eb3c",
+          "src/storage/text_tree.c": "aa3508cf48621274cdf77c1361dd747e7f1b92bedf84d7dff814522ee0e21ecf",
+          "src/storage/transaction.c": "07247749b1793ec70459207314504f75c54acff3151bd61777860a4fed4c33b1",
+          "src/storage/value.c": "7be837f5ffa899e959fc4271e3a6903bc662786f6d018c83650444e19d446c03"
+        }
+      }
+    }
+  },
+  "engines": {
+    "sqlite": {
+      "after": {
+        "audit": {
+          "added_rows": {
+            "max": 62,
+            "median": 51,
+            "min": 46,
+            "n": 5
+          },
+          "changed_fields": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "missing_rows": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "payload_bytes": {
+            "max": 10062000,
+            "median": 10051000,
+            "min": 10046000,
+            "n": 5
+          },
+          "rows": {
+            "max": 10062,
+            "median": 10051,
+            "min": 10046,
+            "n": 5
+          }
+        },
+        "binding_errors": 0,
+        "exhausted": 0,
+        "logical_operations": 5000.0,
+        "native_attempts": 5000,
+        "non_ok": 0,
+        "official_runtime_ms": {
+          "max": 380.0,
+          "median": 369.0,
+          "min": 351.0,
+          "n": 5
+        },
+        "operations": {
+          "INSERT": {
+            "50thPercentileLatency(us)": {
+              "max": 1020.0,
+              "median": 1001.0,
+              "min": 943.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 1405.0,
+              "median": 1370.0,
+              "min": 1277.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 8703.0,
+              "median": 2371.0,
+              "min": 2053.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 62.0,
+              "median": 51.0,
+              "min": 46.0,
+              "n": 5
+            }
+          },
+          "READ": {
+            "50thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "95thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "99thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "Operations": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            }
+          },
+          "SCAN": {
+            "50thPercentileLatency(us)": {
+              "max": 257.0,
+              "median": 248.0,
+              "min": 240.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 547.0,
+              "median": 471.0,
+              "min": 432.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 710.0,
+              "median": 683.0,
+              "min": 588.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 954.0,
+              "median": 949.0,
+              "min": 938.0,
+              "n": 5
+            }
+          }
+        },
+        "retries": 0,
+        "returned_bytes": 239438000,
+        "returned_rows": 239438,
+        "runtime_seconds": {
+          "max": 0.5644711630000074,
+          "median": 0.5439047350000124,
+          "min": 0.5264037889999997,
+          "n": 5
+        },
+        "successful": 5,
+        "throughput": {
+          "max": 2849.002849002849,
+          "median": 2710.027100271003,
+          "min": 2631.5789473684213,
+          "n": 5
+        },
+        "timeouts": 0,
+        "total": 5
+      },
+      "after_before": {
+        "ci95": [
+          0.9500000000000001,
+          1.0510752688172043
+        ],
+        "median": 1.0189701897018972,
+        "n": 5,
+        "ratios": [
+          1.0,
+          1.0341880341880343,
+          1.0510752688172043,
+          0.9500000000000001,
+          1.0189701897018972
+        ],
+        "resamples": 10000,
+        "seed": 228
+      },
+      "before": {
+        "audit": {
+          "added_rows": {
+            "max": 61,
+            "median": 56,
+            "min": 50,
+            "n": 5
+          },
+          "changed_fields": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "missing_rows": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "payload_bytes": {
+            "max": 10061000,
+            "median": 10056000,
+            "min": 10050000,
+            "n": 5
+          },
+          "rows": {
+            "max": 10061,
+            "median": 10056,
+            "min": 10050,
+            "n": 5
+          }
+        },
+        "binding_errors": 0,
+        "exhausted": 0,
+        "logical_operations": 5000.0,
+        "native_attempts": 5000,
+        "non_ok": 0,
+        "official_runtime_ms": {
+          "max": 391.0,
+          "median": 363.0,
+          "min": 351.0,
+          "n": 5
+        },
+        "operations": {
+          "INSERT": {
+            "50thPercentileLatency(us)": {
+              "max": 1033.0,
+              "median": 1005.0,
+              "min": 967.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 1430.0,
+              "median": 1324.0,
+              "min": 1292.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 8599.0,
+              "median": 2471.0,
+              "min": 1333.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 61.0,
+              "median": 56.0,
+              "min": 50.0,
+              "n": 5
+            }
+          },
+          "READ": {
+            "50thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "95thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "99thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "Operations": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            }
+          },
+          "SCAN": {
+            "50thPercentileLatency(us)": {
+              "max": 268.0,
+              "median": 252.0,
+              "min": 242.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 565.0,
+              "median": 511.0,
+              "min": 471.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 774.0,
+              "median": 661.0,
+              "min": 642.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 950.0,
+              "median": 944.0,
+              "min": 939.0,
+              "n": 5
+            }
+          }
+        },
+        "retries": 0,
+        "returned_bytes": 237692000,
+        "returned_rows": 237692,
+        "runtime_seconds": {
+          "max": 0.5645053160000089,
+          "median": 0.5438787779999643,
+          "min": 0.5237352309999892,
+          "n": 5
+        },
+        "successful": 5,
+        "throughput": {
+          "max": 2849.002849002849,
+          "median": 2754.8209366391184,
+          "min": 2557.544757033248,
+          "n": 5
+        },
+        "timeouts": 0,
+        "total": 5
+      }
+    },
+    "totedb": {
+      "after": {
+        "audit": {
+          "added_rows": {
+            "max": 58,
+            "median": 46,
+            "min": 41,
+            "n": 5
+          },
+          "changed_fields": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "missing_rows": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "payload_bytes": {
+            "max": 10058000,
+            "median": 10046000,
+            "min": 10041000,
+            "n": 5
+          },
+          "rows": {
+            "max": 10058,
+            "median": 10046,
+            "min": 10041,
+            "n": 5
+          }
+        },
+        "binding_errors": 0,
+        "exhausted": 0,
+        "logical_operations": 5000.0,
+        "native_attempts": 5000,
+        "non_ok": 0,
+        "official_runtime_ms": {
+          "max": 543.0,
+          "median": 531.0,
+          "min": 517.0,
+          "n": 5
+        },
+        "operations": {
+          "INSERT": {
+            "50thPercentileLatency(us)": {
+              "max": 690.0,
+              "median": 683.0,
+              "min": 665.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 1987.0,
+              "median": 965.0,
+              "min": 924.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 8095.0,
+              "median": 6983.0,
+              "min": 978.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 58.0,
+              "median": 46.0,
+              "min": 41.0,
+              "n": 5
+            }
+          },
+          "READ": {
+            "50thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "95thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "99thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "Operations": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            }
+          },
+          "SCAN": {
+            "50thPercentileLatency(us)": {
+              "max": 458.0,
+              "median": 446.0,
+              "min": 429.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 829.0,
+              "median": 784.0,
+              "min": 757.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 1238.0,
+              "median": 1144.0,
+              "min": 947.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 959.0,
+              "median": 954.0,
+              "min": 942.0,
+              "n": 5
+            }
+          }
+        },
+        "retries": 0,
+        "returned_bytes": 239455000,
+        "returned_rows": 239455,
+        "runtime_seconds": {
+          "max": 0.7249653149999915,
+          "median": 0.7060117869999658,
+          "min": 0.685655220000001,
+          "n": 5
+        },
+        "successful": 5,
+        "throughput": {
+          "max": 1934.2359767891683,
+          "median": 1883.2391713747645,
+          "min": 1841.6206261510129,
+          "n": 5
+        },
+        "timeouts": 0,
+        "total": 5
+      },
+      "after_before": {
+        "ci95": [
+          46.312849162011176,
+          49.04255319148937
+        ],
+        "median": 47.86740331491713,
+        "n": 5,
+        "ratios": [
+          47.86740331491713,
+          49.04255319148937,
+          46.45951035781544,
+          46.312849162011176,
+          48.74857142857143
+        ],
+        "resamples": 10000,
+        "seed": 228
+      },
+      "before": {
+        "audit": {
+          "added_rows": {
+            "max": 63,
+            "median": 53,
+            "min": 36,
+            "n": 5
+          },
+          "changed_fields": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "missing_rows": {
+            "max": 0,
+            "median": 0,
+            "min": 0,
+            "n": 5
+          },
+          "payload_bytes": {
+            "max": 10063000,
+            "median": 10053000,
+            "min": 10036000,
+            "n": 5
+          },
+          "rows": {
+            "max": 10063,
+            "median": 10053,
+            "min": 10036,
+            "n": 5
+          }
+        },
+        "binding_errors": 0,
+        "exhausted": 0,
+        "logical_operations": 5000.0,
+        "native_attempts": 5000,
+        "non_ok": 0,
+        "official_runtime_ms": {
+          "max": 25992.0,
+          "median": 25355.0,
+          "min": 24670.0,
+          "n": 5
+        },
+        "operations": {
+          "INSERT": {
+            "50thPercentileLatency(us)": {
+              "max": 902.0,
+              "median": 878.0,
+              "min": 861.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 1309.0,
+              "median": 1081.0,
+              "min": 1008.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 7447.0,
+              "median": 1739.0,
+              "min": 1148.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 63.0,
+              "median": 53.0,
+              "min": 36.0,
+              "n": 5
+            }
+          },
+          "READ": {
+            "50thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "95thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "99thPercentileLatency(us)": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            },
+            "Operations": {
+              "max": null,
+              "median": null,
+              "min": null,
+              "n": 0
+            }
+          },
+          "SCAN": {
+            "50thPercentileLatency(us)": {
+              "max": 27375.0,
+              "median": 26383.0,
+              "min": 25887.0,
+              "n": 5
+            },
+            "95thPercentileLatency(us)": {
+              "max": 40991.0,
+              "median": 39807.0,
+              "min": 39487.0,
+              "n": 5
+            },
+            "99thPercentileLatency(us)": {
+              "max": 42975.0,
+              "median": 41951.0,
+              "min": 41247.0,
+              "n": 5
+            },
+            "Operations": {
+              "max": 964.0,
+              "median": 947.0,
+              "min": 937.0,
+              "n": 5
+            }
+          }
+        },
+        "retries": 0,
+        "returned_bytes": 241997000,
+        "returned_rows": 241997,
+        "runtime_seconds": {
+          "max": 26.16882647,
+          "median": 25.527898971000013,
+          "min": 24.843250048000016,
+          "n": 5
+        },
+        "successful": 5,
+        "throughput": {
+          "max": 40.53506282934739,
+          "median": 39.43995267205679,
+          "min": 38.47337642351493,
+          "n": 5
+        },
+        "timeouts": 0,
+        "total": 5
+      }
+    }
+  },
+  "measured_runs": 20,
+  "preflight_runs": 20,
+  "raw_file_list_sha256": "6acf839bc538cc3b1b4d8c5e6346ed3971420ecbd51d1b30690ab577dca65b32"
+}

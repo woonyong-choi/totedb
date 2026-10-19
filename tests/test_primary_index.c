@@ -26,6 +26,8 @@
 #include "storage/heap_store.h"
 #include "storage/page_file.h"
 #include "storage/pk_tree.h"
+#include "storage/text_tree.h"
+#include "storage/le.h"
 
 #define DIR_NAME "build/test_primary_index_dir"
 #define DB_PATH DIR_NAME "/db.totedb"
@@ -417,14 +419,14 @@ static void test_index_out_of_step_with_heap_is_not_used(void)
 
 /* ── 4. 색인이 가리키는 행이 틀리면 엉뚱한 행을 돌려주지 않는다 ── */
 
-static void test_wrong_locator_is_reported_not_returned(void)
+static void test_wrong_locator_is_reported_not_returned(bool text_keys)
 {
     printf("\n[test_wrong_locator_is_reported_not_returned]\n");
     database_t *db = create_db();
-    ok(db, "CREATE TABLE t (id INTEGER PRIMARY KEY, v TEXT)");
+    ok(db, text_keys ? "CREATE TABLE t (id TEXT PRIMARY KEY, v TEXT)" : "CREATE TABLE t (id INTEGER PRIMARY KEY, v TEXT)");
     for (int id = 1; id <= 5; id++) {
         char sql[64];
-        snprintf(sql, sizeof(sql), "INSERT INTO t VALUES (%d, 'v%d')", id, id);
+        snprintf(sql, sizeof(sql), text_keys ? "INSERT INTO t VALUES ('%d', 'v%d')" : "INSERT INTO t VALUES (%d, 'v%d')", id, id);
         ok(db, sql);
     }
     assert(database_close(db) == DATABASE_OK);
@@ -442,16 +444,22 @@ static void test_wrong_locator_is_reported_not_returned(void)
     uint8_t body[PAGE_BODY_BYTES];
     assert(page_file_read(file, view.primary_root, PAGE_KIND_INDEX, id, body) == PAGE_FILE_OK);
     /* leaf의 첫 항목(key 1)이 둘째 항목(key 2)의 행을 가리키게 한다 */
-    memcpy(body + PK_TREE_HEADER_BYTES + 8, body + PK_TREE_HEADER_BYTES + PK_TREE_LEAF_ENTRY_BYTES + 8, 6);
+    if (text_keys) {
+        uint16_t first = le_get_u16(body + TEXT_TREE_HEADER_BYTES);
+        uint16_t second = le_get_u16(body + TEXT_TREE_HEADER_BYTES + 2);
+        memcpy(body + first + 3, body + second + 3, 6);
+    } else {
+        memcpy(body + PK_TREE_HEADER_BYTES + 8, body + PK_TREE_HEADER_BYTES + PK_TREE_LEAF_ENTRY_BYTES + 8, 6);
+    }
     assert(page_file_write(file, view.primary_root, PAGE_KIND_INDEX, id, body) == PAGE_FILE_OK);
     catalog_close(catalog);
     assert(page_file_close(file) == PAGE_FILE_OK);
 
     assert(database_open(DB_PATH, true, &db) == DATABASE_OK);
-    outcome_t wrong = run(db, "SELECT id, v FROM t WHERE id = 1");
+    outcome_t wrong = run(db, text_keys ? "SELECT id, v FROM t WHERE id >= '1' ORDER BY id LIMIT 1" : "SELECT id, v FROM t WHERE id = 1");
     CHECK(wrong.kind == RESULT_KIND_ERROR, "다른 행을 가리키는 색인은 그 행을 돌려주지 않고 오류 (%d: %s)", wrong.kind, wrong.text);
-    CHECK(run(db, "INSERT INTO t VALUES (1, 'dup')").kind == RESULT_KIND_ERROR, "중복 검사도 틀린 행을 믿지 않음");
-    CHECK(strcmp(run(db, "SELECT id, v FROM t WHERE id = 3").text, "3|v3/") == 0, "손상되지 않은 키는 계속 조회됨");
+    CHECK(run(db, text_keys ? "INSERT INTO t VALUES ('1', 'dup')" : "INSERT INTO t VALUES (1, 'dup')").kind == RESULT_KIND_ERROR, "중복 검사도 틀린 행을 믿지 않음");
+    CHECK(strcmp(run(db, text_keys ? "SELECT id, v FROM t WHERE id >= '3' AND id <= '3'" : "SELECT id, v FROM t WHERE id = 3").text, "3|v3/") == 0, "손상되지 않은 키는 계속 조회됨");
     assert(database_close(db) == DATABASE_OK);
 }
 
@@ -541,7 +549,8 @@ int main(void)
     test_moved_and_deleted_rows_have_no_stale_locator();
     test_table_without_index_scans_and_stays_correct();
     test_index_out_of_step_with_heap_is_not_used();
-    test_wrong_locator_is_reported_not_returned();
+    test_wrong_locator_is_reported_not_returned(false);
+    test_wrong_locator_is_reported_not_returned(true);
     test_collect_pages_includes_index_nodes();
     test_index_with_tree_directory();
     clean_dir();
