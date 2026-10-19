@@ -10,6 +10,7 @@
  * 합성 데이터만 쓴다.
  */
 #include <pthread.h>
+#include <errno.h>
 #include <stdlib.h>
 
 static long g_realloc_calls, g_realloc_fail_at;
@@ -461,9 +462,44 @@ static void test_queue_round_trip(void)
     CHECK(tote_close(&db) == TOTE_OK, "close");
 }
 
+#ifdef TOTE_BENCHMARK
+static void test_benchmark_request_boundaries(void)
+{
+    fresh_dir();
+    tb_bench_record records[TB_BENCH_RECORDS];
+    uint8_t *wire = NULL;
+    size_t size = 0;
+    tote_txn_t *txn = NULL;
+    tote_queue_item_t item;
+    errno = EBUSY;
+    CHECK(tote_exec(NULL, NULL, "", NULL, 0, &wire, &size) == ACKQ_INVALID, "exec validation");
+    CHECK(tote_begin(NULL, &txn) == ACKQ_INVALID, "begin validation");
+    CHECK(tote_commit(NULL) == ACKQ_INVALID, "commit validation");
+    CHECK(tote_rollback(NULL) == ACKQ_INVALID, "rollback validation");
+    CHECK(tote_queue_put(NULL, NULL, NULL, 0, NULL, NULL, NULL) == ACKQ_INVALID, "put validation");
+    CHECK(tote_queue_get(NULL, NULL, 0, 1, &item) == ACKQ_INVALID, "get validation");
+    CHECK(tote_queue_ack(NULL, NULL, 1, 1) == ACKQ_INVALID, "ack validation");
+    CHECK(errno == EBUSY, "instrumentation preserves errno on early return");
+    CHECK(tb_bench_drain(records, TB_BENCH_RECORDS) == 7, "all early returns produce requests");
+    for (unsigned i = 0; i < 7; i++) CHECK(records[i].incomplete == 0, "early-return complete scope");
+    CHECK(strcmp(records[0].operation, "tote_exec") == 0, "request operation");
+    tote_db_t *db = open_capi_db("benchmark-empty.db");
+    tote_queue_t *q = NULL;
+    CHECK(tote_queue_open(db, "empty", 1, NULL, &q) == TOTE_OK, "open benchmark queue");
+    CHECK(tote_queue_get(q, NULL, 0, 1, &item) == TOTE_EMPTY, "empty result");
+    CHECK(tb_bench_drain(records, TB_BENCH_RECORDS) == 1, "empty return produces request");
+    CHECK(strcmp(records[0].operation, "tote_queue_get") == 0 && records[0].incomplete == 0, "empty scope complete");
+    tote_queue_close(&q);
+    CHECK(tote_close(&db) == TOTE_OK, "close benchmark queue database");
+}
+#endif
+
 int main(void)
 {
     set_dir(DIR);
+#ifdef TOTE_BENCHMARK
+    test_benchmark_request_boundaries();
+#endif
     test_db_only_and_encoding();
     test_output_cap();
     test_allocation_failure();

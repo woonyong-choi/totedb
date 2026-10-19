@@ -24,9 +24,9 @@ TOTEDB_SHARED_LIB = $(BUILD_DIR)/lib/libtotedb.$(TOTEDB_SHARED_EXT)
 TOTEDB_SHARED_SRCS = $(patsubst $(BUILD_DIR)/%.o,$(SRC_DIR)/%.c,$(DATABASE_OBJS)) \
                     src/sql/session.c src/queue/ack_queue.c src/queue/ack_queue_sql.c src/capi/totedb.c
 
-$(TOTEDB_SHARED_LIB): $(TOTEDB_SHARED_SRCS) $(wildcard include/*/*.h) $(wildcard src/queue/*.h)
+$(TOTEDB_SHARED_LIB): $(TOTEDB_SHARED_SRCS) $(wildcard include/*.h include/*/*.h) $(wildcard src/queue/*.h) src/benchmark.h $(BUILD_FINGERPRINT)
 	@mkdir -p $(dir $@)
-	$(CC) -O2 -g -fPIC -shared $(WARNFLAGS) $(INCLUDES) -o $@ $(TOTEDB_SHARED_SRCS) $(LDLIBS)
+	$(CC) $(SHARED_CFLAGS) -fPIC -shared -o $@ $(TOTEDB_SHARED_SRCS) $(LDLIBS)
 
 # Python 시험은 pytest가 필요하다. TOTEDB_PYTHON으로 pytest가 있는 인터프리터를 고른다.
 TOTEDB_PYTHON ?= $(PYTHON)

@@ -21,6 +21,7 @@
 #include "queue/ack_queue.h"
 #include "sql/result.h"
 #include "sql/session.h"
+#include "../benchmark.h"
 
 struct tote_db {
     session_pool_t *pool;
@@ -369,6 +370,7 @@ static int build_views(const tote_param_t *params, size_t count, value_view_t **
 int tote_exec(tote_db_t *db, tote_txn_t *txn, const char *sql, const tote_param_t *params, size_t param_count,
                uint8_t **out, size_t *out_size)
 {
+    TB_REQUEST_SCOPE(bench_request);
     if (db == NULL || sql == NULL || out == NULL || out_size == NULL || (param_count > 0 && params == NULL)) {
         return ACKQ_INVALID;
     }
@@ -383,7 +385,9 @@ int tote_exec(tote_db_t *db, tote_txn_t *txn, const char *sql, const tote_param_
     result_t *result = NULL;
     buffer_t buffer = {0};
     /* 실행, 인코딩, 해제를 한 잠금 구간에서 끝낸다. 행은 result_next가 database 상태를 읽어 만든다. */
+    TB_BEGIN(bench_lock, TB_HANDLE_LOCK);
     pthread_mutex_lock(&db->mutex);
+    TB_END(bench_lock);
     session_t *session = session_for(db, txn);
     set_running(db, session);
     database_exec_status_t exec_status = session_exec(session, NULL, (const uint8_t *)sql, strlen(sql),
@@ -426,13 +430,16 @@ static int map_txn(txn_status_t status)
 
 int tote_begin(tote_db_t *db, tote_txn_t **out)
 {
+    TB_REQUEST_SCOPE(bench_request);
     if (db == NULL || out == NULL) return ACKQ_INVALID;
     *out = NULL;
     if (forked(db)) return TOTE_DB_FORKED;
     tote_txn_t *handle = calloc(1, sizeof(*handle));
     if (handle == NULL) return ACKQ_NOMEM;
     session_txn_options_t options = {TXN_GUARANTEE_DURABLE, 0};
+    TB_BEGIN(bench_lock, TB_HANDLE_LOCK);
     pthread_mutex_lock(&db->mutex);
+    TB_END(bench_lock);
     int status = session_open(db->db, &handle->session) == SESSION_OK ? TOTE_OK : ACKQ_NOMEM;
     if (status == TOTE_OK) {
         txn_status_t begun = session_txn_begin(handle->session, &options);
@@ -462,11 +469,16 @@ static void forget_txn(tote_txn_t **txn)
 
 int tote_commit(tote_txn_t **txn)
 {
+    TB_REQUEST_SCOPE(bench_request);
     if (txn == NULL || *txn == NULL) return ACKQ_INVALID;
     tote_db_t *db = (*txn)->db;
     if (forked(db)) return TOTE_DB_FORKED;
+    TB_BEGIN(bench_lock, TB_HANDLE_LOCK);
     pthread_mutex_lock(&db->mutex);
+    TB_END(bench_lock);
+    TB_BEGIN(bench_commit, TB_PUBLISH);
     txn_status_t status = session_txn_commit((*txn)->session, NULL);
+    TB_END(bench_commit);
     /* 실패 상태(INVALID)이면 트랜잭션이 남으므로 rollback으로 정리한다 */
     if (session_txn_active((*txn)->session)) session_txn_rollback((*txn)->session);
     forget_txn(txn);
@@ -476,10 +488,13 @@ int tote_commit(tote_txn_t **txn)
 
 int tote_rollback(tote_txn_t **txn)
 {
+    TB_REQUEST_SCOPE(bench_request);
     if (txn == NULL || *txn == NULL) return ACKQ_INVALID;
     tote_db_t *db = (*txn)->db;
     if (forked(db)) return TOTE_DB_FORKED;
+    TB_BEGIN(bench_lock, TB_HANDLE_LOCK);
     pthread_mutex_lock(&db->mutex);
+    TB_END(bench_lock);
     txn_status_t status = session_txn_rollback((*txn)->session);
     forget_txn(txn);
     pthread_mutex_unlock(&db->mutex);
@@ -546,7 +561,9 @@ void tote_queue_close(tote_queue_t **queue)
     do {                                                                      \
         if ((q) == NULL || ((txn) != NULL && (txn)->db != (q)->db)) return ACKQ_INVALID; \
         if (forked((q)->db)) return TOTE_DB_FORKED;                           \
+        TB_BEGIN(bench_lock, TB_HANDLE_LOCK);                                 \
         pthread_mutex_lock(&(q)->db->mutex);                                  \
+        TB_END(bench_lock);                                                   \
         session_t *session = session_for((q)->db, (txn));                    \
         set_running((q)->db, session);                                        \
         status = (call);                                                      \
@@ -557,6 +574,7 @@ void tote_queue_close(tote_queue_t **queue)
 int tote_queue_put(tote_queue_t *q, tote_txn_t *txn, const uint8_t *payload, size_t size, const char *idem_key, uint64_t *id,
              int *duplicate)
 {
+    TB_REQUEST_SCOPE(bench_request);
     int status;
     bool dup = false;
     QUEUE_CALL(q, txn, ackq_enqueue(q->queue, session, payload, size, idem_key, id, &dup));
@@ -566,6 +584,7 @@ int tote_queue_put(tote_queue_t *q, tote_txn_t *txn, const uint8_t *payload, siz
 
 int tote_queue_get(tote_queue_t *q, tote_txn_t *txn, uint64_t id, uint64_t lease_ms, tote_queue_item_t *item)
 {
+    TB_REQUEST_SCOPE(bench_request);
     int status;
     ackq_claim_t claim = {0};
     size_t count = 0;
@@ -591,6 +610,7 @@ void tote_queue_item_free(tote_queue_item_t *item)
 
 int tote_queue_ack(tote_queue_t *q, tote_txn_t *txn, uint64_t id, uint64_t fence)
 {
+    TB_REQUEST_SCOPE(bench_request);
     int status;
     QUEUE_CALL(q, txn, ackq_ack(q->queue, session, id, fence));
     return status;

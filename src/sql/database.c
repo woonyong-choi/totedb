@@ -2,6 +2,7 @@
  * database.c — 데이터베이스 핸들의 열기·닫기, 메모리 계상, 작업 카탈로그, 게시, 문장 실행 진입점과 쓰기 작업.
  */
 #include "database_exec.h"
+#include "../benchmark.h"
 
 /* 문장 수준 오류. 정리를 모두 마친 뒤 진입점이 결과로 만든다(그 결과를 만들 메모리를 먼저 돌려주기 위해). */
 #define EXEC_PENDING ((database_exec_status_t)100)
@@ -582,6 +583,7 @@ void work_close(database_t *db, work_t *work)
 /* 게시된 카탈로그를 복제한다. 복제 동안의 순간 최대치를 먼저 reserve하고 끝나면 복제본 몫만 남긴다. */
 bool work_clone(database_t *db, work_t *work)
 {
+    TB_SCOPE(bench_metadata, TB_METADATA);
     const catalog_t *base = base_catalog(db);
     size_t peak = catalog_clone_peak_bytes(base);
     if (!q_reserve(db, peak)) return false;
@@ -812,6 +814,7 @@ database_exec_status_t publish(database_t *db, work_t *work, catalog_table_id_t 
                                       const uint32_t *drop_pages, size_t drop_count,
                                       result_t *success, result_t **out)
 {
+    TB_SCOPE(bench_publish, TB_PUBLISH);
     database_exec_status_t status = publish_inner(db, work, id, batch, drop_pages,
                                                   drop_count, success, out);
     heap_batch_free(batch);
@@ -910,6 +913,7 @@ static database_exec_status_t exec_statement(database_t *db, const database_exec
                                              const uint8_t *sql, size_t size,
                                              const lexer_binding_t *binding, result_t **out)
 {
+    TB_SCOPE(bench_exec, TB_EXEC);
     if (db->poisoned) {
         return fail_result(db, RESULT_E_IO, 19, "이 핸들은 불확정한 커밋 결과 또는 fsync 실패로 더 쓸 수 없습니다");
     }
@@ -928,7 +932,9 @@ static database_exec_status_t exec_statement(database_t *db, const database_exec
     if (!q_reserve(db, lex_peak)) return DATABASE_EXEC_NOMEM;
     lexed_t *lexed = NULL;
     lexer_error_t lex_error;
+    TB_BEGIN(bench_lexer, TB_PARSE);
     lexer_status_t scanned = lexer_scan(text, size, &limits, &lexed, &lex_error);
+    TB_END(bench_lexer);
     if (scanned == LEXER_NOMEM) {
         q_release(db, lex_peak);
         return DATABASE_EXEC_NOMEM;
@@ -969,7 +975,9 @@ static database_exec_status_t exec_statement(database_t *db, const database_exec
         goto done;
     }
     sqlstmt_error_t parse_error;
+    TB_BEGIN(bench_parser, TB_PARSE);
     sqlstmt_status_t parsed = sqlstmt_parse(&tokens, bound, &statement, &parse_error);
+    TB_END(bench_parser);
     if (parsed == SQLSTMT_NOMEM) {
         status = DATABASE_EXEC_NOMEM;
         goto done;

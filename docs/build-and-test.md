@@ -24,6 +24,28 @@ make SANITIZE= BUILD_DIR=build-nosan test-database
 
 ## 시험 대상
 
+### 요청 단위 내부 계측
+
+정상 빌드는 `BENCHMARK=0`이며 계측 매크로의 인자와 선언은 전처리 때 사라진다. 런타임 환경 변수로 켤 수 없다. `BENCHMARK=1`만 별도 `build-benchmark`에서 계측 소스를 링크한다. 이 모드에 `BUILD_DIR=build`를 주면 실패한다. 사용자 지정 디렉터리를 재사용해도 모드·컴파일러·플래그 fingerprint가 바뀌면 객체와 공유 라이브러리를 다시 만든다. 실제 플래그는 해당 디렉터리의 `.build-fingerprint`와 Make 출력에 남는다.
+
+```sh
+make test-benchmark
+make BENCHMARK=0 SANITIZE= counter-driver
+python3 bench/counter_run.py --build-dir build --output .local/runs/counter-off --n 12
+make BENCHMARK=1 SANITIZE= counter-driver
+python3 bench/counter_run.py --build-dir build-benchmark --output .local/runs/counter-on --n 12
+python3 tools/verify_benchmark.py build/lib/libtotedb.so
+python3 tools/verify_benchmark.py build-benchmark/lib/libtotedb.so --enabled
+```
+
+macOS에서는 검사할 라이브러리의 확장자를 `.dylib`로 바꾼다. output 디렉터리는 새 경로여야 한다. 실패한 DB도 보존한다. 이 작은 실행은 정확성 검사이며 성능 결론의 근거가 아니다. 두 엔진 모두 같은 단일 행 스키마와 단일 클라이언트로 매 증가마다 명시적 begin/update/commit을 실행하고 영향 행 수, 최종 값, 닫았다 다시 연 영속 값을 검사한다. SQLite prepare-each와 prepared-reuse는 별도 구성이다. 입력 생성·DB 생성·JSON 출력은 측정 밖이다. Tote의 결과 wire 인코딩은 exec에 포함되며 결과 해석·해제와 SQLite changes/reset/finalize 비용은 별도로 남긴다.
+
+계측 범위는 C API exec·begin·commit·rollback·queue put/get/ack 전체이며 검증 실패와 EMPTY 반환도 포함한다. 내부에는 어휘 분석·구문 분석, 실행 부모, 카탈로그 복제·save/load, 게시·commit, 정수 키 lookup·heap page 수집·batch finish, 핸들 mutex 획득, 파일 lock 획득과 개별 pread/pwrite/fsync/flock 호출이 있다. ROW_INDEX는 이 coarse 범위만 포함하며 전체 행 처리 비용을 뜻하지 않는다. 결과는 스레드별 고정 버퍼에 쌓이고 요청 밖에서 drain한다. 불완전한 시계·스택·overflow·drop은 카운터로 남는다.
+
+inclusive 단계 시간은 자식을 포함한다. exclusive만 자식 시간을 제외하므로 부모와 자식을 더하면 안 된다. CPU 시간과 I/O wall 시간을 합쳐 100%로 만들지 않는다. wall−CPU는 미분류 잔여이며 OS off-CPU나 잠금 시간으로 단정하지 않는다. I/O bytes는 커널 호출에 수락된 양이지 물리 장치 전송량이 아니다. SQLite 내부 단계는 측정하지 않았으므로 unknown이며 0비용이 아니다.
+
+wheel과 sdist 재빌드는 환경의 Make 모드 변수를 차단하고 패키징 전용 경로에서 `BENCHMARK=0 SANITIZE=`로 강제 재빌드한다. 복사 전후와 설치 smoke에서 `tb_bench` 정의·참조·TLS 심볼을 검사하여 계측 라이브러리의 배포를 거절한다.
+
 | 대상 | 검사하는 것 |
 |---|---|
 | `make test` | 행 인코딩, overflow, 값, 카탈로그, lexer, 페이지 파일, 카탈로그 저장, 기본 키·TEXT 색인 트리 |
