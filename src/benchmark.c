@@ -131,6 +131,10 @@ size_t tb_bench_drain(tb_bench_record *records, size_t capacity)
     if (tb_bench_tls.requests || records == NULL) return 0;
     size_t n = capacity < tb_bench_tls.count ? capacity : tb_bench_tls.count;
     memcpy(records, tb_bench_tls.records, n * sizeof(*records));
+    if (n > 0) {
+        records[n - 1].dropped += tb_bench_tls.dropped;
+        tb_bench_tls.dropped = 0;
+    }
     tb_bench_tls.count -= n;
     memmove(tb_bench_tls.records, tb_bench_tls.records + n,
             tb_bench_tls.count * sizeof(*records));

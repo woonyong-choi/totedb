@@ -72,9 +72,19 @@ static void test_io_and_failures(void)
     assert(records[0].overflow == 1 && records[0].incomplete > 0);
     for (unsigned i = 0; i < TB_BENCH_RECORDS + 2; i++) assert(early_return() == -7);
     assert(tb_bench_drain(records, TB_BENCH_RECORDS) == TB_BENCH_RECORDS);
+    uint64_t dropped = 0;
+    for (unsigned i = 0; i < TB_BENCH_RECORDS; i++) dropped += records[i].dropped;
+    assert(dropped == 2);
+    assert(tb_bench_drain(records, TB_BENCH_RECORDS) == 0);
     assert(early_return() == -7);
     assert(tb_bench_drain(records, TB_BENCH_RECORDS) == 1);
-    assert(records[0].dropped == 2);
+    assert(records[0].dropped == 0);
+    for (unsigned i = 0; i < TB_BENCH_RECORDS + 3; i++) assert(early_return() == -7);
+    assert(tb_bench_drain(records, 0) == 0);
+    assert(tb_bench_drain(records, 1) == 1);
+    assert(records[0].dropped == 3);
+    assert(tb_bench_drain(records, TB_BENCH_RECORDS) == TB_BENCH_RECORDS - 1);
+    for (unsigned i = 0; i < TB_BENCH_RECORDS - 1; i++) assert(records[i].dropped == 0);
 }
 
 static void test_nested_requests_and_unmatched_stack(void)

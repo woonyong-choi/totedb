@@ -11,17 +11,18 @@ def verify_library(path: Path, *, enabled: bool = False) -> set[str]:
     output = subprocess.run(
         ["nm", "-a", str(path)], capture_output=True, text=True, check=True
     ).stdout
-    symbols = set(re.findall(r"\b_?(tb_bench\w*)\b", output))
-    if bool(symbols) != enabled:
-        raise ValueError(f"benchmark symbol mismatch in {path}: {sorted(symbols)}")
-    if enabled and "tb_bench_tls" not in symbols:
-        raise ValueError(f"missing benchmark TLS positive control in {path}")
     command = (
         ["otool", "-l", str(path)]
         if sys.platform == "darwin"
         else ["readelf", "-sW", str(path)]
     )
     details = subprocess.run(command, capture_output=True, text=True, check=True).stdout
+    symbol_text = output if sys.platform == "darwin" else output + "\n" + details
+    symbols = set(re.findall(r"\b_?(tb_bench\w*)\b", symbol_text))
+    if bool(symbols) != enabled:
+        raise ValueError(f"benchmark symbol mismatch in {path}: {sorted(symbols)}")
+    if enabled and "tb_bench_tls" not in symbols:
+        raise ValueError(f"missing benchmark TLS positive control in {path}")
     if enabled:
         tls_present = (
             "__thread_bss" in details
@@ -33,6 +34,8 @@ def verify_library(path: Path, *, enabled: bool = False) -> set[str]:
     exports = subprocess.run(
         ["nm", "-g", str(path)], capture_output=True, text=True, check=True
     ).stdout
+    if sys.platform != "darwin":
+        exports += "\n" + details
     return set(re.findall(r"\b_?(tote_\w*)\b", exports))
 
 

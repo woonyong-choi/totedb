@@ -40,6 +40,39 @@ class BenchmarkBuildTest(unittest.TestCase):
         )
         self.assertNotEqual(result.returncode, 0)
 
+    def test_stripped_elf_dynamic_symbols_are_checked(self) -> None:
+        details = "1: 0000000000000010 8 TLS LOCAL DEFAULT 12 tb_bench_tls\n2: 0000000000001000 8 FUNC GLOBAL DEFAULT 10 tb_bench_request\n"
+        with (
+            patch("tools.verify_benchmark.sys.platform", "linux"),
+            patch(
+                "tools.verify_benchmark.subprocess.run",
+                side_effect=[
+                    subprocess.CompletedProcess([], 0, stdout=""),
+                    subprocess.CompletedProcess([], 0, stdout=details),
+                ],
+            ),
+        ):
+            with self.assertRaisesRegex(ValueError, "benchmark symbol mismatch"):
+                verify_library(Path("stripped.so"))
+
+    @unittest.skipIf(
+        sys.platform == "darwin", "GNU strip ELF verification runs on Linux"
+    )
+    def test_actual_stripped_elf_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory(
+            dir=ROOT / "build", prefix="benchmark-stripped-"
+        ) as directory:
+            library = Path(directory) / "instrumented.so"
+            subprocess.run(
+                ["cc", "-shared", "-fPIC", "-x", "c", "-", "-o", str(library)],
+                input="_Thread_local int tb_bench_tls; int tb_bench_request(void) { return tb_bench_tls; }",
+                text=True,
+                check=True,
+            )
+            subprocess.run(["strip", "--strip-all", str(library)], check=True)
+            with self.assertRaisesRegex(ValueError, "benchmark symbol mismatch"):
+                verify_library(library)
+
     def test_off_arguments_are_not_evaluated_or_parsed(self) -> None:
         source = r"""
         #include "src/benchmark.h"
