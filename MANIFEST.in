@@ -3,3 +3,4 @@ include Makefile CHANGELOG.md
 recursive-include include *.h
 recursive-include src *.c *.h *.mk
 include tests/package_smoke.py
+include tools/verify_benchmark.py

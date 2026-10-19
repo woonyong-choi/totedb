@@ -12,6 +12,9 @@ on:
       - MANIFEST.in
       - Makefile
       - src/queue/queue.mk
+      - src/benchmark.*
+      - tools/verify_benchmark.py
+      - tests/test_benchmark*
       - python/totedb/_native.py
       - tests/package_smoke.py
       - .github/workflows/release.yml

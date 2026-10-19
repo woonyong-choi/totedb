@@ -16,6 +16,7 @@
 #include "page_cache.h"
 #include "storage/checksum.h"
 #include "storage/record_page.h"
+#include "../benchmark.h"
 
 _Static_assert(RECORD_PAGE_BYTES == PAGE_BODY_BYTES,
                "record page body must equal the page_file body");
@@ -301,7 +302,10 @@ static page_file_status_t read_full(const page_file_t *file, uint8_t *buf, size_
     size_t done = 0;
     int eintr = 0;
     while (done < size) {
+        TB_BEGIN(bench_io, TB_READ);
         ssize_t got = file->io.pread(file->fd, buf + done, size - done, (off_t)(offset + done));
+        TB_END(bench_io);
+        TB_IO(TB_READ, got, size - done, errno);
         if (got < 0) {
             if (errno == EINTR && ++eintr <= EINTR_RETRY_MAX) continue;
             return PAGE_FILE_IO;
@@ -322,7 +326,10 @@ static page_file_status_t write_full(const page_file_t *file, const uint8_t *buf
     size_t done = 0;
     int eintr = 0;
     while (done < size) {
+        TB_BEGIN(bench_io, TB_WRITE);
         ssize_t put = file->io.pwrite(file->fd, buf + done, size - done, (off_t)(offset + done));
+        TB_END(bench_io);
+        TB_IO(TB_WRITE, put, size - done, errno);
         if (put < 0) {
             if (errno == EINTR && ++eintr <= EINTR_RETRY_MAX) continue;
             return PAGE_FILE_IO;
@@ -340,7 +347,12 @@ static page_file_status_t write_full(const page_file_t *file, const uint8_t *buf
 static page_file_status_t sync_file(page_file_t *file)
 {
     int eintr = 0;
-    while (file->io.fsync(file->fd) != 0) {
+    for (;;) {
+        TB_BEGIN(bench_io, TB_SYNC);
+        int synced = file->io.fsync(file->fd);
+        TB_END(bench_io);
+        TB_IO(TB_SYNC, synced, 0, errno);
+        if (synced == 0) break;
         if (errno == EINTR && ++eintr <= EINTR_RETRY_MAX) continue;
         /* 커널이 더러운 페이지를 버렸을 수 있어 이 핸들로는 더 이상 성공을 주장하지 않는다. */
         file->poisoned = true;
@@ -451,10 +463,15 @@ static uint64_t monotonic_us(void)
 /* 바쁘면 100µs에서 2ms까지 늘려 쉬며 다시 시도한다. 대기 상한을 넘으면 LOCKED다. operation은 LOCK_SH·LOCK_EX */
 static page_file_status_t lock_fd(int fd, int operation, uint32_t timeout_ms)
 {
+    TB_SCOPE(bench_lock, TB_FILE_LOCK);
     uint64_t deadline = monotonic_us() + (uint64_t)timeout_ms * 1000u;
     long pause_us = 100;
     for (;;) {
-        if (flock(fd, operation | LOCK_NB) == 0) return PAGE_FILE_OK;
+        TB_BEGIN(bench_syscall, TB_LOCK_SYSCALL);
+        int locked = flock(fd, operation | LOCK_NB);
+        TB_END(bench_syscall);
+        TB_IO(TB_LOCK_SYSCALL, locked, 0, errno);
+        if (locked == 0) return PAGE_FILE_OK;
         if (errno == EINTR) continue;
         if (errno != EWOULDBLOCK) return PAGE_FILE_IO;
         if (monotonic_us() >= deadline) {

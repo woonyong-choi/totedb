@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "storage/heap_store.h"
+#include "../benchmark.h"
 #include "storage/le.h"
 #include "storage/overflow.h"
 #include "storage/pk_tree.h"
@@ -877,6 +878,7 @@ static heap_status_t check_indexed_row(heap_t *heap, heap_locator_t at, const ro
 // alt: heap_cursor 전체 스캔. time O(n), heap O(1), io O(n). 잃는 것: 키 조회 시간
 heap_status_t heap_find_key(heap_t *heap, int64_t key, heap_locator_t *locator)
 {
+    TB_SCOPE(bench_row_index, TB_ROW_INDEX);
     if (heap == NULL || locator == NULL || !heap->indexed || heap->key_type != VALUE_INTEGER) return HEAP_INVALID;
     if (heap->stats != NULL) heap->stats->index_lookups++;
     if (heap->index_root == PAGE_FILE_NO_PAGE) return HEAP_NOT_FOUND;
@@ -1238,6 +1240,7 @@ heap_status_t heap_collect_pages_with_indexes(heap_t *heap, const uint32_t *root
 
 heap_status_t heap_collect_pages(heap_t *heap, uint32_t **pages, size_t *count)
 {
+    TB_SCOPE(bench_row_index, TB_ROW_INDEX);
     return heap_collect_pages_with_indexes(heap, NULL, 0, pages, count);
 }
 
@@ -2430,6 +2433,7 @@ static heap_status_t publish_directories(heap_batch_t *batch, uint32_t *new_root
 
 heap_status_t heap_batch_finish(heap_batch_t *batch, heap_batch_result_t *result)
 {
+    TB_SCOPE(bench_row_index, TB_ROW_INDEX);
     if (batch == NULL || result == NULL || batch->finished) return HEAP_INVALID;
     if (batch->failed) return HEAP_BATCH_FAILED;
     heap_t *heap = batch->heap;

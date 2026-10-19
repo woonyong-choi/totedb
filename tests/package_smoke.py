@@ -14,6 +14,9 @@ import totedb
 from totedb import Database, Queue
 from totedb._native import load_library
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tools.verify_benchmark import verify_library
+
 
 def main() -> None:
     if os.environ.get("TOTEDB_LIB"):
@@ -21,13 +24,21 @@ def main() -> None:
     package_dir = Path(totedb.__file__).resolve().parent
     bundled = [p for p in package_dir.iterdir() if p.name.startswith("libtotedb.")]
     if len(bundled) != 1:
-        sys.exit(f"expected one bundled library in {package_dir}, found {[p.name for p in bundled]}")
+        sys.exit(
+            f"expected one bundled library in {package_dir}, found {[p.name for p in bundled]}"
+        )
+    verify_library(bundled[0])
 
     native_version = load_library().tote_version().decode()
     if native_version != totedb.__version__:
-        sys.exit(f"version mismatch: library {native_version}, package {totedb.__version__}")
+        sys.exit(
+            f"version mismatch: library {native_version}, package {totedb.__version__}"
+        )
 
-    with tempfile.TemporaryDirectory() as tmp, Database(str(Path(tmp) / "smoke.db")) as db:
+    with (
+        tempfile.TemporaryDirectory() as tmp,
+        Database(str(Path(tmp) / "smoke.db")) as db,
+    ):
         db.execute("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)")
         queue = Queue(db, "jobs")
         with db.begin() as txn:

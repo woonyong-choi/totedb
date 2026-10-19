@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "storage/catalog_store.h"
+#include "../benchmark.h"
 
 #define CATALOG_TABLE_ID 0u
 
@@ -60,6 +61,7 @@ static catalog_store_status_t not_applied(page_file_t *file, catalog_store_statu
 
 catalog_store_status_t catalog_store_save(page_file_t *file, const catalog_t *catalog)
 {
+    TB_SCOPE(bench_metadata, TB_METADATA);
     if (file == NULL || catalog == NULL) return CATALOG_STORE_INVALID;
     if (page_file_is_poisoned(file)) {
         errno = EIO;
@@ -120,6 +122,7 @@ catalog_store_status_t catalog_store_load(page_file_t *file, catalog_t **out)
 catalog_store_status_t catalog_store_load_admitted(page_file_t *file, catalog_store_admit_fn admit,
                                                    void *admit_ctx, catalog_t **out)
 {
+    TB_SCOPE(bench_metadata, TB_METADATA);
     if (file == NULL || out == NULL) return CATALOG_STORE_INVALID;
     const page_file_control_t *control = page_file_control(file);
     if (control->catalog_head == PAGE_FILE_NO_PAGE) return CATALOG_STORE_EMPTY;

@@ -34,19 +34,50 @@ FAULT_SEED ?= 1
 TEST_RUNNER = $(PYTHON) tests/fault_runner.py --timeout $(TEST_TIMEOUT) --seed $(FAULT_SEED)
 .DEFAULT_GOAL := all
 
+BENCHMARK ?= 0
+ifneq ($(BENCHMARK),0)
+ifneq ($(BENCHMARK),1)
+$(error BENCHMARK must be 0 or 1)
+endif
+endif
 SRC_DIR   = src
-BUILD_DIR = build
+ifeq ($(BENCHMARK),1)
+BUILD_DIR ?= build-benchmark
+ifeq ($(abspath $(BUILD_DIR)),$(abspath build))
+$(error BENCHMARK=1 cannot use the normal build directory)
+endif
+BENCHMARK_FLAGS = -UTOTE_BENCHMARK -DTOTE_BENCHMARK=1
+BENCHMARK_OBJ = $(BUILD_DIR)/benchmark.o
+else
+BUILD_DIR ?= build
+BENCHMARK_FLAGS = -UTOTE_BENCHMARK
+endif
+override CFLAGS += $(BENCHMARK_FLAGS)
+SHARED_CFLAGS ?= -O2 -g $(WARNFLAGS) $(INCLUDES)
+override SHARED_CFLAGS += $(BENCHMARK_FLAGS)
+BUILD_FINGERPRINT = $(BUILD_DIR)/.build-fingerprint
+CONFIG_ID := $(shell printf '%s\n' 'BENCHMARK=$(BENCHMARK)' 'CC=$(CC)' 'CFLAGS=$(CFLAGS)' 'SHARED_CFLAGS=$(SHARED_CFLAGS)' 'LDFLAGS=$(LDFLAGS)' | shasum -a 256 | cut -d' ' -f1)
+ifeq ($(shell grep -Fx 'CONFIG_ID=$(CONFIG_ID)' $(BUILD_FINGERPRINT) 2>/dev/null),)
+.PHONY: $(BUILD_FINGERPRINT)
+endif
+.PHONY: FORCE
+FORCE:
+$(BUILD_FINGERPRINT): FORCE
+	@mkdir -p $(BUILD_DIR)
+	@printf '%s\n' 'CONFIG_ID=$(CONFIG_ID)' 'BENCHMARK=$(BENCHMARK)' 'CC=$(CC)' 'CFLAGS=$(CFLAGS)' 'SHARED_CFLAGS=$(SHARED_CFLAGS)' 'LDFLAGS=$(LDFLAGS)' > $@.candidate
+	@cmp -s $@.candidate $@ || cp $@.candidate $@
+	@rm -f $@.candidate
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_FINGERPRINT)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(DEPFLAGS) -c -o $@ $<
 
 # 각 테스트 번역 단위도 헤더 의존성을 추적한다.
-$(BUILD_DIR)/tests/%.o: tests/%.c
+$(BUILD_DIR)/tests/%.o: tests/%.c $(BUILD_FINGERPRINT)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(DEPFLAGS) -c -o $@ $<
 
-STORAGE_OBJS = $(BUILD_DIR)/storage/record.o $(BUILD_DIR)/storage/record_page.o \
+STORAGE_OBJS = $(BENCHMARK_OBJ) $(BUILD_DIR)/storage/record.o $(BUILD_DIR)/storage/record_page.o \
                $(BUILD_DIR)/storage/overflow.o $(BUILD_DIR)/storage/checksum.o $(BUILD_DIR)/storage/value.o $(BUILD_DIR)/storage/catalog.o \
                $(BUILD_DIR)/storage/page_file.o $(BUILD_DIR)/storage/page_cache.o $(BUILD_DIR)/storage/catalog_store.o \
                $(BUILD_DIR)/storage/pk_tree.o $(BUILD_DIR)/storage/text_tree.o
@@ -307,6 +338,28 @@ clean:
 
 # 기본 대상: DB와 큐를 묶은 공유 라이브러리(파이썬 바인딩이 쓴다)
 all: $(TOTEDB_SHARED_LIB)
+
+$(shell find $(BUILD_DIR) -name '*.o' 2>/dev/null): $(BUILD_FINGERPRINT)
+
+.PHONY: test-benchmark
+test-benchmark:
+	$(PYTHON) -m unittest discover -s tests -p test_benchmark_build.py
+	$(MAKE) BENCHMARK=1 BUILD_DIR=build-benchmark build-benchmark/test_benchmark
+	./build-benchmark/test_benchmark
+	$(MAKE) BENCHMARK=1 BUILD_DIR=build-benchmark build-benchmark/test_totedb
+	./build-benchmark/test_totedb
+
+$(BUILD_DIR)/benchmark_test.o: src/benchmark.c src/benchmark.h $(BUILD_FINGERPRINT)
+	$(CC) $(CFLAGS) -Dclock_gettime=tb_test_clock -c -o $@ $<
+
+$(BUILD_DIR)/test_benchmark: $(BUILD_DIR)/tests/test_benchmark.o $(BUILD_DIR)/benchmark_test.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+.PHONY: counter-driver
+counter-driver: $(BUILD_DIR)/counter_driver
+
+$(BUILD_DIR)/counter_driver: bench/counter_driver.c src/benchmark.h include/totedb.h $(TOTEDB_SHARED_LIB) $(BUILD_FINGERPRINT)
+	$(CC) $(SHARED_CFLAGS) -o $@ $< -L$(dir $(TOTEDB_SHARED_LIB)) -ltotedb -lsqlite3 -Wl,-rpath,$(abspath $(dir $(TOTEDB_SHARED_LIB)))
 
 .PHONY: ycsb-build ycsb-test
 ycsb-build:

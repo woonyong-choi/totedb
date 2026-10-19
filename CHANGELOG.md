@@ -2,6 +2,20 @@
 
 버전별 주요 변경을 적는다. 형식: [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/). 버전: [유의적 버전](https://semver.org/lang/ko/). 1.0 전에는 파일 형식과 API가 호환 없이 바뀔 수 있다.
 
+## 0.2.0 - 2026-10-19
+
+### 추가
+
+- 명시적 benchmark 빌드의 요청별 계측과 배포 바이너리 제외 검사 추가 ([#232](https://github.com/woonyong-choi/totedb/issues/232))
+- 단일 writer 비용 진단과 평가 근거 추가 ([#234](https://github.com/woonyong-choi/totedb/pull/234))
+
+### 변경
+
+- YCSB·큐 비교와 TEXT 범위 조회 개선 ([#227](https://github.com/woonyong-choi/totedb/pull/227))
+- 아키텍처와 안전성 문장 개선 ([#237](https://github.com/woonyong-choi/totedb/pull/237))
+- 첫 실행과 지원 범위 안내 정리 ([#219](https://github.com/woonyong-choi/totedb/pull/219))
+- 조회 조건과 새 핸들 열기 제한 설명 추가 ([#217](https://github.com/woonyong-choi/totedb/pull/217))
+
 ## 0.1.0 - 2026-10-17
 
 첫 공개판이다.

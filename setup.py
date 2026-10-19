@@ -16,6 +16,9 @@ from setuptools import Distribution, setup
 from setuptools.command.bdist_wheel import bdist_wheel
 from setuptools.command.build_py import build_py
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from tools.verify_benchmark import verify_library
+
 ROOT = Path(__file__).resolve().parent
 LIB_NAME = "libtotedb.dylib" if sys.platform == "darwin" else "libtotedb.so"
 
@@ -25,14 +28,29 @@ class BuildPyWithLibrary(build_py):
 
     def run(self) -> None:
         super().run()
-        build_dir = Path(self.build_lib).resolve().parent / "totedb-native"
-        command = ["make", "-C", str(ROOT), f"BUILD_DIR={build_dir}", "SANITIZE=", "all"]
+        build_dir = Path(self.build_lib).resolve().parent / "totedb-native-release"
+        command = [
+            "make",
+            "-B",
+            "-C",
+            str(ROOT),
+            f"BUILD_DIR={build_dir}",
+            "BENCHMARK=0",
+            "SANITIZE=",
+            "all",
+        ]
         if os.environ.get("CC"):
             command.append(f"CC={os.environ['CC']}")
-        subprocess.run(command, check=True)
+        environment = os.environ.copy()
+        for name in ("BENCHMARK", "MAKEFLAGS", "MFLAGS", "MAKEOVERRIDES"):
+            environment.pop(name, None)
+        subprocess.run(command, check=True, env=environment)
         target = Path(self.build_lib) / "totedb" / LIB_NAME
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(build_dir / "lib" / LIB_NAME, target)
+        source = build_dir / "lib" / LIB_NAME
+        verify_library(source)
+        shutil.copy2(source, target)
+        verify_library(target)
 
 
 class NativeDistribution(Distribution):
@@ -50,4 +68,7 @@ class PlatformWheel(bdist_wheel):
         return "py3", "none", platform
 
 
-setup(distclass=NativeDistribution, cmdclass={"build_py": BuildPyWithLibrary, "bdist_wheel": PlatformWheel})
+setup(
+    distclass=NativeDistribution,
+    cmdclass={"build_py": BuildPyWithLibrary, "bdist_wheel": PlatformWheel},
+)
