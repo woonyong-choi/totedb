@@ -314,3 +314,7 @@ ycsb-build:
 
 ycsb-test:
 	$(PYTHON) bench/ycsb/run.py test
+
+.PHONY: queue-contention-test
+queue-contention-test: $(TOTEDB_SHARED_LIB)
+	$(PYTHON) -m unittest discover -s tests -p test_queue_contention.py -v

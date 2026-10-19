@@ -82,6 +82,23 @@ jobs:
         with:
           args: -color
 
+  queue-contention:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build the public Python library
+        run: make SANITIZE= all
+      - name: Check queue semantics, concurrent trials and evidence verification
+        run: python3 -m unittest discover -s tests -p test_queue_contention.py -v
+      - name: Preserve queue contention checks
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: queue-contention-checks
+          path: build/queue-contention/tests/
+          if-no-files-found: warn
+
   ycsb:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
