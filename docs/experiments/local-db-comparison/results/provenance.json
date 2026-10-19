@@ -1,0 +1,52 @@
+{
+  "run_id": "20261019T112642Z-5beed7f",
+  "workflow_run": 39244451196,
+  "source_commit": "5beed7f794d19fbfdce8c89f7d4b69da2c2474de",
+  "product_base": "a86cf241255ad06aba2010c3a8b35ff98633a841",
+  "plan_commits": [
+    "c46b7005",
+    "d971a992"
+  ],
+  "artifact": {
+    "id": 12182947216,
+    "name": "local-db-queue-evidence",
+    "size_in_bytes": 197775554,
+    "digest": "sha256:092cc3cb0425229131907527ff18186dc2761e6bc079b7e4f73d5fd65aec0efc",
+    "expires_at": "2027-01-17T11:24:51Z"
+  },
+  "database": {
+    "trials": 216,
+    "measured": 180,
+    "warmup": 36,
+    "api_preflight": 6,
+    "trial_failures": 0,
+    "api_preflight_failures": 0,
+    "summary_sha256": "8c28211b594725e4c11bb557ce486e6dc95c9d235b1b700bdbdc116a6a7e5728",
+    "seal_sha256": "d99c98df7786c9e9b9ea9f5bc3bea5eb3d911f069f15bf194e0237bb4932630e",
+    "sealed_files": 1559
+  },
+  "queues": {
+    "trials": 120,
+    "measured": 100,
+    "warmup": 20,
+    "failed_trials": 0,
+    "summary_sha256": "d40af1bcc35a6a461d2602db4dbaaed712fa4cd37a7eaf69a8cb411207f1fbd4",
+    "seal_sha256": "e9fd67fe9f728a53877591454b396e63a79afde2177702fce51c58231d74e6fe",
+    "sealed_files": 651
+  },
+  "installation_report_sha256": "0f8951c09de7eadc6a02d5a4204c8241056a454d8451122657f7ddd44280e932",
+  "local_download_verification": {
+    "database": "PASS,0 trial failures,0 API preflight failures",
+    "queues": "complete_success=true,0 failed trials"
+  },
+  "public_export": "publish.py produces summary without duplicated full payloads; source metrics and per-trial timings retained",
+  "publication_verification": {
+    "summary_and_env_regeneration": "byte-identical",
+    "independent_numeric_checks": {
+      "original_items": 82,
+      "original_values": 138,
+      "additional_analysis_values": 14
+    },
+    "additional_analysis": "post-collection descriptive metrics and source-path inspection, not preregistered causal proof"
+  }
+}

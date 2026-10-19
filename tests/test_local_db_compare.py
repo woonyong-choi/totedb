@@ -19,6 +19,67 @@ compare = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(compare)
 
 
+def test_public_additional_analysis_has_explicit_descriptive_boundaries() -> None:
+    spec = importlib.util.spec_from_file_location(
+        "local_db_publish",
+        SCRIPT.parents[1] / "docs/experiments/local-db-comparison/publish.py",
+    )
+    assert spec is not None and spec.loader is not None
+    publisher = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(publisher)
+    database = {
+        "groups": [
+            {
+                "engine": "tote",
+                "workload": "atomic-outbox",
+                "payload_bytes": 256,
+                "ops_per_s": {"median": 100},
+            },
+            {
+                "engine": "tote",
+                "workload": "atomic-outbox-batch",
+                "payload_bytes": 256,
+                "ops_per_s": {"median": 400},
+            },
+        ]
+    }
+    identity = {"engine": "totedb", "n": 2, "payload_bytes": 256}
+    queues = {
+        "groups": [identity],
+        "trials": [
+            {
+                **identity,
+                "warmup": False,
+                "status": "ok",
+                "timing": {
+                    "put": {"count": 2, "total_ns": total},
+                    "read": {"count": 0, "total_ns": 0},
+                    "ack": {"count": 0, "total_ns": 0},
+                },
+            }
+            for total in (200, 400)
+        ],
+    }
+    result = publisher.additional_analysis(database, queues, 64)
+    assert result["batch_scaling"][0]["ratio_of_medians"] == 4
+    assert result["batch_protocol"]["commit_calls"] == 2
+    costs = result["queue_api_costs"][0]["mean_call_wall_ns_across_trials"]
+    assert costs == {"put": {"median": 150, "min": 100, "max": 200}}
+    assert "not dynamic" in result["static_success_path"]["evidence_kind"]
+
+
+def test_public_export_cannot_write_into_original_artifact(tmp_path: Path) -> None:
+    spec = importlib.util.spec_from_file_location(
+        "local_db_publish_guard",
+        SCRIPT.parents[1] / "docs/experiments/local-db-comparison/publish.py",
+    )
+    assert spec is not None and spec.loader is not None
+    publisher = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(publisher)
+    with pytest.raises(ValueError, match="outside the immutable artifact"):
+        publisher.publish(tmp_path, tmp_path / "modified")
+
+
 @pytest.fixture
 def measured_rows() -> list[dict[str, Any]]:
     rows = []
