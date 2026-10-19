@@ -14,6 +14,79 @@ permissions:
   contents: read
 
 jobs:
+  local-db-queue-experiment:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'local-db-queue-experiment')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      BENCHMARK: '0'
+      SANITIZE: ''
+      PYTHONPATH: python:.local/runs/local-db-comparison/deps-queue
+      TOTEDB_LIB: ${{ github.workspace }}/build/lib/libtotedb.so
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install pinned actual database and queue packages
+        run: |
+          mkdir -p build
+          python -m pip install 'pytest==8.4.2'
+          python -m pip install --target .local/runs/local-db-comparison/deps-queue --report build/local-comparison-install.json -r docs/experiments/local-db-comparison/requirements.txt
+          python -m pip freeze > build/local-comparison-freeze.txt
+      - name: Verify unchanged product source and build without instrumentation
+        run: |
+          git diff --exit-code a86cf241255ad06aba2010c3a8b35ff98633a841 HEAD -- src include Makefile python setup.py pyproject.toml
+          make BENCHMARK=0 SANITIZE= all
+          python tools/verify_benchmark.py build/lib/libtotedb.so
+          echo "RUN_ID=$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short=7 HEAD)" >> "$GITHUB_ENV"
+      - name: Check benchmark failure handling before collection
+        run: python -m pytest -q tests/test_local_db_compare.py tests/test_python_queue_compare.py
+      - name: Record the measurement host before collection
+        run: |
+          uname -a > build/local-comparison-uname.txt
+          lscpu --json > build/local-comparison-cpu.json
+          cat /proc/meminfo > build/local-comparison-memory.txt
+          python -c 'import json,os,time; from pathlib import Path; Path("build/local-comparison-before.json").write_text(json.dumps({"utc":time.time(),"load":os.getloadavg(),"cpu_count":os.cpu_count(),"filesystem":list(os.statvfs("build"))})+"\n")'
+      - name: Measure local SQL and KV primitives
+        run: |
+          DEPS="$PWD/.local/runs/local-db-comparison/deps-queue"
+          python bench/local_db_compare.py collect --output build/local-db-comparison --run-id "$RUN_ID" --library build/lib/libtotedb.so --deps "$DEPS" --requirements-lock docs/experiments/local-db-comparison/requirements.txt
+      - name: Measure actual SQLite-backed Python queues
+        if: ${{ !cancelled() }}
+        run: python bench/python_queue_compare.py collect --output build/python-queue-comparison
+      - name: Verify and regenerate database measurements
+        if: ${{ !cancelled() }}
+        run: python bench/local_db_compare.py verify --output build/local-db-comparison
+      - name: Verify and regenerate queue measurements
+        if: ${{ !cancelled() }}
+        run: python bench/python_queue_compare.py verify --output build/python-queue-comparison
+      - name: Record the measurement host after collection
+        if: always()
+        run: python -c 'import json,os,time; from pathlib import Path; Path("build/local-comparison-after.json").write_text(json.dumps({"utc":time.time(),"load":os.getloadavg(),"cpu_count":os.cpu_count()})+"\n")'
+      - name: Preserve raw databases, package provenance and failures
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: local-db-queue-evidence
+          retention-days: 90
+          if-no-files-found: warn
+          path: |
+            build/local-db-comparison/
+            build/python-queue-comparison/
+            build/local-comparison-install.json
+            build/local-comparison-freeze.txt
+            build/local-comparison-uname.txt
+            build/local-comparison-cpu.json
+            build/local-comparison-memory.txt
+            build/local-comparison-before.json
+            build/local-comparison-after.json
+            build/lib/
+            build/.build-fingerprint
+
   release-cost-experiment:
     if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'release-cost-experiment')
     runs-on: ubuntu-24.04
