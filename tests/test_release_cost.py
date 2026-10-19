@@ -106,6 +106,64 @@ def test_native_fixture_recomputes_elapsed_exclusive_phases_and_accepted_io(
     assert "wall_ns" not in phases["write"]
 
 
+def test_failed_on_preflight_invalidates_perturbation(
+    evidence: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def read(directory: Path, spec: dict[str, Any]) -> dict[str, Any]:
+        if (
+            spec["n"] == 128
+            and spec["mode"] == "on"
+            and spec["engine"] == "tote"
+            and spec["phase"] == "preflight"
+        ):
+            raise ValueError("failed ON preflight")
+        return {
+            **spec,
+            "ops_s": 1.0,
+            "elapsed_ns": 1,
+            "timers": dict.fromkeys(suite.TIMERS, 1),
+            "phases": {},
+        }
+
+    monkeypatch.setattr(suite, "_read_native", read)
+    result = suite._native_summary(evidence, "run")
+    assert result["instrumentation_perturbation"][0]["status"] == "incomparable"
+    assert result["instrumentation_perturbation"][1]["status"] == "comparable"
+
+
+@pytest.mark.parametrize("fault", ["modify", "delete", "extra"])
+def test_external_database_changes_are_rejected(
+    evidence: Path, monkeypatch: pytest.MonkeyPatch, fault: str
+) -> None:
+    output = evidence / "output"
+    database = evidence / "build/ycsb/runs/run/database.db"
+    database.parent.mkdir(parents=True)
+    database.write_bytes(b"original database")
+    suite._write(
+        output / "data/manifest.json",
+        {"database_roots": ["build/ycsb/runs/run"]},
+    )
+    monkeypatch.setenv("RELEASE_COST_DATABASE_ROOT", str(evidence))
+    suite._seal(output)
+    suite._verify_hashes(output)
+    if fault == "modify":
+        database.write_bytes(b"corrupt database")
+    elif fault == "delete":
+        database.unlink()
+    else:
+        (database.parent / "extra.db").write_bytes(b"unexpected database")
+    with pytest.raises(ValueError, match="external database"):
+        suite._verify_hashes(output)
+
+
+def test_collect_rejects_verification_database_root_override(
+    evidence: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("RELEASE_COST_DATABASE_ROOT", str(evidence / "wrong"))
+    with pytest.raises(ValueError, match="verification-only"):
+        suite._collect(evidence, "run")
+
+
 @pytest.mark.parametrize(
     "fault",
     [

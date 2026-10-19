@@ -311,6 +311,8 @@ def _collect_native(output: Path, run_id: str) -> None:
 
 
 def _collect(output: Path, run_id: str) -> None:
+    if "RELEASE_COST_DATABASE_ROOT" in os.environ:
+        raise ValueError("external database root override is verification-only")
     identity = _source_identity()
     diff = identity["product_diff"]
     if diff.get("exit_code") != 0 or diff["stdout"]:
@@ -545,7 +547,20 @@ def _native_summary(output: Path, run_id: str) -> dict[str, Any]:
         {
             "n": n,
             "metric": "on/off tote throughput; diagnostic only",
-            **_paired(groups[(n, "on", "tote")], groups[(n, "off", "tote")]),
+            **(
+                _paired(groups[(n, "on", "tote")], groups[(n, "off", "tote")])
+                if all(
+                    any(
+                        row["n"] == n
+                        and row["mode"] == mode
+                        and row["engine"] == "tote"
+                        and row["phase"] == "preflight"
+                        for row in rows
+                    )
+                    for mode in ("on", "off")
+                )
+                else _paired([], [])
+            ),
         }
         for n in (128, 1024)
     ]
@@ -586,6 +601,7 @@ def _evidence_files(output: Path) -> dict[str, str]:
 
 
 def _seal(output: Path) -> None:
+    _write(output / "data/external-files.json", _external_files(output))
     path = output / "data/SHA256SUMS"
     rows = [f"{digest}  {name}\n" for name, digest in _evidence_files(output).items()]
     path.write_text("".join(rows))
@@ -600,6 +616,29 @@ def _verify_hashes(output: Path) -> None:
         listed[name] = digest
     if listed != _evidence_files(output):
         raise ValueError("evidence hash or file set mismatch")
+    if _load(output / "data/external-files.json") != _external_files(output):
+        raise ValueError("external database hash or file set mismatch")
+
+
+def _external_files(output: Path) -> dict[str, Any]:
+    manifest = output / "data/manifest.json"
+    roots = _load(manifest).get("database_roots", []) if manifest.exists() else []
+    source = Path(os.environ.get("RELEASE_COST_DATABASE_ROOT", str(ROOT)))
+    result = {}
+    for name in roots:
+        relative = Path(name)
+        if relative.is_absolute() or ".." in relative.parts:
+            raise ValueError("invalid external database root")
+        directory = source / relative
+        result[name] = {
+            "exists": directory.is_dir(),
+            "files": {
+                path.relative_to(directory).as_posix(): _digest(path)
+                for path in sorted(directory.rglob("*"))
+                if path.is_file()
+            },
+        }
+    return result
 
 
 def _derived(output: Path, axis: str, command: str, run_id: str) -> dict[str, Any]:
