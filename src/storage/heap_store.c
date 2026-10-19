@@ -931,6 +931,35 @@ heap_status_t heap_visit_key_range(heap_t *heap, int64_t low, int64_t high,
     return HEAP_OK;
 }
 
+static bool visit_text_key_entry(void *context, const uint8_t *key, size_t key_bytes, heap_locator_t locator)
+{
+    key_range_t *range = context;
+    row_key_t expected = {.present = true, .size_bytes = key_bytes};
+    if (key_bytes > 0) memcpy(expected.bytes, key, key_bytes);
+    range->status = check_indexed_row(range->heap, locator, &expected);
+    return range->status == HEAP_OK && range->visit(range->context, locator);
+}
+
+heap_status_t heap_visit_text_key_range(heap_t *heap, text_key_range_t bounds,
+                                        bool (*visit)(void *context, heap_locator_t locator), void *context,
+                                        bool *stopped)
+{
+    if (heap == NULL || visit == NULL || stopped == NULL) return HEAP_INVALID;
+    if (!heap->indexed || heap->key_type != VALUE_TEXT) return HEAP_INVALID;
+    *stopped = false;
+    if (heap->stats != NULL) heap->stats->index_lookups++;
+    if (heap->index_root == PAGE_FILE_NO_PAGE) return HEAP_OK;
+    pk_tree_io_t io = index_read_io(heap);
+    key_range_t range = {heap, visit, context, HEAP_OK};
+    bool halted = false;
+    heap_status_t status = heap_from_pk(heap, text_tree_visit_range(&io, heap->table_id, heap->index_root, bounds,
+                                                                    visit_text_key_entry, &range, &halted));
+    if (status != HEAP_OK) return status;
+    if (range.status != HEAP_OK) return range.status;
+    *stopped = halted;
+    return HEAP_OK;
+}
+
 heap_status_t heap_find_text_key(heap_t *heap, const uint8_t *key, size_t key_bytes,
                                  heap_locator_t *locator)
 {

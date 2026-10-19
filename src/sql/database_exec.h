@@ -172,6 +172,16 @@ typedef struct {
 } range_t;
 
 typedef struct {
+    value_t value;
+    bool inclusive;
+} text_bound_t;
+
+typedef struct {
+    size_t column;
+    text_bound_t low, high;
+} text_range_t;
+
+typedef struct {
     bool present;
     sqleval_prog_t *prog;
     bool never;                        /* 최상위 AND 안의 등가 조건이 어떤 행과도 맞을 수 없다 */
@@ -179,6 +189,8 @@ typedef struct {
     size_t probe_count;
     range_t ranges[WHERE_MAX_PROBES];
     size_t range_count;
+    text_range_t text_ranges[WHERE_MAX_PROBES];
+    size_t text_range_count;
 } where_t;
 
 /* RETURNING: 바뀐 행마다 목록을 계산해 결과 행으로 모은다. 목록이 없으면 명령 결과를 만든다 */
@@ -394,6 +406,8 @@ bool cast_for_column(database_t *db, const value_view_t *source, const catalog_c
 bool values_equal(const value_view_t *a, const value_view_t *b);
 sqlexpr_op_t flip_comparison(sqlexpr_op_t op);
 void narrow_range(where_t *where, size_t index, sqlexpr_op_t op, int64_t bound);
+database_exec_status_t narrow_text_range(database_t *db, where_t *where, size_t index,
+                                        sqlexpr_op_t op, const value_view_t *bound);
 bool compile_where(database_t *db, const resolver_t *resolver, const sqlexpr_t *source, where_t *where,
                           database_exec_status_t *status);
 database_exec_status_t where_matches(database_t *db, const where_t *where, const value_t *row, bool *matched);
@@ -439,6 +453,9 @@ bool constant_count(database_t *db, const sqlexpr_t *expr, bool *present, uint64
                            database_exec_status_t *status);
 size_t key_probe(const catalog_table_view_t *view, const heap_t *heap, const where_t *where);
 size_t key_range(const catalog_table_view_t *view, const heap_t *heap, const where_t *where);
+size_t text_key_range(const catalog_table_view_t *view, const heap_t *heap, const where_t *where);
+heap_status_t visit_text_range(heap_t *heap, const text_range_t *range,
+                               bool (*visit)(void *, heap_locator_t), void *context, bool *stopped);
 size_t secondary_probe(database_t *db, catalog_table_id_t table_id, const where_t *where,
                               heap_secondary_spec_t *spec);
 database_exec_status_t locate_key(database_t *db, heap_t *heap, const value_view_t *key, bool *is_hit,

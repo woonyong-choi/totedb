@@ -297,6 +297,25 @@ size_t key_range(const catalog_table_view_t *view, const heap_t *heap, const whe
     return SIZE_MAX;
 }
 
+size_t text_key_range(const catalog_table_view_t *view, const heap_t *heap, const where_t *where)
+{
+    if (!heap_is_indexed(heap) || where->never) return SIZE_MAX;
+    for (size_t i = 0; i < where->text_range_count; i++) {
+        if (where->text_ranges[i].column == view->primary_key_column) return i;
+    }
+    return SIZE_MAX;
+}
+
+heap_status_t visit_text_range(heap_t *heap, const text_range_t *range,
+                               bool (*visit)(void *, heap_locator_t), void *context, bool *stopped)
+{
+    const value_view_t *low = &range->low.value.view, *high = &range->high.value.view;
+    text_key_bound_t lower = {low->bytes, low->size_bytes, range->low.inclusive};
+    text_key_bound_t upper = {high->bytes, high->size_bytes, range->high.inclusive};
+    text_key_range_t bounds = {low->type == VALUE_NULL ? NULL : &lower, high->type == VALUE_NULL ? NULL : &upper};
+    return heap_visit_text_key_range(heap, bounds, visit, context, stopped);
+}
+
 /* 보조 색인 탐침 번호. 없으면 SIZE_MAX */
 size_t secondary_probe(database_t *db, catalog_table_id_t table_id, const where_t *where,
                               heap_secondary_spec_t *spec)
@@ -409,6 +428,14 @@ database_exec_status_t scan_rows(database_t *db, const catalog_table_view_t *tab
         bool stopped = false;
         heap_status_t visited = heap_visit_key_range(heap, where->ranges[by_range].low, where->ranges[by_range].high,
                                                      scan_range_row, &scan, &stopped);
+        if (scan.status != DATABASE_EXEC_OK) return scan.status;
+        return visited == HEAP_OK ? DATABASE_EXEC_OK : heap_failure(db, visited, "index range");
+    }
+    size_t by_text = text_key_range(table, heap, where);
+    if (by_text != SIZE_MAX) {
+        range_scan_t scan = {db, heap, where, row, needed, sink, DATABASE_EXEC_OK};
+        bool stopped = false;
+        heap_status_t visited = visit_text_range(heap, &where->text_ranges[by_text], scan_range_row, &scan, &stopped);
         if (scan.status != DATABASE_EXEC_OK) return scan.status;
         return visited == HEAP_OK ? DATABASE_EXEC_OK : heap_failure(db, visited, "index range");
     }
