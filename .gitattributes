@@ -3,3 +3,4 @@ bench/ycsb/LICENSE.txt -text
 bench/ycsb/NOTICE.txt -text whitespace=-blank-at-eol
 docs/experiments/ycsb-sqlite/**/*.csv -text whitespace=cr-at-eol
 docs/experiments/queue-contention/validation/*.log -text whitespace=-blank-at-eol
+docs/experiments/text-range/**/*.csv -text whitespace=cr-at-eol
