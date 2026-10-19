@@ -1,0 +1,18 @@
+
+[test_key_statements_do_not_scan]
+
+[test_moved_and_deleted_rows_have_no_stale_locator]
+
+[test_table_without_index_scans_and_stays_correct]
+
+[test_index_out_of_step_with_heap_is_not_used]
+
+[test_wrong_locator_is_reported_not_returned]
+
+[test_wrong_locator_is_reported_not_returned]
+
+[test_collect_pages_includes_index_nodes]
+
+[test_index_with_tree_directory]
+
+ALL PASSED: 4925/4925

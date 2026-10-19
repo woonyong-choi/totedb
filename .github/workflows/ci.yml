@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, labeled]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -120,4 +121,142 @@ jobs:
         with:
           name: ycsb-binding-checks
           path: build/ycsb/checks/
+          if-no-files-found: warn
+
+  benchmark-comparison:
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'benchmark-comparison')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      BASELINE_ROOT: ${{ github.workspace }}.wt/text-range-before
+      CHANGED_ROOT: ${{ github.workspace }}
+      QUEUE_ROOT: ${{ github.workspace }}.wt/queue-contention
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install benchmark dependencies
+        run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev python3
+      - name: Prepare fixed source worktrees
+        run: |
+          git worktree add --detach "$BASELINE_ROOT" 04f9f2d14d94da7284b90b60370ded5ebefab65c
+          git worktree add --detach "$QUEUE_ROOT" f7dd4a57c2d6455036f8047d2423bd03d0e9d6b8
+          echo "RUN_ID=$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short=7 HEAD)" >> "$GITHUB_ENV"
+      - name: Record VM environment and source identities
+        run: |
+          python3 - <<'PYTHON'
+          import datetime
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          roots = {
+              name: Path(os.environ[name])
+              for name in ("BASELINE_ROOT", "CHANGED_ROOT", "QUEUE_ROOT")
+          }
+          evidence = {
+              "ts_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "run_id": os.environ["RUN_ID"],
+              "cpu_count": os.cpu_count(),
+              "load_average": os.getloadavg(),
+              "meminfo": Path("/proc/meminfo").read_text(),
+              "runner": {
+                  key: os.environ.get(key)
+                  for key in (
+                      "ImageOS",
+                      "ImageVersion",
+                      "RUNNER_ARCH",
+                      "RUNNER_OS",
+                      "GITHUB_RUN_ID",
+                      "GITHUB_RUN_ATTEMPT",
+                  )
+              },
+              "uname": subprocess.check_output(["uname", "-a"], text=True),
+              "lscpu": subprocess.check_output(["lscpu", "--json"], text=True),
+              "sources": {
+                  name: subprocess.check_output(
+                      ["git", "-C", str(root), "rev-parse", "HEAD"], text=True
+                  ).strip()
+                  for name, root in roots.items()
+              },
+          }
+          for root, experiment in (
+              (roots["CHANGED_ROOT"], "text-range"),
+              (roots["QUEUE_ROOT"], "queue-contention"),
+          ):
+              path = root / "docs/experiments" / experiment / "machine.json"
+              path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n")
+          PYTHON
+      - name: Complete all builds before measurement
+        id: builds
+        run: |
+          python3 "$BASELINE_ROOT/bench/ycsb/run.py" build
+          python3 "$CHANGED_ROOT/bench/ycsb/run.py" build
+          make -C "$QUEUE_ROOT" SANITIZE= all
+      - name: Collect and verify five paired TEXT comparisons
+        id: text
+        run: bash docs/experiments/text-range/run.sh all
+      - name: Collect and verify 360 queue trials and 72 preflights
+        id: queue
+        if: ${{ !cancelled() && steps.builds.outcome == 'success' }}
+        run: bash "$QUEUE_ROOT/docs/experiments/queue-contention/run.sh" all
+      - name: Profile the changed YCSB source after formal collection
+        id: text_profile
+        if: ${{ !cancelled() && steps.text.outcome == 'success' && steps.queue.outcome == 'success' }}
+        continue-on-error: true
+        run: |
+          profile_id="$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short=7 HEAD)-profile"
+          python3 bench/ycsb/run.py profile --output docs/experiments/text-range \
+            --run-id "$profile_id" --sizes 10000 --workloads E --threads 1 \
+            --operations 1000 --repetitions 1
+      - name: Profile the fixed queue source after formal collection
+        id: queue_profile
+        if: ${{ !cancelled() && steps.text.outcome == 'success' && steps.queue.outcome == 'success' }}
+        continue-on-error: true
+        run: |
+          profile_id="$(date -u +%Y%m%dT%H%M%SZ)-$(git -C "$QUEUE_ROOT" rev-parse --short=7 HEAD)-profile"
+          RUN_ID="$profile_id" bash "$QUEUE_ROOT/docs/experiments/queue-contention/run.sh" profile
+      - name: Reverify both formal evidence sets after diagnostics
+        if: ${{ !cancelled() && steps.text.outcome == 'success' && steps.queue.outcome == 'success' }}
+        run: |
+          data_run_id="$RUN_ID"
+          RUN_ID="$data_run_id-final-check" DATA_RUN_ID="$data_run_id" bash docs/experiments/text-range/run.sh verify
+          RUN_ID="$data_run_id-final-check" bash "$QUEUE_ROOT/docs/experiments/queue-contention/run.sh" verify
+      - name: Preserve TEXT comparison evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: text-range-linux-comparison
+          path: docs/experiments/text-range/
+          if-no-files-found: warn
+      - name: Preserve queue comparison evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: queue-contention-linux-comparison
+          path: |
+            ${{ env.QUEUE_ROOT }}/docs/experiments/queue-contention/
+            docs/experiments/queue-contention/linux-design.md
+          if-no-files-found: warn
+      - name: Preserve failed TEXT comparison databases
+        if: ${{ always() && (steps.text.outcome != 'success' || steps.text_profile.outcome == 'failure') }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: text-range-linux-failed-databases
+          path: |
+            ${{ env.BASELINE_ROOT }}/build/ycsb/runs/
+            ${{ env.CHANGED_ROOT }}/build/ycsb/runs/
+          if-no-files-found: warn
+      - name: Preserve failed queue comparison databases
+        if: ${{ always() && (steps.queue.outcome != 'success' || steps.queue_profile.outcome == 'failure') }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: queue-contention-linux-failed-databases
+          path: ${{ env.QUEUE_ROOT }}/build/queue-contention/runs/
           if-no-files-found: warn

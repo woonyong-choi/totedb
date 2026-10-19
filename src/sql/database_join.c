@@ -48,11 +48,14 @@ static database_exec_status_t join_probes(join_t *join, const join_level_t *step
             continue;
         }
         if (step->probes[i].op != SQLEXPR_OP_EQ) {
-            /* 정수 열과 정수 값의 대소 비교만 구간으로 쓴다. 나머지는 단계 조건 검사에 맡긴다 */
+            database_exec_status_t status = DATABASE_EXEC_OK;
             if (step->probes[i].type == VALUE_INTEGER && value.view.type == VALUE_INTEGER) {
                 narrow_range(where, step->probes[i].column, step->probes[i].op, value.view.integer);
+            } else if (step->probes[i].type == VALUE_TEXT && value.view.type == VALUE_TEXT) {
+                status = narrow_text_range(db, where, step->probes[i].column, step->probes[i].op, &value.view);
             }
             value_clear(&value);
+            if (status != DATABASE_EXEC_OK) return status;
             continue;
         }
         probe_t *probe = &where->probes[where->probe_count];
@@ -300,16 +303,21 @@ static database_exec_status_t join_open(database_t *db, const sqlstmt_select_t *
     return status;
 }
 
-/* ORDER BY가 원본 하나의 정수 기본 키 하나(오름차순)인지 */
-static bool orders_by_primary_key(const sqlstmt_select_t *select, const resolver_t *resolver, const join_level_t *level)
+static bool orders_by_primary_key(const sqlstmt_select_t *select, const resolver_t *resolver,
+                                   const join_level_t *level, const select_ctx_t *ctx)
 {
     if (select->order_count != 1 || select->order[0].desc || select->order[0].expr->kind != SQLEXPR_COLUMN) return false;
+    const select_key_t *key = &ctx->keys[0];
+    if (key->prog == NULL) {
+        const select_out_t *out = &ctx->outs[key->slot];
+        return out->prog == NULL && out->column == level->view.primary_key_column;
+    }
     const sqlexpr_t *expr = select->order[0].expr;
     value_type_t type;
     size_t column = resolve_column((void *)resolver, &expr->qualifier, &expr->name, &type);
     return column != SQLEVAL_NO_COLUMN && column != SQLEVAL_AMBIGUOUS &&
            level->view.primary_key_column != CATALOG_NO_COLUMN && column == level->view.primary_key_column &&
-           type == VALUE_INTEGER;
+           (type == VALUE_INTEGER || type == VALUE_TEXT);
 }
 
 /*
@@ -327,7 +335,8 @@ static database_exec_status_t scan_follows_primary_key(join_t *join, join_level_
         else if (secondary_probe(join->db, step->id, &where, &secondary) != SIZE_MAX) {
             *ordered = secondary.unique || secondary.ordered;   /* scan_rows는 구간보다 보조 색인을 먼저 쓴다 */
         } else {
-            *ordered = key_range(&step->view, step->heap, &where) != SIZE_MAX;
+            *ordered = key_range(&step->view, step->heap, &where) != SIZE_MAX ||
+                       text_key_range(&step->view, step->heap, &where) != SIZE_MAX;
         }
     }
     where_clear(join->db, &where);
@@ -413,7 +422,7 @@ database_exec_status_t select_run(database_t *db, const sqlstmt_select_t *select
      * 원본 하나의 조건은 탐침만 쓰므로 바깥 행 없이 판정할 수 있다.
      */
     if (!core_only && !grouped && !select->distinct && ctx->key_count == 1 && join.level_count == 1 &&
-        join.levels[0].relation == NULL && orders_by_primary_key(select, &resolver, &join.levels[0])) {
+        join.levels[0].relation == NULL && orders_by_primary_key(select, &resolver, &join.levels[0], ctx)) {
         bool ordered = false;
         status = scan_follows_primary_key(&join, &join.levels[0], &ordered);
         if (status != DATABASE_EXEC_OK) goto done;

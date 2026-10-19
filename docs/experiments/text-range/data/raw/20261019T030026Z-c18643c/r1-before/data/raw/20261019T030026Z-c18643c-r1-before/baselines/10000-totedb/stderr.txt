@@ -1,0 +1,8 @@
+Command line: -load -db org.totedb.ycsb.SqlBinding -P /Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/bench/ycsb/workloads/workloada -P /Users/woonyong/workspace/totedb/totedb.wt/perf-228-text-range/docs/experiments/text-range/data/raw/20261019T030026Z-c18643c/r1-before/data/raw/20261019T030026Z-c18643c-r1-before/baselines/10000-totedb/run.properties -threads 1
+YCSB Client 0.17.0
+
+Loading workload...
+ (might take a few minutes for large data sets)
+Starting test.
+DBWrapper: report latency for each error is false and specific error codes to track for latency are: []
+BINDING setup_attempts=0 setup_retries=0 attempts=10000 retries=0 exhausted=0 open_retries=0 sql_bytes=1330000 input_bytes=10228798 output_bytes=0 result_rows=0

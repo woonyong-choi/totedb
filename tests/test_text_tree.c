@@ -14,11 +14,13 @@ typedef struct {
     bool live[TEST_PAGES];
     bool fresh[TEST_PAGES];
     uint32_t next;
+    size_t reads;
 } store_t;
 
 static pk_status_t read_page(void *context, uint32_t page, uint8_t body[PAGE_BODY_BYTES])
 {
     store_t *store = context;
+    store->reads++;
     if (page >= store->next || !store->live[page]) return PK_CORRUPT;
     memcpy(body, store->pages[page], PAGE_BODY_BYTES);
     return PK_OK;
@@ -73,6 +75,98 @@ static void key_for(unsigned n, char out[8])
     assert(size == 6);
 }
 
+typedef struct {
+    unsigned first;
+    unsigned count;
+    unsigned stop_after;
+} range_result_t;
+
+static bool collect_range(void *context, const uint8_t *key, size_t key_bytes, heap_locator_t locator)
+{
+    range_result_t *result = context;
+    char expected[8];
+    key_for(result->first + result->count, expected);
+    assert(key_bytes == 6 && memcmp(key, expected, key_bytes) == 0);
+    assert(locator.directory_index == result->first + result->count);
+    result->count++;
+    return result->stop_after == 0 || result->count < result->stop_after;
+}
+
+static bool collect_long_range(void *context, const uint8_t *key, size_t key_bytes, heap_locator_t locator)
+{
+    range_result_t *result = context;
+    char prefix[5];
+    snprintf(prefix, sizeof(prefix), "L%03u", result->first + result->count);
+    assert(key_bytes == TEXT_TREE_KEY_MAX_BYTES && memcmp(key, prefix, 4) == 0);
+    assert(locator.directory_index == 1000u + result->first + result->count);
+    result->count++;
+    return true;
+}
+
+static void check_long_ranges(const pk_tree_io_t *io, uint32_t root)
+{
+    uint8_t lower[TEXT_TREE_KEY_MAX_BYTES], upper[TEXT_TREE_KEY_MAX_BYTES];
+    memset(lower, 'x', sizeof(lower));
+    memset(upper, 'x', sizeof(upper));
+    memcpy(lower, "L020", 4);
+    memcpy(upper, "L080", 4);
+    text_key_bound_t low = {lower, sizeof(lower), false};
+    text_key_bound_t high = {upper, sizeof(upper), true};
+    range_result_t result = {21, 0, 0};
+    bool stopped = false;
+    assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){&low, &high},
+                                  collect_long_range, &result, &stopped) == PK_OK);
+    assert(!stopped && result.count == 60);
+}
+
+static void check_ranges(const pk_tree_io_t *io, uint32_t root, store_t *store)
+{
+    text_key_bound_t low = {(const uint8_t *)"k00250", 6, true};
+    text_key_bound_t high = {(const uint8_t *)"k00540", 6, true};
+    for (unsigned flags = 0; flags < 4; flags++) {
+        low.inclusive = (flags & 1u) != 0;
+        high.inclusive = (flags & 2u) != 0;
+        range_result_t result = {250u + !low.inclusive, 0, 0};
+        bool stopped = true;
+        assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){&low, &high},
+                                      collect_range, &result, &stopped) == PK_OK);
+        assert(!stopped && result.count == 289u + low.inclusive + high.inclusive);
+    }
+    size_t pages = 0;
+    assert(text_tree_visit_pages(io, TABLE_ID, root, count_page, &pages) == PK_OK);
+    store->reads = 0;
+    low = (text_key_bound_t){(const uint8_t *)"k00590", 6, true};
+    range_result_t result = {590, 0, 3};
+    bool stopped = false;
+    assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){&low, NULL},
+                                  collect_range, &result, &stopped) == PK_OK);
+    assert(stopped && result.count == 3 && store->reads < pages);
+    printf("text tree range: read=%zu total=%zu visited=%u stopped=%u\n", store->reads, pages, result.count, stopped);
+    result = (range_result_t){0, 0, 0};
+    assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){NULL, NULL},
+                                  collect_range, &result, &stopped) == PK_OK);
+    assert(!stopped && result.count == 600);
+    result = (range_result_t){0, 0, 0};
+    high = (text_key_bound_t){(const uint8_t *)"k00002", 6, false};
+    assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){NULL, &high},
+                                  collect_range, &result, &stopped) == PK_OK);
+    assert(!stopped && result.count == 2);
+    result = (range_result_t){0, 0, 0};
+    assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){&low, &high},
+                                  collect_range, &result, &stopped) == PK_OK);
+    assert(!stopped && result.count == 0);
+    high = (text_key_bound_t){NULL, 1, true};
+    assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){NULL, &high},
+                                  collect_range, &result, &stopped) == PK_LIMIT);
+    assert(text_tree_visit_range(io, TABLE_ID, TEST_PAGES, (text_key_range_t){NULL, NULL},
+                                  collect_range, &result, &stopped) == PK_CORRUPT);
+    uint8_t saved = store->pages[root][0];
+    store->pages[root][0] = 0;
+    assert(text_tree_visit_range(io, TABLE_ID, root, (text_key_range_t){NULL, NULL},
+                                  collect_range, &result, &stopped) == PK_CORRUPT);
+    store->pages[root][0] = saved;
+}
+
 int main(void)
 {
     store_t *store = calloc(1, sizeof(*store));
@@ -102,6 +196,7 @@ int main(void)
         assert(found.directory_index == i && found.slot == i);
         assert(text_tree_put(&io, TABLE_ID, &root, (const uint8_t *)key, 6, found, false, NULL) == PK_EXISTS);
     }
+    check_ranges(&io, root, store);
     for (unsigned i = 0; i < 600; i += 2) {
         char key[8];
         key_for(i, key);
@@ -140,6 +235,7 @@ int main(void)
         assert(text_tree_find(&io, TABLE_ID, root, key, sizeof(key), &found) == PK_OK);
         assert(found.directory_index == 1000u + i);
     }
+    check_long_ranges(&io, root);
     assert(text_tree_restamp(&io, TABLE_ID, &root, 77) == PK_OK);
     uint32_t stamp = 0;
     assert(text_tree_stamp(&io, TABLE_ID, root, &stamp) == PK_OK && stamp == 77);

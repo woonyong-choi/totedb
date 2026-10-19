@@ -392,6 +392,8 @@ static const statement_case_t CASES[] = {
     {"update text key", "UPDATE text_keys SET k = 'renamed' WHERE k = 'a'", false},
     {"update text value", "UPDATE text_keys SET v = 'changed' WHERE k = 'a'", false},
     {"delete text key", "DELETE FROM text_keys WHERE k = 'b'", false},
+    {"update text range", "UPDATE text_keys SET v = 'range' WHERE k >= 'a' AND k < 'c'", false},
+    {"delete text range", "DELETE FROM text_keys WHERE k > '' AND k <= 'b'", false},
     {"update returning", "UPDATE users SET bio = ? WHERE id <= 3 RETURNING id, bio", true},
     {"delete returning", "DELETE FROM users WHERE id = 2 RETURNING *", false},
     {"insert returning", "INSERT INTO users (name, bio) VALUES ('ret', ?) RETURNING id, name", true},

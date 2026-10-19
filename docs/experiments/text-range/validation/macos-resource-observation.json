@@ -1,0 +1,12 @@
+{
+  "captured_utc": "2026-10-19T03:09:28.658458+00:00",
+  "load_average": [
+    93.58203125,
+    91.548828125,
+    76.78759765625
+  ],
+  "cpu_count": 10,
+  "swapusage": "vm.swapusage: total = 22528.00M  used = 21683.69M  free = 844.31M  (encrypted)",
+  "active_collection": "20261019T030026Z-c18643c",
+  "interpretation": "Local resource pressure observed after the first preflight timed out. This is an environment observation, not proof of the sole timeout cause."
+}

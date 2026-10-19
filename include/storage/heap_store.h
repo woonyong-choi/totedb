@@ -117,6 +117,18 @@ typedef struct {
     uint16_t slot;
 } heap_locator_t;
 
+typedef struct {
+    const uint8_t *bytes;
+    size_t size_bytes;
+    bool inclusive;
+} text_key_bound_t;
+
+/* NULL 경계는 무한대이며 빈 키와 구별한다. 경계와 바이트는 호출자가 순회 종료까지 소유한다. */
+typedef struct {
+    const text_key_bound_t *low;
+    const text_key_bound_t *high;
+} text_key_range_t;
+
 typedef struct heap heap_t;
 typedef struct heap_batch heap_batch_t;
 typedef struct heap_cursor heap_cursor_t;
@@ -201,6 +213,10 @@ heap_status_t heap_find_text_key(heap_t *heap, const uint8_t *key, size_t key_by
 heap_status_t heap_visit_key_range(heap_t *heap, int64_t low, int64_t high,
                                    bool (*visit)(void *context, heap_locator_t locator), void *context,
                                    bool *stopped);
+/* TEXT 키 오름차순으로 방문하며 행의 키를 검증한다. callback의 false는 오류 없이 *stopped를 설정한다. */
+heap_status_t heap_visit_text_key_range(heap_t *heap, text_key_range_t range,
+                                        bool (*visit)(void *context, heap_locator_t locator), void *context,
+                                        bool *stopped);
 bool heap_secondary_key_fits(const value_view_t *value);
 heap_status_t heap_secondary_visit_equal(heap_t *heap, heap_secondary_spec_t spec,
                                          const value_view_t *value,

@@ -1,0 +1,7 @@
+$ RUN_ID=20261019T030026Z-c18643c ./run.sh all
+$ /Library/Developer/CommandLineTools/usr/bin/python3 ~/workspace/totedb/totedb.wt/text-range-measure/bench/ycsb/run.py collect --output ~/workspace/totedb/totedb.wt/perf-228-text-range/docs/experiments/text-range/data/raw/20261019T030026Z-c18643c/r1-before --run-id 20261019T030026Z-c18643c-r1-before --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": ["timeout", "nonzero_exit", "logical_operation_count", "worker_cleanup_count", "row_count", "key_set"], "elapsed_seconds": 180.03470516700003}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 3.1925449999999955}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 167.58560079199998}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 15.119314250000059}
+collection failed, partial raw preserved: r1-before
