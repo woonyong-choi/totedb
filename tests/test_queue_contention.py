@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 import json
 import os
 import subprocess
@@ -25,7 +26,8 @@ from bench.queue_contention.analysis import (
     _validate_records,
     verify_output,
 )
-from bench.queue_contention.run import _matrix, _schedule
+from bench.queue_contention.run import _matrix, _read_trial, _schedule
+from bench.queue_contention.trial import WorkerResult
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -129,6 +131,44 @@ class QueueContentionTest(unittest.TestCase):
         summary.write_bytes(summary.read_bytes() + b"\n")
         with self.assertRaisesRegex(ContentionError, "regeneration mismatch"):
             verify_output(output)
+
+    def test_killed_partial_worker_output_is_retained_without_stopping_collection(
+        self,
+    ) -> None:
+        valid = dataclasses.asdict(WorkerResult(1, "producer"))
+        (self.directory / "worker-1.json").write_text(json.dumps(valid))
+        path = self.directory / "worker-0.json"
+        child = subprocess.Popen(
+            [
+                sys.executable,
+                "-c",
+                "import pathlib, sys, time; "
+                "pathlib.Path(sys.argv[1]).write_bytes(b'{\"worker\":'); "
+                "print('written', flush=True); time.sleep(60)",
+                str(path),
+            ],
+            stdout=subprocess.PIPE,
+        )
+        try:
+            self.assertEqual(child.stdout.readline(), b"written\n")
+        finally:
+            child.kill()
+            child.wait(timeout=5)
+            child.stdout.close()
+        original = path.read_bytes()
+        for partial in (original, b'{"worker": "\xff'):
+            with self.subTest(partial=partial):
+                path.write_bytes(partial)
+                failed = _read_trial(self.directory, child.returncode, True)
+                self.assertEqual(failed["status"], "failed")
+                self.assertEqual(failed["workers"], [valid])
+                self.assertTrue(
+                    any("worker-0.json" in problem for problem in failed["problems"])
+                )
+                self.assertIn("controller timeout", failed["problems"])
+                self.assertEqual(path.read_bytes(), partial)
+        (self.directory / "stdout.txt").write_text(json.dumps({"status": "ok"}))
+        self.assertEqual(_read_trial(self.directory, 0, False)["status"], "ok")
 
     def test_default_schedule_contains_72_preflights_and_360_rotated_trials(
         self,
