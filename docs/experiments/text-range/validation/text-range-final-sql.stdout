@@ -1,0 +1,47 @@
+
+[test_defaults_survive_reopen]
+
+[test_two_schemas_crud_and_reopen]
+
+[test_values_round_trip_across_page_sizes]
+
+[test_failed_statements_keep_existing_data]
+
+[test_drop_removes_only_the_target]
+
+[test_many_rows_updates_and_deletes_across_pages]
+
+[test_identity_and_primary_key_rules]
+
+[test_text_primary_key_index]
+
+[test_text_primary_key_ranges]
+  text range: scanned=0 lookups=1 index_pages=3
+
+[test_result_column_metadata]
+
+[test_primary_key_range]
+
+[test_secondary_index_crud]
+
+[test_secondary_index_many_duplicates]
+
+[test_projected_overflow_reads]
+  page reads: id 8, payload 10
+  accounted peak bytes: id 19952, payload 46612
+
+[test_open_rejects_other_files_without_change]
+
+[test_argument_errors]
+
+[test_order_and_distinct_respect_budget]
+
+[test_aggregate_memory_scales_with_groups]
+
+[test_ordered_secondary_index]
+
+[test_page_accounting_with_large_values]
+
+[test_page_list_with_deep_index]
+
+ALL PASSED: 4009/4009

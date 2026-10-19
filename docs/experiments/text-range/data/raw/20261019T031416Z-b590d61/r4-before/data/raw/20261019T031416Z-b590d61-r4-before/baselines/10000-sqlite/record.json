@@ -1,0 +1,143 @@
+{
+  "audit": {
+    "added_rows": 10000,
+    "changed_fields": 0,
+    "field_bytes": 100,
+    "field_count": 10,
+    "keys_sha256": "cecad843bb0e2c76965d9457a92c466ab87639d21ddf15298a797aab56137a96",
+    "missing_rows": 0,
+    "payload_bytes": 10000000,
+    "rows": 10000,
+    "sha256": "2ffed83b0e3bdf2356ac4dbf883f712e35ba185ce85b81846c8f30d567d64a77"
+  },
+  "condition": {
+    "engine": "sqlite",
+    "operations": 10000,
+    "records": 10000,
+    "threads": 1,
+    "workload": "A"
+  },
+  "database_size_bytes": 12091392,
+  "metrics": {
+    "binding": {
+      "attempts": 10000,
+      "exhausted": 0,
+      "input_bytes": 10228798,
+      "open_retries": 0,
+      "output_bytes": 0,
+      "result_rows": 0,
+      "retries": 0,
+      "setup_attempts": 7,
+      "setup_retries": 0,
+      "sql_bytes": 1330000
+    },
+    "binding_errors": 0,
+    "logical_operations": 10000.0,
+    "non_ok": 0,
+    "sql_calls": 10000.0,
+    "workers": 1,
+    "ycsb": {
+      "CLEANUP": {
+        "50thPercentileLatency(us)": 11591.0,
+        "95thPercentileLatency(us)": 11591.0,
+        "99thPercentileLatency(us)": 11591.0,
+        "AverageLatency(us)": 11588.0,
+        "MaxLatency(us)": 11591.0,
+        "MinLatency(us)": 11584.0,
+        "Operations": 1.0
+      },
+      "INSERT": {
+        "50thPercentileLatency(us)": 760.0,
+        "95thPercentileLatency(us)": 1034.0,
+        "99thPercentileLatency(us)": 1266.0,
+        "AverageLatency(us)": 808.6165,
+        "MaxLatency(us)": 7207.0,
+        "MinLatency(us)": 617.0,
+        "Operations": 10000.0,
+        "Return=OK": 10000.0
+      },
+      "OVERALL": {
+        "RunTime(ms)": 8247.0,
+        "Throughput(ops/sec)": 1212.5621438098703
+      },
+      "TOTAL_GCS_G1_Concurrent_GC": {
+        "Count": 0.0
+      },
+      "TOTAL_GCS_G1_Old_Generation": {
+        "Count": 0.0
+      },
+      "TOTAL_GCS_G1_Young_Generation": {
+        "Count": 2.0
+      },
+      "TOTAL_GC_TIME": {
+        "Time(ms)": 2.0
+      },
+      "TOTAL_GC_TIME_%": {
+        "Time(%)": 0.024251242876197406
+      },
+      "TOTAL_GC_TIME_%_G1_Concurrent_GC": {
+        "Time(%)": 0.0
+      },
+      "TOTAL_GC_TIME_%_G1_Old_Generation": {
+        "Time(%)": 0.0
+      },
+      "TOTAL_GC_TIME_%_G1_Young_Generation": {
+        "Time(%)": 0.024251242876197406
+      },
+      "TOTAL_GC_TIME_G1_Concurrent_GC": {
+        "Time(ms)": 0.0
+      },
+      "TOTAL_GC_TIME_G1_Old_Generation": {
+        "Time(ms)": 0.0
+      },
+      "TOTAL_GC_TIME_G1_Young_Generation": {
+        "Time(ms)": 2.0
+      },
+      "TOTAL_GCs": {
+        "Count": 2.0
+      }
+    }
+  },
+  "process": {
+    "command": [
+      "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+      "-Xms256m",
+      "-Xmx1g",
+      "-Dycsb.native=/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/libycsb.so",
+      "-cp",
+      "/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/classes:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/HdrHistogram-2.1.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/core-0.17.0.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/home/runner/work/totedb/totedb.wt/text-range-before/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+      "site.ycsb.Client",
+      "-load",
+      "-db",
+      "org.totedb.ycsb.SqlBinding",
+      "-P",
+      "/home/runner/work/totedb/totedb.wt/text-range-before/bench/ycsb/workloads/workloada",
+      "-P",
+      "/home/runner/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r4-before/data/raw/20261019T031416Z-b590d61-r4-before/baselines/10000-sqlite/run.properties",
+      "-threads",
+      "1"
+    ],
+    "cpu_system_seconds": 2.659993,
+    "cpu_user_seconds": 1.343604,
+    "elapsed_seconds": 8.427864550000038,
+    "exit_code": 0,
+    "load_after": [
+      1.2119140625,
+      0.90185546875,
+      0.44140625
+    ],
+    "load_before": [
+      1.2509765625,
+      0.89794921875,
+      0.4345703125
+    ],
+    "major_faults": 0,
+    "max_rss_bytes": 160821248,
+    "minor_faults": 11562,
+    "profiler_wait_seconds": 2.343400001336704e-05,
+    "sample_available": false,
+    "sample_exit_code": null,
+    "timeout": false,
+    "ts_utc": "2026-10-19T03:20:14.765613+00:00"
+  }
+}

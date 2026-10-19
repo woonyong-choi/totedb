@@ -1,0 +1,51 @@
+$ RUN_ID=20261019T031416Z-b590d61 ./run.sh all
+$ /usr/bin/python3 ~/work/totedb/totedb.wt/text-range-before/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r1-before --run-id 20261019T031416Z-b590d61-r1-before --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 25.528893366000005}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5440266519999852}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 26.16882647}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5243902059999925}
+$ /usr/bin/python3 ~/work/totedb/totedb/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r1-after --run-id 20261019T031416Z-b590d61-r1-after --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 0.727107817000018}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.545133590000006}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 0.7249653149999915}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5264037889999997}
+$ /usr/bin/python3 ~/work/totedb/totedb/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r2-after --run-id 20261019T031416Z-b590d61-r2-after --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 0.7046097850000024}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5047309500000097}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 0.685655220000001}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5439047350000124}
+$ /usr/bin/python3 ~/work/totedb/totedb.wt/text-range-before/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r2-before --run-id 20261019T031416Z-b590d61-r2-before --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 25.623050748999987}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5640412899999774}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 25.527898971000013}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5237352309999892}
+$ /usr/bin/python3 ~/work/totedb/totedb.wt/text-range-before/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r3-before --run-id 20261019T031416Z-b590d61-r3-before --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 25.298090731000002}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5237233240000023}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 24.843250048000016}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5645053160000089}
+$ /usr/bin/python3 ~/work/totedb/totedb/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r3-after --run-id 20261019T031416Z-b590d61-r3-after --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 0.7257634189999749}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5449964619999719}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 0.704723242}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5438395259999993}
+$ /usr/bin/python3 ~/work/totedb/totedb/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r4-after --run-id 20261019T031416Z-b590d61-r4-after --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 0.7257105109999884}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5842183249999948}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 0.7066302499999892}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5644344250000017}
+$ /usr/bin/python3 ~/work/totedb/totedb.wt/text-range-before/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r4-before --run-id 20261019T031416Z-b590d61-r4-before --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 25.540716753000027}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5239005180000049}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 25.046298267999987}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5438787779999643}
+$ /usr/bin/python3 ~/work/totedb/totedb.wt/text-range-before/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r5-before --run-id 20261019T031416Z-b590d61-r5-before --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 25.74726743299999}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5442107650000025}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 25.772539760999962}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5638721029999942}
+$ /usr/bin/python3 ~/work/totedb/totedb/bench/ycsb/run.py collect --output ~/work/totedb/totedb/docs/experiments/text-range/data/raw/20261019T031416Z-b590d61/r5-after --run-id 20261019T031416Z-b590d61-r5-after --sizes 10000 --workloads E --threads 1 --operations 1000 --repetitions 1
+{"trial_id": "10000-E-t1-preflight-0-totedb", "problems": [], "elapsed_seconds": 0.7455111450000231}
+{"trial_id": "10000-E-t1-preflight-0-sqlite", "problems": [], "elapsed_seconds": 0.5639183460000368}
+{"trial_id": "10000-E-t1-measured-1-totedb", "problems": [], "elapsed_seconds": 0.7060117869999658}
+{"trial_id": "10000-E-t1-measured-1-sqlite", "problems": [], "elapsed_seconds": 0.5644711630000074}

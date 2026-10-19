@@ -90,6 +90,13 @@ python3 bench/queue_contention/run.py verify --output docs/experiments/queue-con
 
 새 실측은 [Linux 계획](experiments/queue-contention/linux-design.md)의 소스와 환경에서 실행한다. 실행 ID는 새로 정하고 기존 자료를 덮어쓰지 않는다. 분석·검증에는 native library가 필요하므로 먼저 빌드한다.
 
+TEXT 기본 키 범위 개선의 전후 비교는 [TEXT 색인 구간 순회 결과](experiments/text-range/report.md)에 있다. 고정 소스의 기존 공식 E를 같은 VM에서 전후로 실행하며 [Linux 계획](experiments/text-range/linux-design.md)에 조건과 순서를 둔다.
+
+```sh
+RUN_ID=20261019T031416Z-b590d61-check ./docs/experiments/text-range/run.sh verify
+RUN_ID=20261019T031416Z-b590d61-check ./docs/experiments/text-range/run.sh analyze
+```
+
 ## CI
 
 `.github/workflows/ci.yml`은 Ubuntu에서 아래 작업을 실행한다.

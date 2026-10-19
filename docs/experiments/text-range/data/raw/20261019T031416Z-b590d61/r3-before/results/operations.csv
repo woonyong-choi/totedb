@@ -1,0 +1,17 @@
+records,workload,threads,engine,operation,metric,n,median,min,max
+10000,E,1,totedb,INSERT,Operations,1,59.0,59.0,59.0
+10000,E,1,totedb,INSERT,50thPercentileLatency(us),1,861.0,861.0,861.0
+10000,E,1,totedb,INSERT,95thPercentileLatency(us),1,1114.0,1114.0,1114.0
+10000,E,1,totedb,INSERT,99thPercentileLatency(us),1,1739.0,1739.0,1739.0
+10000,E,1,totedb,SCAN,Operations,1,941.0,941.0,941.0
+10000,E,1,totedb,SCAN,50thPercentileLatency(us),1,25887.0,25887.0,25887.0
+10000,E,1,totedb,SCAN,95thPercentileLatency(us),1,39647.0,39647.0,39647.0
+10000,E,1,totedb,SCAN,99thPercentileLatency(us),1,41247.0,41247.0,41247.0
+10000,E,1,sqlite,INSERT,Operations,1,61.0,61.0,61.0
+10000,E,1,sqlite,INSERT,50thPercentileLatency(us),1,1014.0,1014.0,1014.0
+10000,E,1,sqlite,INSERT,95thPercentileLatency(us),1,1376.0,1376.0,1376.0
+10000,E,1,sqlite,INSERT,99thPercentileLatency(us),1,2471.0,2471.0,2471.0
+10000,E,1,sqlite,SCAN,Operations,1,939.0,939.0,939.0
+10000,E,1,sqlite,SCAN,50thPercentileLatency(us),1,268.0,268.0,268.0
+10000,E,1,sqlite,SCAN,95thPercentileLatency(us),1,537.0,537.0,537.0
+10000,E,1,sqlite,SCAN,99thPercentileLatency(us),1,743.0,743.0,743.0
