@@ -246,6 +246,17 @@ void catalog_close(catalog_t *catalog)
     free(catalog);
 }
 
+catalog_status_t catalog_clone(const catalog_t *source, catalog_t **out)
+{
+    uint8_t *bytes = NULL;
+    size_t size = 0;
+    catalog_status_t status = catalog_encode(source, &bytes, &size);
+    if (status != CATALOG_OK) return status;
+    status = catalog_decode(bytes, size, out);
+    free(bytes);
+    return status;
+}
+
 static const table_t *find_by_id(const catalog_t *catalog, catalog_table_id_t id)
 {
     size_t low = 0, high = catalog->count;
