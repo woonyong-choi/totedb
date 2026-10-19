@@ -1,0 +1,28 @@
+diagramplay
+title "작업 획득과 처리 확인, 기한 만료 뒤 재획득"
+
+state ready "대기"
+state leased "처리 중"
+state acked "확인 완료"
+
+ready -> leased "get"
+leased -> leased "만료 후 재획득" dashed
+leased -> acked "유효한 권한으로 ACK"
+
+scene "작업 획득과 ACK" mode=loop
+  light ready
+  wait 700ms
+  ready -> leased time=900ms
+  wait 700ms
+  leased -> acked time=900ms
+  wait 1200ms
+
+scene "기한 만료 뒤 재획득" mode=loop
+  light ready
+  wait 700ms
+  ready -> leased time=900ms
+  wait 1000ms
+  leased -> leased time=1100ms
+  wait 700ms
+  leased -> acked time=900ms
+  wait 1200ms
