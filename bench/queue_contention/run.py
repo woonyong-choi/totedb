@@ -342,13 +342,17 @@ def _read_trial(directory: Path, exit_code: int, timed_out: bool) -> dict[str, o
         reason = (
             "controller timeout" if timed_out else f"trial process exited {exit_code}"
         )
+    problems = [reason]
+    workers = []
+    for path in sorted(directory.glob("worker-*.json")):
+        try:
+            workers.append(json.loads(path.read_bytes()))
+        except (json.JSONDecodeError, UnicodeDecodeError) as error:
+            problems.append(f"invalid worker JSON in {path.name}: {error}")
     return {
         "status": "failed",
-        "problems": [reason],
-        "workers": [
-            json.loads(path.read_bytes())
-            for path in sorted(directory.glob("worker-*.json"))
-        ],
+        "problems": problems,
+        "workers": workers,
         "elapsed_s": None,
         "throughput_jobs_s": None,
         "completed_jobs": 0,

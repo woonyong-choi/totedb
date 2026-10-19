@@ -52,7 +52,30 @@ class QueueContentionTest(unittest.TestCase):
         records = self._records(output)
         self.assertEqual(sum(r["phase"] == "preflight" for r in records), 24)
         self.assertEqual(sum(r["phase"] == "measured" for r in records), 24)
+        summary = json.loads((output / "results/summary.json").read_bytes())
+        by_trial = {run["trial_id"]: run for run in summary["runs"]}
         for record in records:
+            self.assertGreater(record["setup_s"], 0)
+            self.assertEqual(record["file_sizes"]["phase"], "after_close")
+            self.assertGreater(record["file_sizes"]["bytes"]["db"], 0)
+            spec = json.loads(
+                (
+                    self._raw_directory(output)
+                    / "trials"
+                    / record["trial_id"]
+                    / "spec.json"
+                ).read_bytes()
+            )
+            database = Path(spec["directory"]) / "queue.db"
+            for name, suffix in (("db", ""), ("wal", "-wal"), ("shm", "-shm")):
+                path = Path(str(database) + suffix)
+                self.assertEqual(
+                    record["file_sizes"]["bytes"][name],
+                    path.stat().st_size if path.exists() else 0,
+                )
+            summarized = by_trial[record["trial_id"]]
+            self.assertEqual(summarized["setup_s"], record["setup_s"])
+            self.assertEqual(summarized["file_sizes"], record["file_sizes"])
             self.assertEqual(record["audit"]["rows"], 12)
             self.assertEqual(record["completed_jobs"], 12)
             self.assertTrue(

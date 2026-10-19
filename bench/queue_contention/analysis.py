@@ -224,6 +224,8 @@ def _run_metrics(record: dict[str, object]) -> dict[str, object]:
         "status",
         "problems",
         "elapsed_s",
+        "setup_s",
+        "file_sizes",
         "completed_jobs",
         "throughput_jobs_s",
         "started_at",
@@ -376,6 +378,8 @@ def _csv(runs: list[dict[str, object]]) -> bytes:
         "jobs",
         "status",
         "elapsed_s",
+        "setup_s",
+        "file_sizes",
         "completed_jobs",
         "throughput_jobs_s",
         "busy",
@@ -396,6 +400,7 @@ def _csv(runs: list[dict[str, object]]) -> bytes:
                 name: json.dumps(merged[name])
                 if name
                 in (
+                    "file_sizes",
                     "errors",
                     "latency_s",
                     "worker_fairness",

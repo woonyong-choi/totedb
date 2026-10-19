@@ -101,6 +101,7 @@ class Progress:
 
 
 def run_trial(spec: Trial) -> dict[str, object]:
+    setup_started = time.perf_counter()
     spec.condition.validate()
     spec.directory.mkdir(parents=True, exist_ok=False)
     payloads = tuple(
@@ -120,6 +121,7 @@ def run_trial(spec: Trial) -> dict[str, object]:
     )
     results = [WorkerResult(index, role) for index, role in enumerate(roles)]
     threads = _start_workers(spec, progress, results, payloads)
+    setup_s = time.perf_counter() - setup_started
     before = _resources()
     started_at = time.time()
     start = time.perf_counter()
@@ -144,7 +146,20 @@ def run_trial(spec: Trial) -> dict[str, object]:
         "started_at": started_at,
         "finished_at": time.time(),
         "elapsed_s": elapsed,
+        "setup_s": setup_s,
         "cleanup_s": joined - start - elapsed,
+        "file_sizes": {
+            "phase": "after_close",
+            "bytes": {
+                "db": path.stat().st_size,
+                "wal": Path(str(path) + "-wal").stat().st_size
+                if Path(str(path) + "-wal").exists()
+                else 0,
+                "shm": Path(str(path) + "-shm").stat().st_size
+                if Path(str(path) + "-shm").exists()
+                else 0,
+            },
+        },
         "completed_jobs": _completed(spec.condition, results),
         "throughput_jobs_s": _completed(spec.condition, results) / elapsed,
         "resources_before": before,
@@ -153,6 +168,8 @@ def run_trial(spec: Trial) -> dict[str, object]:
         "pid": os.getpid(),
         "measurement_scope": {
             "payload_generation": "before start gate",
+            "setup": "trial validation, payload generation, database installation, drain preload and worker readiness",
+            "file_sizes": "after all worker and reopen audit connections close; absent files have zero bytes",
             "elapsed": "gate to last worker request completion",
             "includes": "public API, external BUSY retry, payload validation and result bookkeeping",
             "excludes": "connection setup, payload generation, close and reopen audit",
