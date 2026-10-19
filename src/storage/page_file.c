@@ -975,9 +975,8 @@ static page_file_status_t sync_published(page_file_t *file, bool *changed)
         if (status != PAGE_FILE_OK) return status;
     }
     adopt_published(file, &chosen, file_bytes);
-    page_cache_destroy(file->cache);
-    file->cache = NULL;
-    file->cache_tried = false;
+    page_cache_reset(file->cache);
+    file->cache_tried = file->cache != NULL;
     file->stale = false;
     *changed = true;
     return PAGE_FILE_OK;

@@ -267,8 +267,10 @@ jobs:
     timeout-minutes: 30
     env:
       COST_BASELINE: ${{ github.workspace }}.wt/queue-cost-baseline
+      COST_MAINLINE: ${{ github.workspace }}.wt/queue-cost-mainline
       COST_OUTPUT: ${{ github.workspace }}/.local/runs/queue-cost
-      BASELINE_SHA: 9b212d68542ed24c6ead62eb9fdad62a174e2f2b
+      BASELINE_SHA: 65a20bed191dd61259035a1a94f050447f36fb01
+      MAINLINE_SHA: 9b212d68542ed24c6ead62eb9fdad62a174e2f2b
     steps:
       - uses: actions/checkout@v6
         with:
@@ -299,17 +301,22 @@ jobs:
       - name: Prepare the pinned baseline worktree
         run: |
           git fetch origin main
-          git merge-base --is-ancestor "$BASELINE_SHA" origin/main
+          git merge-base --is-ancestor "$BASELINE_SHA" HEAD
+          git merge-base --is-ancestor "$MAINLINE_SHA" HEAD
           git worktree add --detach "$COST_BASELINE" "$BASELINE_SHA"
           test "$(git -C "$COST_BASELINE" rev-parse HEAD)" = "$BASELINE_SHA"
+          git worktree add --detach "$COST_MAINLINE" "$MAINLINE_SHA"
+          test "$(git -C "$COST_MAINLINE" rev-parse HEAD)" = "$MAINLINE_SHA"
       - name: Build both libraries before any collection
         id: build
         run: |
           make -C "$COST_BASELINE" -j2 SANITIZE= CC='cc -fno-omit-frame-pointer' all > "$COST_OUTPUT/baseline-build.txt" 2>&1
+          make -C "$COST_MAINLINE" -j2 SANITIZE= CC='cc -fno-omit-frame-pointer' all > "$COST_OUTPUT/mainline-build.txt" 2>&1
           make -j2 SANITIZE= CC='cc -fno-omit-frame-pointer' all > "$COST_OUTPUT/candidate-build.txt" 2>&1
-          sha256sum "$COST_BASELINE/build/lib/libtotedb.so" "$GITHUB_WORKSPACE/build/lib/libtotedb.so" > "$COST_OUTPUT/libraries.sha256"
+          sha256sum "$COST_BASELINE/build/lib/libtotedb.so" "$COST_MAINLINE/build/lib/libtotedb.so" "$GITHUB_WORKSPACE/build/lib/libtotedb.so" > "$COST_OUTPUT/libraries.sha256"
           git -C "$COST_BASELINE" status --porcelain > "$COST_OUTPUT/baseline-status.txt"
           git -C "$COST_BASELINE" rev-parse HEAD > "$COST_OUTPUT/baseline-head.txt"
+          git -C "$COST_MAINLINE" rev-parse HEAD > "$COST_OUTPUT/mainline-head.txt"
           git rev-parse HEAD > "$COST_OUTPUT/candidate-head.txt"
           printf '%s\n' "CC=cc -fno-omit-frame-pointer; shared recipe: -O2 -g -fPIC; SANITIZE=" > "$COST_OUTPUT/shared-flags.txt"
       - name: Check diagnostic correctness with small jobs
@@ -320,6 +327,13 @@ jobs:
             --baseline-lib "$COST_BASELINE/build/lib/libtotedb.so" \
             --candidate-lib "$GITHUB_WORKSPACE/build/lib/libtotedb.so" \
             --output "$COST_OUTPUT/compare" --jobs 4096 --repetitions 5 --workers 1,8
+      - name: Collect the cumulative mainline comparison separately
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          python3 bench/queue_contention/diagnose.py compare \
+            --baseline-lib "$COST_MAINLINE/build/lib/libtotedb.so" \
+            --candidate-lib "$GITHUB_WORKSPACE/build/lib/libtotedb.so" \
+            --output "$COST_OUTPUT/compare-mainline" --jobs 4096 --repetitions 5 --workers 1,8
       - name: Trace ToteDB separately
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: |
