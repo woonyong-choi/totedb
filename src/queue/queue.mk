@@ -38,7 +38,7 @@ $(OUTBOX_CONSUMER): examples/outbox/consumer.c include/totedb.h $(TOTEDB_SHARED_
 	$(CC) -O2 -g $(WARNFLAGS) -Iinclude -o $@ $< -L$(dir $(TOTEDB_SHARED_LIB)) -ltotedb -Wl,-rpath,$(abspath $(dir $(TOTEDB_SHARED_LIB)))
 
 test-ack-queue-python: $(TOTEDB_SHARED_LIB) $(OUTBOX_CONSUMER)
-	TOTEDB_LIB=$(abspath $(TOTEDB_SHARED_LIB)) OUTBOX_CONSUMER=$(abspath $(OUTBOX_CONSUMER)) PYTHONPATH=python $(TOTEDB_PYTHON) -m pytest -q tests/test_ack_queue_python.py tests/test_ack_queue_markchain_contract.py tests/test_database_python.py tests/test_multiprocess.py tests/test_outbox_example.py
+	TOTEDB_LIB=$(abspath $(TOTEDB_SHARED_LIB)) OUTBOX_CONSUMER=$(abspath $(OUTBOX_CONSUMER)) PYTHONPATH=python $(TOTEDB_PYTHON) -m pytest -q tests/test_ack_queue_python.py tests/test_ack_queue_synthetic_contract.py tests/test_database_python.py tests/test_multiprocess.py tests/test_outbox_example.py
 
 # Python 생산자와 C worker가 같은 큐를 쓰는 예제를 실행한다
 example-outbox: $(TOTEDB_SHARED_LIB) $(OUTBOX_CONSUMER)
