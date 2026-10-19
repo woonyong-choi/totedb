@@ -1,0 +1,123 @@
+{
+  "started_at": "2026-10-19T02:56:53.360496+00:00",
+  "source_sha": "da28df245e3b90518e6606ba0b06ff128011afe5",
+  "source_tree": "7ab85c93f6c52db6c5f68dd966268c4c20de1c13",
+  "cwd": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention",
+  "commands": [
+    {
+      "label": "full-unittest",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_queue_contention.py",
+        "-v"
+      ],
+      "cwd": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention",
+      "exit_code": 0,
+      "elapsed_s": 126.84439549999999,
+      "log": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/independent-evidence-fix-full-unittest.log"
+    },
+    {
+      "argv": [
+        "make",
+        "SANITIZE=",
+        "all"
+      ],
+      "exit_code": 0,
+      "log": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/independent-evidence-fix-build.log",
+      "note": "make: Nothing to be done for `all'."
+    }
+  ],
+  "prior_evidence_sha256_before": "f9ed849c4ec62e1edbcc49ed3ec22de2778bf6c7a44a0cfa76ec854c7f2a27bf",
+  "new_test_directories": [
+    "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/36c27b27bc7a45db8125dfc448b1280b",
+    "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/3a142531891c48b5aacfc2b7c365d43a",
+    "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/4fc143eaec3f497ea6de0c1b07a1921e",
+    "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/75860405b0f24c108573a54aa938161f",
+    "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/90fd0249741e4402a012a9866ac48f21",
+    "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/9315170bf8aa427abc689d4febf71387",
+    "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/dd26ee99ea274862a651176f85d5cb82"
+  ],
+  "prior_evidence_sha256_after": "f9ed849c4ec62e1edbcc49ed3ec22de2778bf6c7a44a0cfa76ec854c7f2a27bf",
+  "pre_fix_red": {
+    "source_sha": "63260e745e385af97e99e737ce8493ade8074e5c",
+    "source_input": "git show 63260e7:bench/queue_contention/run.py; AST-extract _read_trial and execute in memory against current killed-worker regression test",
+    "command": "python3 stdin independent pre-fix _read_trial regression verifier",
+    "exit_code": 0,
+    "expected_test_result": "FAILED (errors=2)",
+    "tests_run": 1,
+    "errors": 2,
+    "error_types": [
+      "JSONDecodeError",
+      "UnicodeDecodeError"
+    ],
+    "log": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/independent-evidence-fix-prefixed-red.log",
+    "source_files_modified": false
+  },
+  "matrix": {
+    "output": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/9315170bf8aa427abc689d4febf71387/matrix",
+    "records": 48,
+    "preflight": 24,
+    "measured": 24,
+    "failed": 0,
+    "manifest_formal_measurement": false,
+    "raw_summary_json_csv_setup_file_sizes_equal": true,
+    "db_wal_shm_match_on_disk": true,
+    "csv_path": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/9315170bf8aa427abc689d4febf71387/matrix/results/summary.csv"
+  },
+  "input_sha256": {
+    "bench/queue_contention/run.py": "cf84ff9b08341e471d7bbe2422f1f0d81146a115a51e88eae9e74b7b347a2c8f",
+    "bench/queue_contention/trial.py": "c6937b6379bd0bb0d8771f577e6dd5fdcb0fc4a5719dd05374502fd73921f3a6",
+    "bench/queue_contention/analysis.py": "e22b033d5c88f3f5833f2507abded63deab050ea5957affecb591b44e0c723c2",
+    "tests/test_queue_contention.py": "31374f00f5673d7a5a45fc2be95c46db52aadf1c082d9d51a2c486ba1ec21902"
+  },
+  "direct_evidence_check": {
+    "command": "python3 stdin verify 48 raw records against summary.json, summary CSV, and on-disk db/wal/shm stat",
+    "exit_code": 0,
+    "cases": 48
+  },
+  "comment_review": {
+    "scope": [
+      "bench/queue_contention/run.py",
+      "bench/queue_contention/trial.py",
+      "bench/queue_contention/analysis.py",
+      "tests/test_queue_contention.py"
+    ],
+    "inline_comments": 0,
+    "suppression_comments": 0,
+    "new_comments_in_diff": 0,
+    "run_module_docstring": "retained as public CLI contract exception",
+    "deleted": 0,
+    "restored": 0,
+    "reruns": 0,
+    "must_kill": [],
+    "architect_sketch": null,
+    "code_changes": 0,
+    "constraint_encoding_proposals": [],
+    "unenforced_constraints": []
+  },
+  "status": "PASS+NOTES",
+  "remaining_severity_counts": {
+    "P1": 0,
+    "P2": 0,
+    "P3": 0
+  },
+  "tests": 6,
+  "notes": [
+    "No formal collect or profile was executed. Reduced test matrix timings are not performance evidence.",
+    "file_sizes phase after_close measures retained on-disk sizes after worker and reopened audit connections close, not peak WAL size.",
+    "The killed-worker regression kills a real child writing partial JSON. Invalid UTF-8 is then supplied synthetically. Its subsequent success read uses the same evidence directory after writing stdout; it does not inject partial output into the complete collect schedule.",
+    "Pre-fix RED used the exact _read_trial AST from 63260e7 executed in memory; no old checkout or source copy was created.",
+    "Suite elapsed 126.362 seconds was not investigated as a performance result."
+  ],
+  "old_evidence_unchanged": true,
+  "git_status_after": "",
+  "head_after": "da28df245e3b90518e6606ba0b06ff128011afe5",
+  "launched_build_test_processes_remaining": [],
+  "finished_at": "2026-10-19T02:59:43.427341+00:00"
+}

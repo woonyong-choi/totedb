@@ -1,0 +1,33 @@
+test_killed_partial_worker_output_is_retained_without_stopping_collection (queue_tests.QueueContentionTest) ... 
+======================================================================
+ERROR: test_killed_partial_worker_output_is_retained_without_stopping_collection (queue_tests.QueueContentionTest) (partial=b'{"worker":')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/tests/test_queue_contention.py", line 185, in test_killed_partial_worker_output_is_retained_without_stopping_collection
+    failed = _read_trial(self.directory, child.returncode, True)
+  File "63260e7:run.py", line 348, in _read_trial
+  File "63260e7:run.py", line 349, in <listcomp>
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 11 (char 10)
+
+======================================================================
+ERROR: test_killed_partial_worker_output_is_retained_without_stopping_collection (queue_tests.QueueContentionTest) (partial=b'{"worker": "\xff')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/tests/test_queue_contention.py", line 185, in test_killed_partial_worker_output_is_retained_without_stopping_collection
+    failed = _read_trial(self.directory, child.returncode, True)
+  File "63260e7:run.py", line 348, in _read_trial
+  File "63260e7:run.py", line 349, in <listcomp>
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 341, in loads
+    s = s.decode(detect_encoding(s), 'surrogatepass')
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 12: invalid start byte
+
+----------------------------------------------------------------------
+Ran 1 test in 0.751s
+
+FAILED (errors=2)

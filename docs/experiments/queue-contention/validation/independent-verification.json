@@ -1,0 +1,85 @@
+{
+  "status": "FAIL",
+  "head": "26efb1764ce1b502fe94e9cce429443363ed9d02",
+  "executed_source_head": "746dac4e5e7dbcb19d20380bf4a8f4ee2ed072f4",
+  "head_tree_identical": true,
+  "severity_counts": {
+    "P1": 0,
+    "P2": 1,
+    "P3": 1,
+    "P4": 0,
+    "P5": 0
+  },
+  "checks": [
+    {
+      "command": "make SANITIZE= all",
+      "exit_code": 0,
+      "log": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention-independent-build.log",
+      "note": "existing build targets were up to date"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_queue_contention.py -v",
+      "exit_code": 0,
+      "tests": 5,
+      "seconds": 61.196,
+      "log": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention-independent-unittest.log"
+    },
+    {
+      "command": "absolute run.py verify --output /Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/8bc46c3e76674ecf8f6e83d0eab10dc4/matrix",
+      "cwd": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/docs/experiments/queue-contention",
+      "exit_code": 0,
+      "records": 48,
+      "hashes": 296,
+      "log": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention-independent-verify.log"
+    },
+    {
+      "command": "absolute run.py analyze --output /Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/8bc46c3e76674ecf8f6e83d0eab10dc4/matrix",
+      "cwd": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/docs/experiments/queue-contention",
+      "exit_code": 0,
+      "log": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention-independent-analyze.log"
+    }
+  ],
+  "matrix": {
+    "actual_records": 48,
+    "preflight": 24,
+    "measured": 24,
+    "failed": 0,
+    "formal_schedule_only": {
+      "preflight": 72,
+      "measured": 360
+    }
+  },
+  "evidence_output": "/Users/woonyong/workspace/totedb/totedb.wt/queue-contention/build/queue-contention/tests/8bc46c3e76674ecf8f6e83d0eab10dc4/matrix",
+  "findings": [
+    {
+      "priority": "P2",
+      "file": "bench/queue_contention/run.py",
+      "line": 349,
+      "title": "timeout 중 잘린 worker JSON이 전체 수집을 중단함",
+      "evidence": "trial._save_worker writes directly with Path.write_text; controller kills child on timeout. _read_trial failure branch json.loads every worker file without catching truncated JSON. Deterministic in-memory partial-worker reproducer raised JSONDecodeError. collect does not catch _execute failures per trial, so remaining matrix stops and manifest remains collecting.",
+      "suggestion": "worker JSON을 파일별로 읽고 decode 실패는 problems에 남겨 failed record로 반환한다. 원본 bytes는 보존하고 다음 조건을 계속한다. 잘린 worker evidence를 가진 timeout 회귀 검사를 추가한다."
+    },
+    {
+      "priority": "P3",
+      "file": "bench/queue_contention/trial.py",
+      "line": 139,
+      "title": "계획의 DB/WAL 크기와 명시적 setup 시간 미기록",
+      "evidence": "returned trial record has cleanup_s and request resources, but no setup duration or DB/WAL file sizes; design metrics lists both.",
+      "suggestion": "계획과 결과에서 미수집으로 한정하거나 정식 수집 전에 별도 필드를 기록한다."
+    }
+  ],
+  "structure_review": "1875 lines total includes tests. Four runtime modules (335,409,470,404 lines) separate adapters, trial, analysis and CLI. No concrete extra abstraction is needed for this fixed matrix.",
+  "comment_review": {
+    "inline_comments": 0,
+    "run_module_public_contract_docstring": "retained",
+    "changes": 0,
+    "standalone_comment_agent_run": false
+  },
+  "limitations": [
+    "No formal performance collection or profiling was run.",
+    "Only same-provider independent review was available; no Claude review claim.",
+    "Observed load average was high; test duration is not a performance result.",
+    "Partial-worker failure reproduced in memory against the actual _read_trial function; forced-kill timing was not exercised end to end.",
+    "Product src/python changes, commits, pushes and external comments were not made."
+  ]
+}

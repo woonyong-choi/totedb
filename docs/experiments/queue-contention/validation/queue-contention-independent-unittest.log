@@ -1,0 +1,10 @@
+test_adapters_preserve_binary_lease_fence_outbox_and_reopen (test_queue_contention.QueueContentionTest) ... ok
+test_default_schedule_contains_72_preflights_and_360_rotated_trials (test_queue_contention.QueueContentionTest) ... ok
+test_duplicate_output_and_raw_or_summary_tampering_are_rejected (test_queue_contention.QueueContentionTest) ... ok
+test_failures_are_retained_and_make_comparisons_incomparable (test_queue_contention.QueueContentionTest) ... ok
+test_reduced_matrix_completes_all_jobs_and_preserves_evidence (test_queue_contention.QueueContentionTest) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 61.196s
+
+OK

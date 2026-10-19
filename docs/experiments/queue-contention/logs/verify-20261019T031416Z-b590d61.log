@@ -1,0 +1,2 @@
+$ RUN_ID=20261019T031416Z-b590d61 ./run.sh verify
+{"hashes": 3638, "records": 432, "status": "verified"}

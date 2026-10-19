@@ -1,0 +1,672 @@
+{
+  "aggregates": [],
+  "bootstrap": {
+    "confidence": 0.95,
+    "samples": 10000,
+    "seed": 226
+  },
+  "comparisons": [],
+  "runs": [
+    {
+      "busy": 235,
+      "completed_jobs": 256,
+      "condition": {
+        "jobs": 256,
+        "payload_bytes": 256,
+        "workers": 4,
+        "workload": "mixed"
+      },
+      "elapsed_s": 0.4887021099999629,
+      "empty": 397,
+      "engine": "totedb",
+      "errors": [],
+      "file_sizes": {
+        "bytes": {
+          "db": 245760,
+          "shm": 0,
+          "wal": 0
+        },
+        "phase": "after_close"
+      },
+      "finished_at": 1792380421.0966494,
+      "latency_s": {
+        "ack": {
+          "count": 256,
+          "p50": 0.0004452554999829772,
+          "p95": 0.0005331447500225295,
+          "p99": 0.0017269744500538206
+        },
+        "claim": {
+          "count": 256,
+          "p50": 0.0005236569999738094,
+          "p95": 0.0006651307499794257,
+          "p99": 0.032868256899985224
+        },
+        "empty_claim": {
+          "count": 397,
+          "p50": 7.49000000723754e-05,
+          "p95": 0.0006676800000377625,
+          "p99": 0.09333006011997937
+        },
+        "outbox": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        "put": {
+          "count": 256,
+          "p50": 0.00042915550005773184,
+          "p95": 0.0006315405000236751,
+          "p99": 0.12759235370001398
+        }
+      },
+      "phase": "preflight",
+      "problems": [],
+      "repetition": 0,
+      "resources_after": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 35647488,
+        "system_cpu_s": 0.113296,
+        "user_cpu_s": 0.210856
+      },
+      "resources_before": {
+        "load_average": [
+          1.47119140625,
+          1.19482421875,
+          0.7529296875
+        ],
+        "peak_rss_bytes": 26112000,
+        "system_cpu_s": 0.016887,
+        "user_cpu_s": 0.060594999999999996
+      },
+      "retry_sleep_s": 2.3243482650005944,
+      "setup_s": 0.0073423369999545685,
+      "started_at": 1792380420.5863676,
+      "status": "ok",
+      "throughput_jobs_s": 523.8364941784668,
+      "trial_id": "preflight-r0-mixed-w4-b256-n256-totedb",
+      "worker_fairness": {
+        "consumer": {
+          "counts": [
+            24,
+            150,
+            0,
+            82
+          ],
+          "jain_index": 0.5497986577181208,
+          "max": 150,
+          "min": 0
+        },
+        "producer": {
+          "counts": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "jain_index": 1.0,
+          "max": 64,
+          "min": 64
+        }
+      }
+    },
+    {
+      "busy": 226,
+      "completed_jobs": 256,
+      "condition": {
+        "jobs": 256,
+        "payload_bytes": 256,
+        "workers": 4,
+        "workload": "mixed"
+      },
+      "elapsed_s": 0.693538899000032,
+      "empty": 165,
+      "engine": "sqlite-delete",
+      "errors": [],
+      "file_sizes": {
+        "bytes": {
+          "db": 122880,
+          "shm": 0,
+          "wal": 0
+        },
+        "phase": "after_close"
+      },
+      "finished_at": 1792380421.90969,
+      "latency_s": {
+        "ack": {
+          "count": 256,
+          "p50": 0.0007701769999926,
+          "p95": 0.001038127499981556,
+          "p99": 0.0014372845499565294
+        },
+        "claim": {
+          "count": 256,
+          "p50": 0.0007868130000474594,
+          "p95": 0.001058614750036213,
+          "p99": 0.05336082765001038
+        },
+        "empty_claim": {
+          "count": 165,
+          "p50": 2.963500003261288e-05,
+          "p95": 0.0006573864000529283,
+          "p99": 0.24955652560003289
+        },
+        "outbox": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        "put": {
+          "count": 256,
+          "p50": 0.0007770195000489366,
+          "p95": 0.0010158659999888187,
+          "p99": 0.1210320367499769
+        }
+      },
+      "phase": "preflight",
+      "problems": [],
+      "repetition": 0,
+      "resources_after": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 27140096,
+        "system_cpu_s": 0.22946699999999998,
+        "user_cpu_s": 0.12339199999999999
+      },
+      "resources_before": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 26615808,
+        "system_cpu_s": 0.014915999999999999,
+        "user_cpu_s": 0.068617
+      },
+      "retry_sleep_s": 3.07181161399933,
+      "setup_s": 0.011926125000059073,
+      "started_at": 1792380421.2134612,
+      "status": "ok",
+      "throughput_jobs_s": 369.1213288383817,
+      "trial_id": "preflight-r0-mixed-w4-b256-n256-sqlite-delete",
+      "worker_fairness": {
+        "consumer": {
+          "counts": [
+            0,
+            3,
+            188,
+            65
+          ],
+          "jain_index": 0.41396735560159686,
+          "max": 188,
+          "min": 0
+        },
+        "producer": {
+          "counts": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "jain_index": 1.0,
+          "max": 64,
+          "min": 64
+        }
+      }
+    },
+    {
+      "busy": 138,
+      "completed_jobs": 256,
+      "condition": {
+        "jobs": 256,
+        "payload_bytes": 256,
+        "workers": 4,
+        "workload": "mixed"
+      },
+      "elapsed_s": 0.26764531499998157,
+      "empty": 44,
+      "engine": "sqlite-wal",
+      "errors": [],
+      "file_sizes": {
+        "bytes": {
+          "db": 122880,
+          "shm": 0,
+          "wal": 0
+        },
+        "phase": "after_close"
+      },
+      "finished_at": 1792380422.305955,
+      "latency_s": {
+        "ack": {
+          "count": 256,
+          "p50": 0.0001675374999763335,
+          "p95": 0.000514034500042726,
+          "p99": 0.0008896446499136283
+        },
+        "claim": {
+          "count": 256,
+          "p50": 0.00017918399998961831,
+          "p95": 0.0005210707500395984,
+          "p99": 0.061908283349998545
+        },
+        "empty_claim": {
+          "count": 44,
+          "p50": 2.06735000460867e-05,
+          "p95": 0.04463661395001857,
+          "p99": 0.17561625064994704
+        },
+        "outbox": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        "put": {
+          "count": 256,
+          "p50": 0.00032115950006073035,
+          "p95": 0.0005860557500625418,
+          "p99": 0.024274338200012652
+        }
+      },
+      "phase": "preflight",
+      "problems": [],
+      "repetition": 0,
+      "resources_after": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 27234304,
+        "system_cpu_s": 0.072875,
+        "user_cpu_s": 0.11994099999999999
+      },
+      "resources_before": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 26796032,
+        "system_cpu_s": 0.017806,
+        "user_cpu_s": 0.06627999999999999
+      },
+      "retry_sleep_s": 1.2920189459997573,
+      "setup_s": 0.012308003000043755,
+      "started_at": 1792380422.0328,
+      "status": "ok",
+      "throughput_jobs_s": 956.4897483821737,
+      "trial_id": "preflight-r0-mixed-w4-b256-n256-sqlite-wal",
+      "worker_fairness": {
+        "consumer": {
+          "counts": [
+            60,
+            0,
+            87,
+            109
+          ],
+          "jain_index": 0.7108026030368764,
+          "max": 109,
+          "min": 0
+        },
+        "producer": {
+          "counts": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "jain_index": 1.0,
+          "max": 64,
+          "min": 64
+        }
+      }
+    },
+    {
+      "busy": 178,
+      "completed_jobs": 256,
+      "condition": {
+        "jobs": 256,
+        "payload_bytes": 256,
+        "workers": 4,
+        "workload": "mixed"
+      },
+      "elapsed_s": 0.4487536450000107,
+      "empty": 81,
+      "engine": "totedb",
+      "errors": [],
+      "file_sizes": {
+        "bytes": {
+          "db": 245760,
+          "shm": 0,
+          "wal": 0
+        },
+        "phase": "after_close"
+      },
+      "finished_at": 1792380422.9181309,
+      "latency_s": {
+        "ack": {
+          "count": 256,
+          "p50": 0.0004657590000078926,
+          "p95": 0.0006026567500043711,
+          "p99": 0.023911381949960557
+        },
+        "claim": {
+          "count": 256,
+          "p50": 0.0005316870000342533,
+          "p95": 0.0006968555000526067,
+          "p99": 0.08249896290001835
+        },
+        "empty_claim": {
+          "count": 81,
+          "p50": 8.662199991249508e-05,
+          "p95": 0.0010602590000416967,
+          "p99": 0.3061044024000016
+        },
+        "outbox": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        "put": {
+          "count": 256,
+          "p50": 0.0004414085000234991,
+          "p95": 0.0006646155000851195,
+          "p99": 0.08760465969997248
+        }
+      },
+      "phase": "profile",
+      "problems": [],
+      "repetition": 0,
+      "resources_after": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 27107328,
+        "system_cpu_s": 0.082686,
+        "user_cpu_s": 0.22772599999999998
+      },
+      "resources_before": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 26112000,
+        "system_cpu_s": 0.013057,
+        "user_cpu_s": 0.067297
+      },
+      "retry_sleep_s": 2.064019407999922,
+      "setup_s": 0.00863016100004188,
+      "started_at": 1792380422.4457996,
+      "status": "ok",
+      "throughput_jobs_s": 570.4689039350174,
+      "trial_id": "profile-r0-mixed-w4-b256-n256-totedb",
+      "worker_fairness": {
+        "consumer": {
+          "counts": [
+            0,
+            16,
+            22,
+            218
+          ],
+          "jain_index": 0.3394662688546329,
+          "max": 218,
+          "min": 0
+        },
+        "producer": {
+          "counts": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "jain_index": 1.0,
+          "max": 64,
+          "min": 64
+        }
+      }
+    },
+    {
+      "busy": 187,
+      "completed_jobs": 256,
+      "condition": {
+        "jobs": 256,
+        "payload_bytes": 256,
+        "workers": 4,
+        "workload": "mixed"
+      },
+      "elapsed_s": 0.6993593590000273,
+      "empty": 21,
+      "engine": "sqlite-delete",
+      "errors": [],
+      "file_sizes": {
+        "bytes": {
+          "db": 122880,
+          "shm": 0,
+          "wal": 0
+        },
+        "phase": "after_close"
+      },
+      "finished_at": 1792380423.7751033,
+      "latency_s": {
+        "ack": {
+          "count": 256,
+          "p50": 0.0007416185000010955,
+          "p95": 0.0008928230000435633,
+          "p99": 0.0010934676499630312
+        },
+        "claim": {
+          "count": 256,
+          "p50": 0.000765298000032999,
+          "p95": 0.000978372750012113,
+          "p99": 0.006458451999981201
+        },
+        "empty_claim": {
+          "count": 21,
+          "p50": 3.578700000161916e-05,
+          "p95": 0.6777518549999968,
+          "p99": 0.69410536219998
+        },
+        "outbox": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        "put": {
+          "count": 256,
+          "p50": 0.0007971425000050658,
+          "p95": 0.0010479549999899973,
+          "p99": 0.03456908409994444
+        }
+      },
+      "phase": "profile",
+      "problems": [],
+      "repetition": 0,
+      "resources_after": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 27156480,
+        "system_cpu_s": 0.231089,
+        "user_cpu_s": 0.13205
+      },
+      "resources_before": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 26763264,
+        "system_cpu_s": 0.012118,
+        "user_cpu_s": 0.072713
+      },
+      "retry_sleep_s": 3.03092378899953,
+      "setup_s": 0.012511894999988726,
+      "started_at": 1792380423.0708942,
+      "status": "ok",
+      "throughput_jobs_s": 366.0492945515726,
+      "trial_id": "profile-r0-mixed-w4-b256-n256-sqlite-delete",
+      "worker_fairness": {
+        "consumer": {
+          "counts": [
+            64,
+            0,
+            192,
+            0
+          ],
+          "jain_index": 0.4,
+          "max": 192,
+          "min": 0
+        },
+        "producer": {
+          "counts": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "jain_index": 1.0,
+          "max": 64,
+          "min": 64
+        }
+      }
+    },
+    {
+      "busy": 123,
+      "completed_jobs": 256,
+      "condition": {
+        "jobs": 256,
+        "payload_bytes": 256,
+        "workers": 4,
+        "workload": "mixed"
+      },
+      "elapsed_s": 0.2562134189998915,
+      "empty": 14,
+      "engine": "sqlite-wal",
+      "errors": [],
+      "file_sizes": {
+        "bytes": {
+          "db": 122880,
+          "shm": 0,
+          "wal": 0
+        },
+        "phase": "after_close"
+      },
+      "finished_at": 1792380424.1528578,
+      "latency_s": {
+        "ack": {
+          "count": 256,
+          "p50": 0.000151602500068293,
+          "p95": 0.00044313725001643434,
+          "p99": 0.0005539196000086117
+        },
+        "claim": {
+          "count": 256,
+          "p50": 0.00016872999998440719,
+          "p95": 0.0004915194999455252,
+          "p99": 0.016295236400031853
+        },
+        "empty_claim": {
+          "count": 14,
+          "p50": 2.8788000008717063e-05,
+          "p95": 0.2417966280999451,
+          "p99": 0.2514006048199769
+        },
+        "outbox": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null
+        },
+        "put": {
+          "count": 256,
+          "p50": 0.0003530690000275172,
+          "p95": 0.000573149749982349,
+          "p99": 0.062464137500006484
+        }
+      },
+      "phase": "profile",
+      "problems": [],
+      "repetition": 0,
+      "resources_after": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 27136000,
+        "system_cpu_s": 0.074025,
+        "user_cpu_s": 0.124827
+      },
+      "resources_before": {
+        "load_average": [
+          1.43310546875,
+          1.19140625,
+          0.75439453125
+        ],
+        "peak_rss_bytes": 26742784,
+        "system_cpu_s": 0.014232,
+        "user_cpu_s": 0.070145
+      },
+      "retry_sleep_s": 1.3053488340000285,
+      "setup_s": 0.012564501000042583,
+      "started_at": 1792380423.8891854,
+      "status": "ok",
+      "throughput_jobs_s": 999.1670264550369,
+      "trial_id": "profile-r0-mixed-w4-b256-n256-sqlite-wal",
+      "worker_fairness": {
+        "consumer": {
+          "counts": [
+            0,
+            256,
+            0,
+            0
+          ],
+          "jain_index": 0.25,
+          "max": 256,
+          "min": 0
+        },
+        "producer": {
+          "counts": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "jain_index": 1.0,
+          "max": 64,
+          "min": 64
+        }
+      }
+    }
+  ],
+  "schema": 1,
+  "totedb_mixed_worker_scaling": [
+    {
+      "bootstrap_95_ci": null,
+      "jobs": 256,
+      "median_ratio": null,
+      "metric": "totedb mixed workers 8 / 1 throughput",
+      "pairs": 0,
+      "payload_bytes": 256,
+      "status": "incomparable"
+    }
+  ],
+  "workload_origin": "synthetic queue workload; not an official YCSB workload"
+}

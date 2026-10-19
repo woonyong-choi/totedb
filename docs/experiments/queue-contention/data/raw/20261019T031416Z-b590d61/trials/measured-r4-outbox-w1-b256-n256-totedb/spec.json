@@ -1,0 +1,13 @@
+{
+  "condition": {
+    "jobs": 256,
+    "payload_bytes": 256,
+    "workers": 1,
+    "workload": "outbox"
+  },
+  "directory": "/home/runner/work/totedb/totedb.wt/queue-contention/build/queue-contention/runs/20261019T031416Z-b590d61/measured-r4-outbox-w1-b256-n256-totedb/database",
+  "engine": "totedb",
+  "evidence_directory": "/home/runner/work/totedb/totedb.wt/queue-contention/docs/experiments/queue-contention/data/raw/20261019T031416Z-b590d61/trials/measured-r4-outbox-w1-b256-n256-totedb",
+  "fault": "",
+  "timeout_s": 180
+}

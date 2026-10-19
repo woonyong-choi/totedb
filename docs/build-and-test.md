@@ -80,6 +80,16 @@ make ycsb-test
 
 이 시험은 양쪽의 결정적 연결 검사와 공식 Client의 축소 matrix를 검사한다. 성능 합격선은 두지 않는다. 별도 성능 수집과 원자료 재분석은 [바인딩 안내](../bench/ycsb/README.md)에 있다. [YCSB 동등 조건 측정 결과](experiments/ycsb-sqlite/report.md)는 고정한 자동 commit 설정의 240회 비교이며, WAL·준비 문장 캐시를 튜닝한 DB 전체 성능을 뜻하지 않는다.
 
+독립 연결의 큐 쓰기 경합은 [큐 쓰기 경합 결과](experiments/queue-contention/report.md)에 있다. 공식 YCSB와 별개인 enqueue·drain·mixed·outbox 부하를 SQLite DELETE/FULL·WAL/FULL과 비교한다. 연결마다 worker를 하나씩 두며 payload·lease·fence·저장 결과를 대조한다.
+
+```sh
+make SANITIZE= all
+python3 -m unittest discover -s tests -p test_queue_contention.py -v
+python3 bench/queue_contention/run.py verify --output docs/experiments/queue-contention
+```
+
+새 실측은 [Linux 계획](experiments/queue-contention/linux-design.md)의 소스와 환경에서 실행한다. 실행 ID는 새로 정하고 기존 자료를 덮어쓰지 않는다. 분석·검증에는 native library가 필요하므로 먼저 빌드한다.
+
 ## CI
 
 `.github/workflows/ci.yml`은 Ubuntu에서 아래 작업을 실행한다.
@@ -90,6 +100,7 @@ make ycsb-test
 | `test` (thread) | `make SANITIZE=thread test-transaction test-session test-ack-queue` |
 | `pg-compat` | PostgreSQL 18 서비스에 `make test-sql-diff`를 실행한 뒤 `make test-sqlite-session-diff` |
 | `actionlint` | 워크플로 파일 검사 |
+| `queue-contention` | Ubuntu 24.04에서 공개 Python 큐 API·동시 실행·오류 보존·원자료 재현 검사 |
 | `ycsb` | Ubuntu 24.04·Java 21에서 `make ycsb-build ycsb-test`, 양쪽 바인딩·공식 Client·원자료 재분석 검사 |
 
 CI의 SQL 비교·워크플로 검사와 릴리스의 Linux 보조 job은 Ubuntu 24.04로 고정한다. sanitizer 시험은 Ubuntu 22.04를 유지한다. 결과 파일 업로드·다운로드 액션은 Node.js 24 런타임을 사용한다.
