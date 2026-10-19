@@ -1,0 +1,143 @@
+{
+  "audit": {
+    "added_rows": 10000,
+    "changed_fields": 0,
+    "field_bytes": 100,
+    "field_count": 10,
+    "keys_sha256": "cecad843bb0e2c76965d9457a92c466ab87639d21ddf15298a797aab56137a96",
+    "missing_rows": 0,
+    "payload_bytes": 10000000,
+    "rows": 10000,
+    "sha256": "2ffed83b0e3bdf2356ac4dbf883f712e35ba185ce85b81846c8f30d567d64a77"
+  },
+  "condition": {
+    "engine": "sqlite",
+    "operations": 10000,
+    "records": 10000,
+    "threads": 1,
+    "workload": "A"
+  },
+  "database_size_bytes": 12091392,
+  "metrics": {
+    "binding": {
+      "attempts": 10000,
+      "exhausted": 0,
+      "input_bytes": 10228798,
+      "open_retries": 0,
+      "output_bytes": 0,
+      "result_rows": 0,
+      "retries": 0,
+      "setup_attempts": 7,
+      "setup_retries": 0,
+      "sql_bytes": 1330000
+    },
+    "binding_errors": 0,
+    "logical_operations": 10000.0,
+    "non_ok": 0,
+    "sql_calls": 10000.0,
+    "workers": 1,
+    "ycsb": {
+      "CLEANUP": {
+        "50thPercentileLatency(us)": 352767.0,
+        "95thPercentileLatency(us)": 352767.0,
+        "99thPercentileLatency(us)": 352767.0,
+        "AverageLatency(us)": 352640.0,
+        "MaxLatency(us)": 352767.0,
+        "MinLatency(us)": 352512.0,
+        "Operations": 1.0
+      },
+      "INSERT": {
+        "50thPercentileLatency(us)": 977.0,
+        "95thPercentileLatency(us)": 18271.0,
+        "99thPercentileLatency(us)": 82751.0,
+        "AverageLatency(us)": 5321.5465,
+        "MaxLatency(us)": 887295.0,
+        "MinLatency(us)": 321.0,
+        "Operations": 10000.0,
+        "Return=OK": 10000.0
+      },
+      "OVERALL": {
+        "RunTime(ms)": 56340.0,
+        "Throughput(ops/sec)": 177.49378771742988
+      },
+      "TOTAL_GCS_G1_Concurrent_GC": {
+        "Count": 0.0
+      },
+      "TOTAL_GCS_G1_Old_Generation": {
+        "Count": 0.0
+      },
+      "TOTAL_GCS_G1_Young_Generation": {
+        "Count": 2.0
+      },
+      "TOTAL_GC_TIME": {
+        "Time(ms)": 89.0
+      },
+      "TOTAL_GC_TIME_%": {
+        "Time(%)": 0.15796947106851258
+      },
+      "TOTAL_GC_TIME_%_G1_Concurrent_GC": {
+        "Time(%)": 0.0
+      },
+      "TOTAL_GC_TIME_%_G1_Old_Generation": {
+        "Time(%)": 0.0
+      },
+      "TOTAL_GC_TIME_%_G1_Young_Generation": {
+        "Time(%)": 0.15796947106851258
+      },
+      "TOTAL_GC_TIME_G1_Concurrent_GC": {
+        "Time(ms)": 0.0
+      },
+      "TOTAL_GC_TIME_G1_Old_Generation": {
+        "Time(ms)": 0.0
+      },
+      "TOTAL_GC_TIME_G1_Young_Generation": {
+        "Time(ms)": 89.0
+      },
+      "TOTAL_GCs": {
+        "Count": 2.0
+      }
+    }
+  },
+  "process": {
+    "command": [
+      "/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home/bin/java",
+      "-Xms256m",
+      "-Xmx1g",
+      "-Dycsb.native=/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/build/ycsb/libycsb.dylib",
+      "-cp",
+      "/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/build/ycsb/classes:/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/build/ycsb/deps/HdrHistogram-2.1.4.jar:/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/build/ycsb/deps/core-0.17.0.jar:/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/build/ycsb/deps/htrace-core4-4.1.0-incubating.jar:/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/build/ycsb/deps/jackson-core-asl-1.9.4.jar:/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/build/ycsb/deps/jackson-mapper-asl-1.9.4.jar",
+      "site.ycsb.Client",
+      "-load",
+      "-db",
+      "org.totedb.ycsb.SqlBinding",
+      "-P",
+      "/Users/woonyong/workspace/totedb/totedb.wt/text-range-measure/bench/ycsb/workloads/workloada",
+      "-P",
+      "/Users/woonyong/workspace/totedb/totedb.wt/perf-228-text-range/docs/experiments/text-range/data/raw/20261019T030026Z-c18643c/r1-before/data/raw/20261019T030026Z-c18643c-r1-before/baselines/10000-sqlite/run.properties",
+      "-threads",
+      "1"
+    ],
+    "cpu_system_seconds": 6.013874,
+    "cpu_user_seconds": 2.200952,
+    "elapsed_seconds": 57.151333959,
+    "exit_code": 0,
+    "load_after": [
+      85.55126953125,
+      80.2109375,
+      62.77734375
+    ],
+    "load_before": [
+      86.61181640625,
+      78.935546875,
+      61.07568359375
+    ],
+    "major_faults": 9,
+    "max_rss_bytes": 62914560,
+    "minor_faults": 38574,
+    "profiler_wait_seconds": 0.00048466600000551807,
+    "sample_available": false,
+    "sample_exit_code": null,
+    "timeout": false,
+    "ts_utc": "2026-10-19T03:00:58.022086+00:00"
+  }
+}

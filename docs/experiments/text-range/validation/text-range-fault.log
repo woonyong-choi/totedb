@@ -1,0 +1,71 @@
+
+[create]
+  (오류 응답 5, NOMEM 2, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[insert big]
+  (오류 응답 19, NOMEM 24, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update grow]
+  (오류 응답 28, NOMEM 54, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update shrink]
+  (오류 응답 25, NOMEM 80, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[delete]
+  (오류 응답 15, NOMEM 27, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[drop]
+  (오류 응답 7, NOMEM 11, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[insert key]
+  (오류 응답 15, NOMEM 25, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update key]
+  (오류 응답 17, NOMEM 35, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update by key big]
+  (오류 응답 18, NOMEM 34, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[delete last key]
+  (오류 응답 15, NOMEM 27, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[insert text key]
+  (오류 응답 12, NOMEM 23, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update text key]
+  (오류 응답 13, NOMEM 37, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update text value]
+  (오류 응답 11, NOMEM 36, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[delete text key]
+  (오류 응답 12, NOMEM 27, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update text range]
+  (오류 응답 11, NOMEM 50, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[delete text range]
+  (오류 응답 13, NOMEM 36, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[update returning]
+  (오류 응답 28, NOMEM 59, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[delete returning]
+  (오류 응답 15, NOMEM 32, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[insert returning]
+  (오류 응답 19, NOMEM 29, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[upsert update]
+  (오류 응답 18, NOMEM 40, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[upsert mixed]
+  (오류 응답 15, NOMEM 28, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[build secondary index]
+  (오류 응답 16, NOMEM 32, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+[drop indexed]
+  (오류 응답 9, NOMEM 11, 성공 0, poison 2, 오류 응답이지만 새 상태가 보인 불확정 1)
+
+ALL PASSED: 7850/7850

@@ -1,0 +1,28 @@
+{
+  "verdict": "PASS+NOTES",
+  "reviewed_code_commit": "f0f362c5ce861f2c5c65ab9f18a5eca0d8733dd8",
+  "equivalent_rebased_code_commit": "06a2741",
+  "remaining_findings": {
+    "P1": 0,
+    "P2": 0
+  },
+  "independent_execution": {
+    "source_and_binary_hashes_match": true,
+    "text_tree_exit_code": 0,
+    "sqlite_matched_user_queries": 13,
+    "alias_queries": 6,
+    "other_queries": 7,
+    "new_source_writes": false,
+    "build_executed": false
+  },
+  "no_comments": {
+    "public_contract_comments_kept": 3,
+    "must_kill": 0
+  },
+  "limitations": [
+    "Full correctness suites were inspected from the author records, not independently rerun in this verification.",
+    "Default heap runner timed out at 60 seconds; separate 300-second run passed.",
+    "Alias RED was an intermediate uncommitted implementation, not the original product baseline.",
+    "Rebased code commit has identical changed source bytes."
+  ]
+}

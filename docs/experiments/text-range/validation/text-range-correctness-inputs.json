@@ -1,0 +1,30 @@
+{
+  "base_commit": "ec3faa568695afe1bd40b5a86c6a3ea0ef847c82",
+  "source_sha256": {
+    "include/storage/heap_store.h": "2b3c7934bfacc48281d6f56217c1e1eae57f7208b25530c7415de447aca01128",
+    "include/storage/text_tree.h": "9888a3cae84184831b4b453dae20db7125e99e21681f9f5089f38aff35d3a535",
+    "src/sql/database_exec.h": "296b98a69739efa009210a31cdaca5ed798fdd15794d8eafc294c052ef184df1",
+    "src/sql/database_expr.c": "a1073827d584e971bdba6b0dcdda32fb984ec79f37406bd73cab3f39499b2547",
+    "src/sql/database_join.c": "c2c9401c351140a399fb701f2b6236a59bde069bc3acfd65e46e5af2e1e0154a",
+    "src/sql/database_select.c": "06bc8743cdd8a502669d46357d458410a73d3ff95c29fc7efca6fab27a76e5c4",
+    "src/sql/database_update.c": "2a03509fd072b2f56eddfded3049aab4d603dcce64f409c62b00dd8e7b0f0b54",
+    "src/storage/heap_store.c": "872bb60ec5b4c790460190449bd9d2e2ba8d0ce009a48da6b704ac1e39a177ca",
+    "src/storage/text_tree.c": "0a5072e0fc36ff55356c0cf0482d724d3211dd6bec3ea6777f5c2150bbf17174",
+    "tests/test_database.c": "3c33cffff779b2ee80598047d72b20bd76f3676bc9093b895802cb8298bc5d80",
+    "tests/test_database_fault.c": "e78d8d4ccec863e95917cd7afe4e275cb9a537ffe274084331ff3946b7b300fc",
+    "tests/test_database_sqlite.c": "07a754c0e9ac05709caf0c418d1e3a752cdb8e2511848c9e28b35b3576f518f1",
+    "tests/test_primary_index.c": "ff113ee4fc65c76cc3042d6797a6b6c4ff97d62aa10b77239d84e8ff762e918b",
+    "tests/test_text_tree.c": "c3f9c785808cfc00d479fef8282132650771c36ef16731bfd7c4491ef83d3565"
+  },
+  "binaries_sha256": {
+    "build/test_database": "3feed49c52f0f1ab66d3144ff8c79c1f67d7c63295b3a67c09028cfaeaf51e6e",
+    "build/test_database_sqlite": "d542bdd90af356b0e3459947b67c64cded66cd9703811d6ea614def77ebe8b24",
+    "build/session_probe": "42bd30b0b7785cc006a3a573b4b212f655d7c6ec14ea7b2615b54928fbf86438"
+  },
+  "flags": "-Wall -Wextra -Werror -g -Iinclude -fsanitize=undefined",
+  "commands": [
+    "python3 tests/fault_runner.py --timeout 300 --seed 1 --report build/fault/test_database_alias_fixed.json -- build/test_database",
+    "python3 tests/fault_runner.py --timeout 300 --seed 1 --report build/fault/test_database_sqlite_alias_fixed.json -- build/test_database_sqlite"
+  ],
+  "result_commit": "f0f362c5ce861f2c5c65ab9f18a5eca0d8733dd8"
+}
