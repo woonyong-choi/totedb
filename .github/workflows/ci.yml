@@ -207,6 +207,7 @@ jobs:
         if: ${{ !cancelled() && steps.builds.outcome == 'success' }}
         run: bash "$QUEUE_ROOT/docs/experiments/queue-contention/run.sh" all
       - name: Profile the changed YCSB source after formal collection
+        id: text_profile
         if: ${{ !cancelled() && steps.text.outcome == 'success' && steps.queue.outcome == 'success' }}
         continue-on-error: true
         run: |
@@ -215,6 +216,7 @@ jobs:
             --run-id "$profile_id" --sizes 10000 --workloads E --threads 1 \
             --operations 1000 --repetitions 1
       - name: Profile the fixed queue source after formal collection
+        id: queue_profile
         if: ${{ !cancelled() && steps.text.outcome == 'success' && steps.queue.outcome == 'success' }}
         continue-on-error: true
         run: |
@@ -241,4 +243,20 @@ jobs:
           path: |
             ${{ env.QUEUE_ROOT }}/docs/experiments/queue-contention/
             docs/experiments/queue-contention/linux-design.md
+          if-no-files-found: warn
+      - name: Preserve failed TEXT comparison databases
+        if: ${{ always() && (steps.text.outcome != 'success' || steps.text_profile.outcome == 'failure') }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: text-range-linux-failed-databases
+          path: |
+            ${{ env.BASELINE_ROOT }}/build/ycsb/runs/
+            ${{ env.CHANGED_ROOT }}/build/ycsb/runs/
+          if-no-files-found: warn
+      - name: Preserve failed queue comparison databases
+        if: ${{ always() && (steps.queue.outcome != 'success' || steps.queue_profile.outcome == 'failure') }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: queue-contention-linux-failed-databases
+          path: ${{ env.QUEUE_ROOT }}/build/queue-contention/runs/
           if-no-files-found: warn
