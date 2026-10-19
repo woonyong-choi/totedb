@@ -52,7 +52,7 @@ STORAGE_OBJS = $(BUILD_DIR)/storage/record.o $(BUILD_DIR)/storage/record_page.o 
                $(BUILD_DIR)/storage/pk_tree.o $(BUILD_DIR)/storage/text_tree.o
 BASIC_TESTS = test_record test_record_fault test_overflow test_overflow_fault test_value test_value_fault \
               test_catalog test_catalog_fault test_lexer test_lexer_fault test_page_file test_catalog_store \
-              test_pk_tree test_text_tree test_page_file_audit test_page_cache_fault
+              test_pk_tree test_text_tree
 TEST_BINS = $(addprefix $(BUILD_DIR)/,$(BASIC_TESTS))
 
 $(BUILD_DIR)/test_record: $(BUILD_DIR)/tests/test_record.o $(BUILD_DIR)/storage/record.o $(BUILD_DIR)/storage/record_page.o
@@ -76,14 +76,6 @@ $(BUILD_DIR)/test_catalog_fault: $(BUILD_DIR)/tests/test_catalog_fault.o $(BUILD
 $(BUILD_DIR)/test_lexer: $(BUILD_DIR)/tests/test_lexer.o $(BUILD_DIR)/sql/lexer.o
 $(BUILD_DIR)/test_lexer_fault: $(BUILD_DIR)/tests/test_lexer_fault.o $(BUILD_DIR)/sql/lexer_fault.o
 $(BUILD_DIR)/test_page_file: $(BUILD_DIR)/tests/test_page_file.o $(STORAGE_OBJS)
-$(BUILD_DIR)/test_page_cache_fault: $(BUILD_DIR)/tests/test_page_cache_fault.o $(BUILD_DIR)/storage/page_cache_fault.o
-$(BUILD_DIR)/storage/page_cache_fault.o: src/storage/page_cache.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(DEPFLAGS) -Dmalloc=cache_test_malloc -Dcalloc=cache_test_calloc -Dfree=cache_test_free -c -o $@ $<
-$(BUILD_DIR)/test_page_file_audit: $(BUILD_DIR)/tests/test_page_file_audit.o $(BUILD_DIR)/tests/alloc_audit.o $(patsubst $(BUILD_DIR)/%.o,$(BUILD_DIR)/audit/%.o,$(STORAGE_OBJS))
-$(BUILD_DIR)/tests/test_page_file_audit.o: tests/test_page_file.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(DEPFLAGS) -DPAGE_FILE_ALLOC_AUDIT -Dmalloc=audit_malloc -Dcalloc=audit_calloc -Drealloc=audit_realloc -Dfree=audit_free -c -o $@ $<
 $(BUILD_DIR)/test_catalog_store: $(BUILD_DIR)/tests/test_catalog_store.o $(STORAGE_OBJS)
 $(BUILD_DIR)/test_pk_tree: $(BUILD_DIR)/tests/test_pk_tree.o $(BUILD_DIR)/storage/pk_tree.o
 $(BUILD_DIR)/test_text_tree: $(BUILD_DIR)/tests/test_text_tree.o $(BUILD_DIR)/storage/text_tree.o

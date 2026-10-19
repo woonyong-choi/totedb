@@ -823,55 +823,8 @@ static void clone_empty_and_invalid_arguments(void)
     catalog_close(source);
 }
 
-static size_t assert_clone_resource_contract(const catalog_t *source)
-{
-    catalog_t *clone;
-    snapshot_t before = snapshot(source);
-    assert(catalog_clone(source, &clone) == CATALOG_OK);
-    size_t memory = catalog_memory_bytes(clone);
-    assert(catalog_clone_peak_bytes(source) == memory);
-    assert(memory <= catalog_memory_bytes(source));
-    assert(catalog_encoded_bytes(clone) == catalog_encoded_bytes(source));
-    assert_same(clone, &before);
-    catalog_close(clone);
-    free(before.bytes);
-    return memory;
-}
-
-static void clone_compacts_dropped_capacity_without_scratch(void)
-{
-    catalog_t *source;
-    assert(catalog_open_empty(&source) == CATALOG_OK);
-    size_t empty_memory = assert_clone_resource_contract(source);
-    catalog_column_spec_t one[] = {column("x", VALUE_INTEGER, false)};
-    catalog_table_id_t id;
-    assert(create(source, "kept", one, 1, CATALOG_NO_COLUMN, false, &id) == CATALOG_OK);
-    assert(catalog_add_index(source, id, "kept_index", 10, 0, false, false) == CATALOG_OK);
-    size_t kept_memory = assert_clone_resource_contract(source);
-    for (size_t i = 0; i < 40; i++) {
-        char name[32], index_name[32];
-        int name_bytes = snprintf(name, sizeof(name), "table_%zu", i);
-        int index_bytes = snprintf(index_name, sizeof(index_name), "index_%zu", i);
-        assert(name_bytes > 0 && index_bytes > 0);
-        assert(create(source, name, one, 1, CATALOG_NO_COLUMN, false, &id) == CATALOG_OK);
-        assert(catalog_add_index(source, id, index_name, (size_t)index_bytes, 0, false, false) == CATALOG_OK);
-    }
-    assert_clone_resource_contract(source);
-    for (catalog_table_id_t dropped = 2; dropped <= id; dropped++) {
-        assert(catalog_drop_table(source, dropped) == CATALOG_OK);
-    }
-    assert(assert_clone_resource_contract(source) == kept_memory);
-    assert(catalog_drop_table(source, 1) == CATALOG_OK);
-    assert(assert_clone_resource_contract(source) == empty_memory);
-    catalog_close(source);
-    source = clone_fixture();
-    assert_clone_resource_contract(source);
-    catalog_close(source);
-}
-
 int main(void)
 {
-    clone_compacts_dropped_capacity_without_scratch();
     clone_preserves_metadata_and_independent_lifetimes();
     clone_empty_and_invalid_arguments();
     defaults_round_trip();

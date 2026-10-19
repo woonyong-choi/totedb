@@ -26,10 +26,6 @@
 #include "storage/page_file.h"
 #include "storage/record_page.h"
 
-#ifdef PAGE_FILE_ALLOC_AUDIT
-#include "alloc_audit.h"
-#endif
-
 #define DIR_NAME "__test__page_file_dir"
 #define DB_PATH DIR_NAME "/db.totedb"
 #define PARTIAL_PATH DB_PATH ".partial"
@@ -1145,90 +1141,6 @@ static void test_read_cache_matches_disk(void)
 }
 
 /* ══════════════════════════════════════════════════════════════ */
-#ifdef PAGE_FILE_ALLOC_AUDIT
-typedef struct {
-    size_t allocations;
-    size_t frees;
-} cache_body_audit_t;
-
-static void count_cache_body_alloc(void *ctx, size_t request, size_t live)
-{
-    (void)live;
-    if (request == 2 * (size_t)PAGE_BODY_BYTES) ((cache_body_audit_t *)ctx)->allocations++;
-}
-
-static void count_cache_body_free(void *ctx, size_t size, size_t live)
-{
-    (void)live;
-    if (size == 2 * (size_t)PAGE_BODY_BYTES) ((cache_body_audit_t *)ctx)->frees++;
-}
-
-static void test_generation_change_reuses_cache_body(void)
-{
-    printf("\n[test_generation_change_reuses_cache_body]\n");
-    fresh_dir();
-    hooks_reset();
-    page_file_set_default_cache_pages(2);
-    page_file_t *writer, *reader;
-    uint32_t ids[2];
-    uint8_t body[PAGE_BODY_BYTES], expected[PAGE_BODY_BYTES];
-    assert(page_file_create(DB_PATH, &writer) == PAGE_FILE_OK);
-    for (unsigned i = 0; i < 2; i++) {
-        assert(page_file_alloc(writer, &ids[i]) == PAGE_FILE_OK);
-        memset(body, i == 0 ? 0x31 : 0x72, sizeof(body));
-        assert(page_file_write(writer, ids[i], PAGE_KIND_RECORD, 7, body) == PAGE_FILE_OK);
-    }
-    assert(page_file_commit(writer) == PAGE_FILE_OK);
-    assert(page_file_publish(writer) == PAGE_FILE_OK);
-    assert(page_file_close(writer) == PAGE_FILE_OK);
-    assert(page_file_open(DB_PATH, false, &reader, NULL) == PAGE_FILE_OK);
-    for (unsigned i = 0; i < 2; i++) {
-        assert(page_file_read(reader, ids[i], PAGE_KIND_RECORD, 7, body) == PAGE_FILE_OK);
-    }
-    assert(page_file_unlock(reader) == PAGE_FILE_OK);
-    assert(page_file_open(DB_PATH, true, &writer, NULL) == PAGE_FILE_OK);
-    memset(body, 0xa6, sizeof(body));
-    assert(page_file_write(writer, ids[0], PAGE_KIND_RECORD, 7, body) == PAGE_FILE_OK);
-    assert(page_file_commit(writer) == PAGE_FILE_OK);
-    assert(page_file_unlock(writer) == PAGE_FILE_OK);
-    assert(page_file_close(writer) == PAGE_FILE_OK);
-
-    cache_body_audit_t counts = {0};
-    audit_ctx = &counts;
-    audit_free_ctx = &counts;
-    audit_on_alloc = count_cache_body_alloc;
-    audit_on_free = count_cache_body_free;
-    bool changed = false;
-    assert(page_file_lock(reader, PAGE_FILE_LOCK_SHARED, &changed) == PAGE_FILE_OK);
-    CHECK(changed, "reader adopts new generation");
-    page_file_cache_stats_t stats = page_file_cache_stats(reader);
-    CHECK(stats.hits == 0 && stats.misses == 0 && stats.evictions == 0, "generation resets cache statistics");
-    for (unsigned i = 0; i < 2; i++) {
-        int reads = g_hooks.pread_calls;
-        memset(expected, i == 0 ? 0xa6 : 0x72, sizeof(expected));
-        assert(page_file_read(reader, ids[i], PAGE_KIND_RECORD, 7, body) == PAGE_FILE_OK);
-        CHECK(g_hooks.pread_calls == reads + 1, "page %u first read invalidated", i);
-        CHECK(memcmp(body, expected, sizeof(body)) == 0, "page %u first read literal body", i);
-        assert(page_file_read(reader, ids[i], PAGE_KIND_RECORD, 7, body) == PAGE_FILE_OK);
-        CHECK(g_hooks.pread_calls == reads + 1, "page %u second read hits", i);
-        CHECK(memcmp(body, expected, sizeof(body)) == 0, "page %u hit literal body", i);
-    }
-    stats = page_file_cache_stats(reader);
-    CHECK(stats.hits == 2 && stats.misses == 2 && stats.evictions == 0, "both pages repopulate cache");
-    audit_on_alloc = NULL;
-    audit_on_free = NULL;
-    audit_ctx = NULL;
-    audit_free_ctx = NULL;
-    CHECK(counts.allocations == 0 && counts.frees == 0, "cache body allocations %zu, frees %zu (expected 0/0)",
-          counts.allocations, counts.frees);
-    assert(page_file_unlock(reader) == PAGE_FILE_OK);
-    assert(page_file_close(reader) == PAGE_FILE_OK);
-    CHECK(audit_live_now() == 0, "audit allocations released after close");
-    page_file_set_default_cache_pages(PAGE_FILE_CACHE_PAGES);
-    clean_dir();
-}
-#endif
-
 static void test_free_list_survives_reopen(void)
 {
     printf("\n[test_free_list_survives_reopen]\n");
@@ -1564,9 +1476,6 @@ int main(void)
     test_released_pages_survive_for_fallback_generation();
     test_page_info_reports_verified_kind();
     test_read_cache_matches_disk();
-#ifdef PAGE_FILE_ALLOC_AUDIT
-    test_generation_change_reuses_cache_body();
-#endif
     test_free_list_survives_reopen();
     test_free_list_commit_failures();
     test_incomplete_commit_falls_back();

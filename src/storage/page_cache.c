@@ -68,17 +68,6 @@ void page_cache_destroy(page_cache_t *cache)
     free(cache);
 }
 
-void page_cache_reset(page_cache_t *cache)
-{
-    if (cache == NULL) return;
-    memset(cache->slots, 0xFF, (cache->slot_mask + 1) * sizeof(*cache->slots));
-    memset(cache->frames, 0, cache->capacity * sizeof(*cache->frames));
-    cache->used = 0;
-    cache->hand = 0;
-    cache->stats = (page_cache_stats_t){0, 0, 0};
-    cache->disabled = false;
-}
-
 static size_t home_slot(const page_cache_t *cache, uint32_t page_id)
 {
     return ((size_t)page_id * 2654435761u) & cache->slot_mask;

@@ -246,66 +246,15 @@ void catalog_close(catalog_t *catalog)
     free(catalog);
 }
 
-static catalog_status_t clone_table(const table_t *source, table_t *out)
-{
-    table_t table = *source;
-    table.names = malloc(source->names_capacity);
-    table.columns = malloc(source->column_count * sizeof(*table.columns));
-    if (table.names == NULL || table.columns == NULL) {
-        release_table(&table);
-        return CATALOG_NOMEM;
-    }
-    memcpy(table.names, source->names, source->names_capacity);
-    memcpy(table.columns, source->columns, source->column_count * sizeof(*table.columns));
-    for (size_t i = 0; i < table.column_count; i++) {
-        catalog_column_t *column = &table.columns[i];
-        column->name = table.names + (source->columns[i].name - source->names);
-        value_view_t *value = &column->default_value;
-        if (!column->has_default || (value->type != VALUE_TEXT && value->type != VALUE_BLOB)) continue;
-        value->bytes = value->size_bytes == 0 ? NULL :
-            (const uint8_t *)table.names + (value->bytes - (const uint8_t *)source->names);
-    }
-    *out = table;
-    return CATALOG_OK;
-}
-
 catalog_status_t catalog_clone(const catalog_t *source, catalog_t **out)
 {
-    if (source == NULL || out == NULL) return CATALOG_INVALID;
-    catalog_t *clone = malloc(sizeof(*clone));
-    if (clone == NULL) return CATALOG_NOMEM;
-    *clone = *source;
-    clone->tables = NULL;
-    clone->indexes = NULL;
-    clone->count = 0;
-    clone->index_count = 0;
-    clone->capacity = source->count;
-    clone->index_capacity = source->index_count;
-    if (clone->capacity > 0) {
-        clone->tables = malloc(clone->capacity * sizeof(*clone->tables));
-        if (clone->tables == NULL) goto nomem;
-    }
-    if (clone->index_capacity > 0) {
-        clone->indexes = malloc(clone->index_capacity * sizeof(*clone->indexes));
-        if (clone->indexes == NULL) goto nomem;
-    }
-    for (size_t i = 0; i < source->count; i++) {
-        if (clone_table(&source->tables[i], &clone->tables[i]) != CATALOG_OK) goto nomem;
-        clone->count++;
-    }
-    for (size_t i = 0; i < source->index_count; i++) {
-        index_t index = source->indexes[i];
-        index.name = malloc(index.name_bytes);
-        if (index.name == NULL) goto nomem;
-        memcpy(index.name, source->indexes[i].name, index.name_bytes);
-        clone->indexes[i] = index;
-        clone->index_count++;
-    }
-    *out = clone;
-    return CATALOG_OK;
-nomem:
-    catalog_close(clone);
-    return CATALOG_NOMEM;
+    uint8_t *bytes = NULL;
+    size_t size = 0;
+    catalog_status_t status = catalog_encode(source, &bytes, &size);
+    if (status != CATALOG_OK) return status;
+    status = catalog_decode(bytes, size, out);
+    free(bytes);
+    return status;
 }
 
 static const table_t *find_by_id(const catalog_t *catalog, catalog_table_id_t id)
@@ -905,11 +854,21 @@ size_t catalog_memory_bytes(const catalog_t *catalog)
 size_t catalog_clone_peak_bytes(const catalog_t *catalog)
 {
     if (catalog == NULL) return 0;
-    size_t total = sizeof(*catalog) + catalog->count * sizeof(table_t) +
-                   catalog->index_count * sizeof(index_t);
-    for (size_t i = 0; i < catalog->count; i++) total += table_memory_bytes(&catalog->tables[i]);
-    for (size_t i = 0; i < catalog->index_count; i++) total += catalog->indexes[i].name_bytes;
-    return total;
+    size_t decoded = sizeof(*catalog) + catalog->count * sizeof(table_t);
+    size_t widest = 0;
+    for (size_t i = 0; i < catalog->count; i++) {
+        decoded += table_memory_bytes(&catalog->tables[i]);
+        if (catalog->tables[i].column_count > widest) widest = catalog->tables[i].column_count;
+    }
+    decoded += catalog->index_capacity * sizeof(index_t);
+    /* 복제 중 realloc은 이전 배열과 새 배열이 동시에 살아 있을 수 있다. */
+    if (catalog->index_capacity > 4) decoded += (catalog->index_capacity / 2u) * sizeof(index_t);
+    for (size_t i = 0; i < catalog->index_count; i++) decoded += catalog->indexes[i].name_bytes;
+    /* read_table의 임시 spec 배열과 이름 검사 refs, 마지막의 테이블 이름 refs */
+    size_t per_table = widest * (sizeof(catalog_column_spec_t) + sizeof(value_view_t) + sizeof(name_ref_t));
+    size_t names = catalog->count * sizeof(name_ref_t);
+    size_t scratch = per_table > names ? per_table : names;
+    return catalog->encoded_bytes + decoded + scratch;
 }
 
 size_t catalog_create_peak_bytes(const catalog_t *catalog, size_t column_count, size_t names_bytes)
