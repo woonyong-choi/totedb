@@ -90,6 +90,20 @@ python3 bench/queue_contention/run.py verify --output docs/experiments/queue-con
 
 새 실측은 [Linux 계획](experiments/queue-contention/linux-design.md)의 소스와 환경에서 실행한다. 실행 ID는 새로 정하고 기존 자료를 덮어쓰지 않는다. 분석·검증에는 native library가 필요하므로 먼저 빌드한다.
 
+Issue #232의 비용 가설 진단은 이미 빌드한 두 라이브러리를 사용한다. 아래 output은 존재하지 않아야 한다. 빌드를 모두 끝낸 뒤 실행하며 기존 자료를 덮어쓰지 않는다. 정식 비교와 native trace는 별개이며, 비Linux·도구 및 권한 부재는 `unavailable`로 보존한다.
+
+```sh
+python3 -m unittest discover -s tests -p test_queue_diagnose.py -v
+python3 bench/queue_contention/diagnose.py compare \
+  --baseline-lib "$BASELINE_LIB" --candidate-lib "$CANDIDATE_LIB" \
+  --output .local/runs/queue-cost-compare --jobs 4096 --repetitions 5 --workers 1,8
+python3 bench/queue_contention/diagnose.py trace \
+  --library "$CANDIDATE_LIB" --engine totedb \
+  --output .local/runs/queue-cost-trace --jobs 4096 --workers 8
+```
+
+작은 정확성 smoke는 compare의 `--jobs 12 --repetitions 1 --workers 1`로 실행한다. 성능 비교에 사용하지 않는다. PR에 `queue-cost-experiment` label을 붙이면 선택형 CI가 고정 기준선과 candidate를 먼저 빌드하고 비교·ToteDB/SQLite trace를 직렬 수행한다. 원본 JSON·로그·DB와 라이브러리 해시는 `queue-cost-hypotheses` artifact에 남는다. 조건과 채택 기준은 [Linux 후속 계획](experiments/queue-contention/linux-design.md#issue-232-후속-비용-진단과-전후-비교)에 있다.
+
 TEXT 기본 키 범위 개선의 전후 비교는 [TEXT 색인 구간 순회 결과](experiments/text-range/report.md)에 있다. 고정 소스의 기존 공식 E를 같은 VM에서 전후로 실행하며 [Linux 계획](experiments/text-range/linux-design.md)에 조건과 순서를 둔다.
 
 ```sh

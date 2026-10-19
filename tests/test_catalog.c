@@ -666,8 +666,167 @@ static void defaults_round_trip(void)
     catalog_close(catalog);
 }
 
+static catalog_t *clone_fixture(void)
+{
+    catalog_t *catalog;
+    assert(catalog_open_empty(&catalog) == CATALOG_OK);
+    assert(create_users(catalog) == 1);
+    assert(create_orders(catalog) == 2);
+    value_view_t defaults[] = {
+        {.type = VALUE_INTEGER, .integer = -17},
+        {.type = VALUE_REAL, .real = -2.75},
+        {.type = VALUE_TEXT, .bytes = (const uint8_t *)"a\0z", .size_bytes = 3},
+        {.type = VALUE_BLOB, .bytes = (const uint8_t *)"\x00\xff\x42", .size_bytes = 3},
+        {.type = VALUE_TEXT, .bytes = NULL, .size_bytes = 0},
+        {.type = VALUE_BLOB, .bytes = NULL, .size_bytes = 0},
+    };
+    catalog_column_spec_t columns[] = {
+        {"id", 2, VALUE_INTEGER, true, &defaults[0]},
+        {"real", 4, VALUE_REAL, false, &defaults[1]},
+        {"text", 4, VALUE_TEXT, false, &defaults[2]},
+        {"blob", 4, VALUE_BLOB, true, &defaults[3]},
+        {"empty_text", 10, VALUE_TEXT, false, &defaults[4]},
+        {"empty_blob", 10, VALUE_BLOB, false, &defaults[5]},
+        {"unset", 5, VALUE_INTEGER, false, NULL},
+    };
+    catalog_table_id_t id;
+    assert(create(catalog, "defaults", columns, 7, 0, true, &id) == CATALOG_OK && id == 3);
+    assert(catalog_drop_table(catalog, 2) == CATALOG_OK);
+    assert(catalog_set_row_count(catalog, 3, 987) == CATALOG_OK);
+    assert(catalog_set_locators(catalog, 3, 71, 72) == CATALOG_OK);
+    assert(catalog_raise_identity(catalog, 3, 1234) == CATALOG_OK);
+    assert(catalog_add_index(catalog, 3, "unique_real", 11, 1, true, false) == CATALOG_OK);
+    assert(catalog_add_index(catalog, 3, "ordered_text", 12, 2, false, true) == CATALOG_OK);
+    assert(catalog_set_index_root(catalog, "unique_real", 11, 81) == CATALOG_OK);
+    assert(catalog_set_index_root(catalog, "ordered_text", 12, 82) == CATALOG_OK);
+    return catalog;
+}
+
+static void assert_clone_fixture(const catalog_t *catalog)
+{
+    assert(catalog_table_count(catalog) == 2 && catalog_generation(catalog) == 11);
+    catalog_table_view_t view;
+    assert(catalog_table_at(catalog, 0, &view) == CATALOG_OK && view.id == 1);
+    assert(view.name_bytes == 5 && memcmp(view.name, "users", 5) == 0);
+    assert(catalog_table_at(catalog, 1, &view) == CATALOG_OK && view.id == 3);
+    assert(view.name_bytes == 8 && memcmp(view.name, "defaults", 8) == 0);
+    assert(view.column_count == 7 && view.primary_key_column == 0 && view.has_identity);
+    assert(view.row_count == 987 && view.next_identity == 1234);
+    assert(view.heap_root == 71 && view.primary_root == 72);
+    const char *names[] = {"id", "real", "text", "blob", "empty_text", "empty_blob", "unset"};
+    const value_type_t types[] = {VALUE_INTEGER, VALUE_REAL, VALUE_TEXT, VALUE_BLOB,
+                                 VALUE_TEXT, VALUE_BLOB, VALUE_INTEGER};
+    for (size_t i = 0; i < 7; i++) {
+        const catalog_column_t *col = &view.columns[i];
+        assert(col->name_bytes == strlen(names[i]) && memcmp(col->name, names[i], col->name_bytes) == 0);
+        assert(col->type == types[i] && col->not_null == (i == 0 || i == 3));
+        assert(col->has_default == (i < 6));
+        if (i < 6) assert(col->default_value.type == types[i]);
+    }
+    assert(view.columns[0].default_value.integer == -17);
+    assert(view.columns[1].default_value.real == -2.75);
+    assert(view.columns[2].default_value.size_bytes == 3);
+    assert(memcmp(view.columns[2].default_value.bytes, "a\0z", 3) == 0);
+    assert(view.columns[3].default_value.size_bytes == 3);
+    assert(memcmp(view.columns[3].default_value.bytes, "\x00\xff\x42", 3) == 0);
+    assert(view.columns[4].default_value.size_bytes == 0 && view.columns[4].default_value.bytes == NULL);
+    assert(view.columns[5].default_value.size_bytes == 0 && view.columns[5].default_value.bytes == NULL);
+    assert(catalog_index_count(catalog, 3) == 2 && catalog_index_count(catalog, 2) == 0);
+    catalog_index_view_t index;
+    assert(catalog_index_at(catalog, 3, 0, &index) == CATALOG_OK);
+    assert(index.name_bytes == 11 && memcmp(index.name, "unique_real", 11) == 0);
+    assert(index.table_id == 3 && index.column == 1 && index.unique && !index.ordered && index.root == 81);
+    assert(catalog_index_at(catalog, 3, 1, &index) == CATALOG_OK);
+    assert(index.name_bytes == 12 && memcmp(index.name, "ordered_text", 12) == 0);
+    assert(index.table_id == 3 && index.column == 2 && !index.unique && index.ordered && index.root == 82);
+}
+
+static void assert_clone_owns_storage(const catalog_t *source, const catalog_t *clone)
+{
+    assert(clone != source);
+    catalog_table_view_t left = describe(source, 3), right = describe(clone, 3);
+    assert(left.name != right.name && left.columns != right.columns);
+    for (size_t i = 0; i < left.column_count; i++) assert(left.columns[i].name != right.columns[i].name);
+    assert(left.columns[2].default_value.bytes != right.columns[2].default_value.bytes);
+    assert(left.columns[3].default_value.bytes != right.columns[3].default_value.bytes);
+    for (size_t i = 0; i < 2; i++) {
+        catalog_index_view_t a, b;
+        assert(catalog_index_at(source, 3, i, &a) == CATALOG_OK);
+        assert(catalog_index_at(clone, 3, i, &b) == CATALOG_OK);
+        assert(a.name != b.name);
+    }
+}
+
+static void clone_preserves_metadata_and_independent_lifetimes(void)
+{
+    catalog_t *source = clone_fixture(), *clone;
+    snapshot_t before = snapshot(source);
+    assert(catalog_clone(source, &clone) == CATALOG_OK);
+    assert_clone_owns_storage(source, clone);
+    assert_clone_fixture(clone);
+    assert_same(clone, &before);
+
+    assert(catalog_drop_table(source, 3) == CATALOG_OK);
+    assert_clone_fixture(clone);
+    catalog_close(source);
+    assert_clone_fixture(clone);
+    assert_same(clone, &before);
+    catalog_table_id_t id;
+    catalog_column_spec_t one[] = {column("x", VALUE_INTEGER, false)};
+    assert(create(clone, "next", one, 1, CATALOG_NO_COLUMN, false, &id) == CATALOG_OK && id == 4);
+    uint64_t identity;
+    assert(catalog_reserve_identity(clone, 3, &identity) == CATALOG_OK && identity == 1234);
+    catalog_close(clone);
+    free(before.bytes);
+
+    source = clone_fixture();
+    before = snapshot(source);
+    assert(catalog_clone(source, &clone) == CATALOG_OK);
+    assert(catalog_drop_table(clone, 3) == CATALOG_OK);
+    assert(catalog_set_row_count(clone, 1, 456) == CATALOG_OK);
+    assert_clone_fixture(source);
+    assert_same(source, &before);
+    catalog_close(clone);
+    assert_clone_fixture(source);
+    assert_same(source, &before);
+    assert(create(source, "next", one, 1, CATALOG_NO_COLUMN, false, &id) == CATALOG_OK && id == 4);
+    free(before.bytes);
+    catalog_close(source);
+}
+
+static void clone_empty_and_invalid_arguments(void)
+{
+    catalog_t *source, *clone;
+    assert(catalog_open_empty(&source) == CATALOG_OK);
+    snapshot_t before = snapshot(source);
+    assert(catalog_clone(source, &clone) == CATALOG_OK && clone != source);
+    assert(catalog_table_count(clone) == 0 && catalog_generation(clone) == 0);
+    assert_same(clone, &before);
+    catalog_close(clone);
+    static char marker;
+    clone = (catalog_t *)&marker;
+    assert(catalog_clone(NULL, &clone) == CATALOG_INVALID && clone == (catalog_t *)&marker);
+    assert(catalog_clone(source, NULL) == CATALOG_INVALID);
+    assert(catalog_clone(NULL, NULL) == CATALOG_INVALID);
+    assert_same(source, &before);
+    catalog_table_id_t id;
+    catalog_column_spec_t one[] = {column("x", VALUE_INTEGER, false)};
+    assert(create(source, "first", one, 1, CATALOG_NO_COLUMN, false, &id) == CATALOG_OK && id == 1);
+    assert(catalog_drop_table(source, id) == CATALOG_OK);
+    assert(catalog_clone(source, &clone) == CATALOG_OK && clone != source);
+    assert(catalog_table_count(clone) == 0 && catalog_generation(clone) == 2);
+    assert(create(clone, "next", one, 1, CATALOG_NO_COLUMN, false, &id) == CATALOG_OK && id == 2);
+    catalog_close(clone);
+    assert(catalog_table_count(source) == 0 && catalog_generation(source) == 2);
+    assert(create(source, "next", one, 1, CATALOG_NO_COLUMN, false, &id) == CATALOG_OK && id == 2);
+    free(before.bytes);
+    catalog_close(source);
+}
+
 int main(void)
 {
+    clone_preserves_metadata_and_independent_lifetimes();
+    clone_empty_and_invalid_arguments();
     defaults_round_trip();
     tables_are_independent();
     duplicate_and_missing_keep_catalog();

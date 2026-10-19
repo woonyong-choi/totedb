@@ -174,8 +174,77 @@ static void decode_failure_keeps_output_and_frees_partial_work(void)
     assert(live == 0);
 }
 
+static catalog_t *clone_fault_fixture(void)
+{
+    catalog_t *catalog = four_tables();
+    assert(catalog_drop_table(catalog, 2) == CATALOG_OK);
+    value_view_t defaults[] = {
+        {.type = VALUE_INTEGER, .integer = -17}, {.type = VALUE_REAL, .real = 2.75},
+        {.type = VALUE_TEXT, .bytes = (const uint8_t *)"a\0z", .size_bytes = 3},
+        {.type = VALUE_BLOB, .bytes = (const uint8_t *)"\x00\xff", .size_bytes = 2},
+        {.type = VALUE_TEXT}, {.type = VALUE_BLOB},
+    };
+    catalog_column_spec_t columns[] = {
+        {"i", 1, VALUE_INTEGER, true, &defaults[0]}, {"r", 1, VALUE_REAL, false, &defaults[1]},
+        {"t", 1, VALUE_TEXT, false, &defaults[2]}, {"b", 1, VALUE_BLOB, false, &defaults[3]},
+        {"et", 2, VALUE_TEXT, false, &defaults[4]}, {"eb", 2, VALUE_BLOB, false, &defaults[5]},
+    };
+    catalog_table_spec_t spec = {"defaults", 8, columns, 6, 0, true};
+    catalog_table_id_t id;
+    assert(catalog_create_table(catalog, &spec, &id) == CATALOG_OK && id == 5);
+    assert(catalog_set_row_count(catalog, id, 987) == CATALOG_OK);
+    assert(catalog_set_locators(catalog, id, 71, 72) == CATALOG_OK);
+    assert(catalog_raise_identity(catalog, id, 1234) == CATALOG_OK);
+    assert(catalog_add_index(catalog, id, "unique_real", 11, 1, true, false) == CATALOG_OK);
+    assert(catalog_add_index(catalog, id, "ordered_text", 12, 2, false, true) == CATALOG_OK);
+    assert(catalog_set_index_root(catalog, "unique_real", 11, 81) == CATALOG_OK);
+    assert(catalog_set_index_root(catalog, "ordered_text", 12, 82) == CATALOG_OK);
+    return catalog;
+}
+
+static void clone_failures_preserve_source_output_and_allocations(catalog_t *source)
+{
+    snapshot_t before = snapshot(source);
+    uint64_t generation = catalog_generation(source);
+    long baseline = live;
+    static char marker;
+    bool succeeded = false;
+    int failures = 0;
+    for (int step = 1; step <= 200; step++) {
+        catalog_t *out = (catalog_t *)&marker;
+        calls = 0;
+        fail_at = step;
+        catalog_status_t status = catalog_clone(source, &out);
+        int clone_calls = calls;
+        fail_at = 0;
+        assert(catalog_generation(source) == generation);
+        assert_same(source, &before);
+        if (status == CATALOG_OK) {
+            assert(clone_calls < step && failures == step - 1 && out != source);
+            assert_same(out, &before);
+            catalog_close(out);
+            assert(live == baseline);
+            succeeded = true;
+            break;
+        }
+        assert(status == CATALOG_NOMEM && out == (catalog_t *)&marker);
+        assert(live == baseline);
+        failures++;
+    }
+    assert(succeeded && failures > 0);
+    printf("catalog clone: %zu tables, %d allocation failures preserve source/output/live allocations\n",
+           catalog_table_count(source), failures);
+    catalog_test_free(before.bytes);
+    catalog_close(source);
+    assert(live == 0);
+}
+
 int main(void)
 {
+    clone_failures_preserve_source_output_and_allocations(clone_fault_fixture());
+    catalog_t *empty;
+    assert(catalog_open_empty(&empty) == CATALOG_OK);
+    clone_failures_preserve_source_output_and_allocations(empty);
     create_preserves_catalog();
     open_empty_failure_keeps_output();
     encode_failure_keeps_output();

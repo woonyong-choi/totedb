@@ -112,6 +112,8 @@ typedef struct {
 
 catalog_status_t catalog_open_empty(catalog_t **out);
 void catalog_close(catalog_t *catalog);
+/* codec으로 유효한 값을 독립 소유하는 복제본을 만들며 실패하면 원본과 *out을 바꾸지 않는다. */
+catalog_status_t catalog_clone(const catalog_t *source, catalog_t **out);
 
 /*
  * 모든 변경 함수는 실패하면 카탈로그·카운터·출력 인자를 바꾸지 않는다.

@@ -569,17 +569,6 @@ heap_status_t configure_secondary(heap_batch_t *batch, const catalog_t *catalog,
     return heap_batch_configure_secondary(batch, specs, count);
 }
 
-static catalog_status_t clone_catalog(const catalog_t *source, catalog_t **clone)
-{
-    uint8_t *bytes = NULL;
-    size_t size = 0;
-    catalog_status_t status = catalog_encode(source, &bytes, &size);
-    if (status != CATALOG_OK) return status;
-    status = catalog_decode(bytes, size, clone);
-    free(bytes);
-    return status;
-}
-
 /* ── 문장 몫의 작업 카탈로그 ── */
 
 void work_close(database_t *db, work_t *work)
@@ -597,7 +586,7 @@ bool work_clone(database_t *db, work_t *work)
     size_t peak = catalog_clone_peak_bytes(base);
     if (!q_reserve(db, peak)) return false;
     catalog_t *clone = NULL;
-    if (clone_catalog(base, &clone) != CATALOG_OK) {
+    if (catalog_clone(base, &clone) != CATALOG_OK) {
         q_release(db, peak);
         return false;
     }
