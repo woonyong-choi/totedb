@@ -42,18 +42,29 @@ class SQLDatabase:
         self.config: dict[str, Any] = {}
         if engine == "tote":
             library = Path(os.environ["TOTEDB_LIB"])
-            if not library.is_file() or _digest(library) != os.environ.get("LOCAL_DB_LIBRARY_SHA256", _digest(library)):
-                raise ImportError("explicit native library is missing or changed; fallback is forbidden")
+            if not library.is_file() or _digest(library) != os.environ.get(
+                "LOCAL_DB_LIBRARY_SHA256", _digest(library)
+            ):
+                raise ImportError(
+                    "explicit native library is missing or changed; fallback is forbidden"
+                )
             import totedb
 
             self.db = totedb.Database(path)
-            self.config = {"version": totedb.__version__, "durability": "product default synchronous commit"}
+            self.config = {
+                "version": totedb.__version__,
+                "durability": "product default synchronous commit",
+            }
         elif engine == "duckdb":
             module = _import_pinned("duckdb")
             self.db = module.connect(str(path), config={"threads": "1"})
             self.config = {
                 "version": module.__version__,
-                "settings": dict(self.db.execute("SELECT name, value FROM duckdb_settings() ORDER BY name").fetchall()),
+                "settings": dict(
+                    self.db.execute(
+                        "SELECT name, value FROM duckdb_settings() ORDER BY name"
+                    ).fetchall()
+                ),
                 "durability": "default WAL commit; no SQLite PRAGMAs",
             }
         else:
@@ -62,10 +73,25 @@ class SQLDatabase:
             self.db.execute(f"PRAGMA journal_mode={mode}").fetchall()
             self.db.execute("PRAGMA synchronous=FULL").fetchall()
             self.db.execute("PRAGMA wal_autocheckpoint=1000").fetchall()
-            pragmas = ("journal_mode", "synchronous", "wal_autocheckpoint", "fullfsync", "checkpoint_fullfsync")
-            self.config = {name: self.db.execute(f"PRAGMA {name}").fetchone()[0] for name in pragmas}
-            self.config.update(version=sqlite3.sqlite_version, isolation_level=None, cached_statements=128)
-            self.config["compile_options"] = [row[0] for row in self.db.execute("PRAGMA compile_options").fetchall()]
+            pragmas = (
+                "journal_mode",
+                "synchronous",
+                "wal_autocheckpoint",
+                "fullfsync",
+                "checkpoint_fullfsync",
+            )
+            self.config = {
+                name: self.db.execute(f"PRAGMA {name}").fetchone()[0]
+                for name in pragmas
+            }
+            self.config.update(
+                version=sqlite3.sqlite_version,
+                isolation_level=None,
+                cached_statements=128,
+            )
+            self.config["compile_options"] = [
+                row[0] for row in self.db.execute("PRAGMA compile_options").fetchall()
+            ]
             if self.config["journal_mode"] != mode or self.config["synchronous"] != 2:
                 raise ValueError("sqlite durability configuration was not applied")
 
@@ -80,7 +106,9 @@ class SQLDatabase:
 
     def create(self, tables: tuple[str, ...]) -> None:
         for table in tables:
-            self.execute(f"CREATE TABLE {table} (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)")
+            self.execute(
+                f"CREATE TABLE {table} (id INTEGER PRIMARY KEY, payload BLOB NOT NULL)"
+            )
 
     def commit_records(self, records: list[tuple[str, int, bytes, bytes]]) -> None:
         if self.engine == "tote":
@@ -88,7 +116,10 @@ class SQLDatabase:
         else:
             self.execute("BEGIN")
         for table, identifier, payload, _ in records:
-            self.execute(f"INSERT INTO {table} (id, payload) VALUES (?, ?)", (identifier, payload))
+            self.execute(
+                f"INSERT INTO {table} (id, payload) VALUES (?, ?)",
+                (identifier, payload),
+            )
         if self.engine == "tote":
             self.transaction.commit()
             self.transaction = None
@@ -107,7 +138,12 @@ class LMDBDatabase:
     def __init__(self, engine: str, path: Path) -> None:
         module = _import_pinned("lmdb")
         self.db = module.open(
-            str(path), map_size=256 * 1024 * 1024, sync=True, metasync=True, writemap=False, lock=True
+            str(path),
+            map_size=256 * 1024 * 1024,
+            sync=True,
+            metasync=True,
+            writemap=False,
+            lock=True,
         )
         self.config = {
             "version": module.__version__,
@@ -175,15 +211,22 @@ def _import_pinned(name: str) -> Any:
     module = importlib.import_module(name)
     actual = importlib.metadata.version(name)
     if actual != PINS[name]:
-        raise ImportError(f"package version mismatch: {name} expected {PINS[name]}, got {actual}")
+        raise ImportError(
+            f"package version mismatch: {name} expected {PINS[name]}, got {actual}"
+        )
     deps = os.environ.get("LOCAL_DB_DEPS")
-    if deps and not Path(module.__file__).resolve().is_relative_to(Path(deps).resolve()):
+    if deps and not Path(module.__file__).resolve().is_relative_to(
+        Path(deps).resolve()
+    ):
         raise ImportError(f"package loaded outside pinned dependency directory: {name}")
     return module
 
 
 def _encode(value: Any) -> bytes:
-    return (json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n").encode()
+    return (
+        json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False, allow_nan=False)
+        + "\n"
+    ).encode()
 
 
 def _write_json(path: Path, value: Any) -> None:
@@ -214,23 +257,33 @@ def _key(table: str, identifier: int) -> bytes:
     return (b"b" if table == "business" else b"o") + identifier.to_bytes(8, "big")
 
 
-def _prepare(workload: str, payload_bytes: int, count: int) -> tuple[tuple[str, ...], list[Any]]:
+def _prepare(
+    workload: str, payload_bytes: int, count: int
+) -> tuple[tuple[str, ...], list[Any]]:
     tables = ("business",) if workload == "write" else ("business", "outbox")
     batch_size = 32 if workload == "atomic-outbox-batch" else 1
     records = []
     for identifier in range(1, count + 1):
         seed = hashlib.sha256(b"local-db-244" + identifier.to_bytes(8, "big")).digest()
         payload = (seed * math.ceil(payload_bytes / len(seed)))[:payload_bytes]
-        records.extend((table, identifier, payload, _key(table, identifier)) for table in tables)
+        records.extend(
+            (table, identifier, payload, _key(table, identifier)) for table in tables
+        )
     width = batch_size * len(tables)
-    return tables, [records[index : index + width] for index in range(0, len(records), width)]
+    return tables, [
+        records[index : index + width] for index in range(0, len(records), width)
+    ]
 
 
 def _audit(db: Any, tables: tuple[str, ...], batches: list[Any]) -> dict[str, Any]:
-    expected = sorted((key, payload) for batch in batches for _, _, payload, key in batch)
+    expected = sorted(
+        (key, payload) for batch in batches for _, _, payload, key in batch
+    )
     actual = sorted(db.read_records(tables))
     if actual != expected:
-        raise ValueError(f"record audit failed: expected {len(expected)} records, got {len(actual)}")
+        raise ValueError(
+            f"record audit failed: expected {len(expected)} records, got {len(actual)}"
+        )
     return _audit_digest(actual)
 
 
@@ -252,7 +305,9 @@ def _open_database(engine: str, root: Path) -> Any:
     return factory(engine, root / "database")
 
 
-def _worker(condition: dict[str, Any], trial: Path, count: int = OPERATIONS) -> dict[str, Any]:
+def _worker(
+    condition: dict[str, Any], trial: Path, count: int = OPERATIONS
+) -> dict[str, Any]:
     result = {
         **condition,
         "status": "ERROR",
@@ -328,7 +383,9 @@ def _schedule() -> list[dict[str, Any]]:
     return schedule
 
 
-def _run_trial(condition: dict[str, Any], trial: Path, env: dict[str, str], *, smoke: bool = False) -> dict[str, Any]:
+def _run_trial(
+    condition: dict[str, Any], trial: Path, env: dict[str, str], *, smoke: bool = False
+) -> dict[str, Any]:
     trial.mkdir(parents=True)
     command = [
         sys.executable,
@@ -348,12 +405,28 @@ def _run_trial(condition: dict[str, Any], trial: Path, env: dict[str, str], *, s
             "cwd": str(ROOT),
             "env": {
                 key: env.get(key)
-                for key in ("PYTHONPATH", "TOTEDB_LIB", "PYTHONNOUSERSITE", "LOCAL_DB_DEPS", "LOCAL_DB_LIBRARY_SHA256")
+                for key in (
+                    "PYTHONPATH",
+                    "TOTEDB_LIB",
+                    "PYTHONNOUSERSITE",
+                    "LOCAL_DB_DEPS",
+                    "LOCAL_DB_LIBRARY_SHA256",
+                )
             },
         },
     )
-    with (trial / "stdout.json").open("wb") as stdout, (trial / "stderr.log").open("wb") as stderr:
-        process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=stdout, stderr=stderr, start_new_session=True)
+    with (
+        (trial / "stdout.json").open("wb") as stdout,
+        (trial / "stderr.log").open("wb") as stderr,
+    ):
+        process = subprocess.Popen(
+            command,
+            cwd=ROOT,
+            env=env,
+            stdout=stdout,
+            stderr=stderr,
+            start_new_session=True,
+        )
         try:
             exit_code = process.wait(timeout=TIMEOUT_S)
             status = "ERROR"
@@ -370,7 +443,12 @@ def _run_trial(condition: dict[str, Any], trial: Path, env: dict[str, str], *, s
     }
     try:
         raw = json.loads((trial / "stdout.json").read_bytes())
-        if not isinstance(raw, dict) or raw.get("status") not in {"PASS", "ERROR", "TIMEOUT", "UNAVAILABLE"}:
+        if not isinstance(raw, dict) or raw.get("status") not in {
+            "PASS",
+            "ERROR",
+            "TIMEOUT",
+            "UNAVAILABLE",
+        }:
             raise ValueError("invalid worker result shape")
         if status != "TIMEOUT":
             result = raw
@@ -396,13 +474,18 @@ def _statistics(values: list[float]) -> dict[str, float]:
 
 
 def _paired_ratios(rows: list[dict[str, Any]], engine: str) -> dict[str, Any]:
-    matching = {(row["engine"], row["repeat"]): row for row in rows if row["status"] == "PASS"}
+    matching = {
+        (row["engine"], row["repeat"]): row for row in rows if row["status"] == "PASS"
+    }
     ratios = []
     for repeat in range(1, 6):
         tote = matching.get(("tote", repeat))
         other = matching.get((engine, repeat))
         if tote is None or other is None:
-            return {"status": "INCOMPARABLE", "reason": "five matched PASS pairs required"}
+            return {
+                "status": "INCOMPARABLE",
+                "reason": "five matched PASS pairs required",
+            }
         ratios.append(other["elapsed_ns"] / tote["elapsed_ns"])
     rng = random.Random(244)
     bootstrap = [statistics.median(rng.choices(ratios, k=5)) for _ in range(10000)]
@@ -410,47 +493,92 @@ def _paired_ratios(rows: list[dict[str, Any]], engine: str) -> dict[str, Any]:
         "status": "PASS",
         "tote_ops_per_s_over_engine": ratios,
         **_statistics(ratios),
-        "median_bootstrap_95pct": [_percentile(bootstrap, 0.025), _percentile(bootstrap, 0.975)],
+        "median_bootstrap_95pct": [
+            _percentile(bootstrap, 0.025),
+            _percentile(bootstrap, 0.975),
+        ],
         "bootstrap_samples": 10000,
         "seed": 244,
     }
 
 
-def _analyze_rows(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def _analyze_rows(
+    rows: list[dict[str, Any]], preflight: list[dict[str, Any]] | None = None
+) -> dict[str, Any]:
     measured = [row for row in rows if not row["warmup"]]
+    controls = {row["engine"]: row["status"] == "PASS" for row in preflight or []}
     groups = []
     ratios = []
     for workload in WORKLOADS:
         for payload in (256, 4096):
-            selected = [row for row in measured if row["workload"] == workload and row["payload_bytes"] == payload]
+            selected = [
+                row
+                for row in measured
+                if row["workload"] == workload and row["payload_bytes"] == payload
+            ]
+            eligible = set()
             for engine in ENGINES:
                 trials = [row for row in selected if row["engine"] == engine]
                 passed = [row for row in trials if row["status"] == "PASS"]
+                warmups = [
+                    row
+                    for row in rows
+                    if row["workload"] == workload
+                    and row["payload_bytes"] == payload
+                    and row["engine"] == engine
+                    and row["warmup"]
+                ]
+                ready = (
+                    len(passed) == 5
+                    and len(warmups) == 1
+                    and warmups[0]["status"] == "PASS"
+                    and controls.get(engine, False)
+                )
+                if ready:
+                    eligible.add(engine)
                 group: dict[str, Any] = {
                     "engine": engine,
                     "workload": workload,
                     "payload_bytes": payload,
-                    "status": "PASS" if len(passed) == 5 else "INCOMPARABLE",
+                    "status": "PASS" if ready else "INCOMPARABLE",
                     "pass_count": len(passed),
                     "statuses": [row["status"] for row in trials],
                     "per_trial": [],
                 }
-                if passed:
-                    group["ops_per_s"] = _statistics([OPERATIONS * 1e9 / row["elapsed_ns"] for row in passed])
+                if ready:
+                    group["ops_per_s"] = _statistics(
+                        [OPERATIONS * 1e9 / row["elapsed_ns"] for row in passed]
+                    )
                     group["per_trial"] = [
                         {
                             "repeat": row["repeat"],
                             "ops_per_s": OPERATIONS * 1e9 / row["elapsed_ns"],
                             "transaction_latency_ns": {
                                 name: _percentile(row["commit_latency_ns"], fraction)
-                                for name, fraction in (("p50", 0.5), ("p95", 0.95), ("p99", 0.99))
+                                for name, fraction in (
+                                    ("p50", 0.5),
+                                    ("p95", 0.95),
+                                    ("p99", 0.99),
+                                )
                             },
                         }
                         for row in passed
                     ]
                 groups.append(group)
             ratios.extend(
-                {"engine": engine, "workload": workload, "payload_bytes": payload, **_paired_ratios(selected, engine)}
+                {
+                    "engine": engine,
+                    "workload": workload,
+                    "payload_bytes": payload,
+                    **(
+                        _paired_ratios(selected, engine)
+                        if {"tote", engine} <= eligible
+                        else {
+                            "status": "INCOMPARABLE",
+                            "reason": "preflight, warmup and five PASS runs required",
+                        }
+                    ),
+                }
                 for engine in ENGINES[1:]
             )
     return {
@@ -474,7 +602,9 @@ def _validate_pass(row: dict[str, Any], count: int = OPERATIONS) -> None:
     if row["elapsed_ns"] < sum(latencies):
         raise ValueError("elapsed time excludes transaction calls")
     _, batches = _prepare(row["workload"], row["payload_bytes"], count)
-    expected = _audit_digest(sorted((key, payload) for batch in batches for _, _, payload, key in batch))
+    expected = _audit_digest(
+        sorted((key, payload) for batch in batches for _, _, payload, key in batch)
+    )
     if row["audit_before_close"] != expected or row["audit_reopened"] != expected:
         raise ValueError("invalid PASS exact-content audit")
     if not row["final_files"]:
@@ -486,7 +616,12 @@ def _validate_pass(row: dict[str, Any], count: int = OPERATIONS) -> None:
             raise ValueError("sqlite FULL/journal mode mismatch")
     if row["engine"] == "lmdb" and any(
         config["flags"][key] != value
-        for key, value in {"sync": True, "metasync": True, "writemap": False, "lock": True}.items()
+        for key, value in {
+            "sync": True,
+            "metasync": True,
+            "writemap": False,
+            "lock": True,
+        }.items()
     ):
         raise ValueError("lmdb durability flags mismatch")
     if row["engine"] == "rocksdb" and (not config["sync"] or config["disable_wal"]):
@@ -507,8 +642,14 @@ def _load_trial(trial: Path, condition: dict[str, Any], count: int) -> dict[str,
         raw = json.loads((trial / "stdout.json").read_bytes())
         if row != {**raw, "exit_code": 0}:
             raise ValueError("PASS raw/result mismatch")
-        actual = {name: (info["bytes"], info["sha256"]) for name, info in _files(trial / "db").items()}
-        expected = {name: (info["bytes"], info["sha256"]) for name, info in row["final_files"].items()}
+        actual = {
+            name: (info["bytes"], info["sha256"])
+            for name, info in _files(trial / "db").items()
+        }
+        expected = {
+            name: (info["bytes"], info["sha256"])
+            for name, info in row["final_files"].items()
+        }
         if actual != expected:
             raise ValueError("final database files differ from worker evidence")
     if row["status"] not in {"PASS", "ERROR", "TIMEOUT", "UNAVAILABLE"}:
@@ -527,17 +668,30 @@ def _load_rows(root: Path, manifest: dict[str, Any]) -> list[dict[str, Any]]:
 
 def _identity(library: Path) -> dict[str, Any]:
     diff = subprocess.run(
-        ["git", "diff", "a86cf241", "--", *PRODUCT_PATHS], cwd=ROOT, capture_output=True, check=True
+        ["git", "diff", "a86cf241", "--", *PRODUCT_PATHS],
+        cwd=ROOT,
+        capture_output=True,
+        check=True,
     ).stdout
     if diff:
         raise ValueError("product source differs from a86cf241")
     subprocess.run(
-        [sys.executable, str(ROOT / "tools/verify_benchmark.py"), str(library)], check=True, capture_output=True
+        [sys.executable, str(ROOT / "tools/verify_benchmark.py"), str(library)],
+        check=True,
+        capture_output=True,
     )
     fingerprint = (library.parent.parent / ".build-fingerprint").read_text()
-    shared_flags = next(line for line in fingerprint.splitlines() if line.startswith("SHARED_CFLAGS="))
-    if "BENCHMARK=0\n" not in fingerprint or "-O2" not in shared_flags or "sanitize" in fingerprint:
-        raise ValueError("native library must be prebuilt -O2 release BENCHMARK=0 without sanitizers")
+    shared_flags = next(
+        line for line in fingerprint.splitlines() if line.startswith("SHARED_CFLAGS=")
+    )
+    if (
+        "BENCHMARK=0\n" not in fingerprint
+        or "-O2" not in shared_flags
+        or "sanitize" in fingerprint
+    ):
+        raise ValueError(
+            "native library must be prebuilt -O2 release BENCHMARK=0 without sanitizers"
+        )
     sources = [
         path
         for folder in ("src", "include", "python/totedb")
@@ -545,7 +699,13 @@ def _identity(library: Path) -> dict[str, Any]:
         if path.is_file() and path.suffix in {".c", ".h", ".py"}
     ]
     sources.extend(
-        ROOT / name for name in ("Makefile", "setup.py", "bench/local_db_compare.py", "tools/verify_benchmark.py")
+        ROOT / name
+        for name in (
+            "Makefile",
+            "setup.py",
+            "bench/local_db_compare.py",
+            "tools/verify_benchmark.py",
+        )
     )
     return {
         "base": "a86cf241",
@@ -553,7 +713,9 @@ def _identity(library: Path) -> dict[str, Any]:
         "native_benchmark": "OFF; verify_benchmark.py succeeded",
         "build_fingerprint": fingerprint,
         "library_sha256": _digest(library),
-        "sources": {str(path.relative_to(ROOT)): _digest(path) for path in sorted(sources)},
+        "sources": {
+            str(path.relative_to(ROOT)): _digest(path) for path in sorted(sources)
+        },
     }
 
 
@@ -562,7 +724,10 @@ def _package_evidence(deps: Path) -> dict[str, Any]:
         path
         for path in deps.rglob("*")
         if path.is_file()
-        and (path.suffix in {".so", ".dylib", ".pyd"} or path.name in {"METADATA", "RECORD", "direct_url.json"})
+        and (
+            path.suffix in {".so", ".dylib", ".pyd"}
+            or path.name in {"METADATA", "RECORD", "direct_url.json"}
+        )
     )
     return {str(path.relative_to(deps)): _digest(path) for path in paths}
 
@@ -602,18 +767,32 @@ def _verify(root: Path) -> dict[str, Any]:
     identity = manifest["identity_before"]
     if _digest(root / manifest["native_library"]) != identity["library_sha256"]:
         raise ValueError("native library evidence mismatch")
-    if _digest(root / "evidence/requirements.lock") != manifest["installation_lock_sha256"]:
+    if (
+        _digest(root / "evidence/requirements.lock")
+        != manifest["installation_lock_sha256"]
+    ):
         raise ValueError("installation lock evidence mismatch")
     if len(manifest["preflight"]) != len(ENGINES):
         raise ValueError("incomplete preflight")
     for engine in ENGINES:
         row = _load_trial(root / "preflight" / engine, {"engine": engine}, 4)
-        if {key: row[key] for key in ("engine", "status", "exit_code")} not in manifest["preflight"]:
+        if {key: row[key] for key in ("engine", "status", "exit_code")} not in manifest[
+            "preflight"
+        ]:
             raise ValueError("preflight manifest/result mismatch")
     rows = _load_rows(root, manifest)
-    if (root / "summary.json").read_bytes() != _encode(_analyze_rows(rows)):
+    if (root / "summary.json").read_bytes() != _encode(
+        _analyze_rows(rows, manifest["preflight"])
+    ):
         raise ValueError("aggregate bytes inconsistent with raw trials")
-    return {"status": "PASS", "trials": len(rows), "trial_failures": sum(row["status"] != "PASS" for row in rows)}
+    return {
+        "status": "PASS",
+        "trials": len(rows),
+        "trial_failures": sum(row["status"] != "PASS" for row in rows),
+        "preflight_failures": sum(
+            row["status"] != "PASS" for row in manifest["preflight"]
+        ),
+    }
 
 
 def _collect(args: argparse.Namespace) -> int:
@@ -667,9 +846,16 @@ def _collect(args: argparse.Namespace) -> int:
             "repeat": 0,
             "warmup": True,
         }
-        preflight.append(_run_trial(condition, output / "preflight" / engine, env, smoke=True))
+        preflight.append(
+            _run_trial(condition, output / "preflight" / engine, env, smoke=True)
+        )
     manifest["preflight"] = [
-        {"engine": row["engine"], "status": row["status"], "exit_code": row["exit_code"]} for row in preflight
+        {
+            "engine": row["engine"],
+            "status": row["status"],
+            "exit_code": row["exit_code"],
+        }
+        for row in preflight
     ]
     for index, condition in enumerate(manifest["schedule"]):
         _run_trial(condition, output / "trials" / f"{index:04d}", env)
@@ -677,11 +863,13 @@ def _collect(args: argparse.Namespace) -> int:
     manifest["packages_after"] = _package_evidence(deps)
     _write_json(output / "manifest.json", manifest)
     rows = _load_rows(output, manifest)
-    _write_json(output / "summary.json", _analyze_rows(rows))
+    _write_json(output / "summary.json", _analyze_rows(rows, manifest["preflight"]))
     _seal(output)
     verification = _verify(output)
     print(json.dumps(verification, sort_keys=True))
-    return int(verification["trial_failures"] != 0)
+    return int(
+        verification["trial_failures"] != 0 or verification["preflight_failures"] != 0
+    )
 
 
 def main() -> int:
@@ -695,7 +883,12 @@ def main() -> int:
     collect.add_argument("--requirements-lock", type=Path, required=True)
     for name in ("analyze", "verify"):
         subparser = commands.add_parser(name)
-        subparser.add_argument("--output", type=Path, required=True, help="existing collection root (read-only)")
+        subparser.add_argument(
+            "--output",
+            type=Path,
+            required=True,
+            help="existing collection root (read-only)",
+        )
     worker = commands.add_parser("_worker", help=argparse.SUPPRESS)
     worker.add_argument("--output", type=Path, required=True)
     worker.add_argument("--condition", required=True)
@@ -704,7 +897,10 @@ def main() -> int:
     try:
         if args.command == "_worker":
             condition = json.loads(args.condition)
-            if condition["engine"] not in ENGINES or condition["workload"] not in WORKLOADS:
+            if (
+                condition["engine"] not in ENGINES
+                or condition["workload"] not in WORKLOADS
+            ):
                 raise ValueError("unknown worker condition")
             result = _worker(condition, args.output, 4 if args.smoke else OPERATIONS)
             sys.stdout.buffer.write(_encode(result))
@@ -712,12 +908,22 @@ def main() -> int:
         if args.command == "collect":
             return _collect(args)
         if args.command == "verify":
-            sys.stdout.buffer.write(_encode(_verify(args.output)))
+            verification = _verify(args.output)
+            sys.stdout.buffer.write(_encode(verification))
         else:
-            _verify(args.output)
+            verification = _verify(args.output)
             manifest = json.loads((args.output / "manifest.json").read_bytes())
-            sys.stdout.buffer.write(_encode(_analyze_rows(_load_rows(args.output, manifest))))
-        return 0
+            sys.stdout.buffer.write(
+                _encode(
+                    _analyze_rows(
+                        _load_rows(args.output, manifest), manifest["preflight"]
+                    )
+                )
+            )
+        return int(
+            verification["trial_failures"] != 0
+            or verification["preflight_failures"] != 0
+        )
     except Exception as error:
         logger.error("%s: %s", type(error).__name__, error)
         return 1

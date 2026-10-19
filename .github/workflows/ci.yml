@@ -23,6 +23,7 @@ jobs:
       SANITIZE: ''
       PYTHONPATH: python:.local/runs/local-db-comparison/deps-queue
       TOTEDB_LIB: ${{ github.workspace }}/build/lib/libtotedb.so
+      LOCAL_DB_COMPARE_TEST_DEPS: ${{ github.workspace }}/.local/runs/local-db-comparison/deps-queue
     steps:
       - uses: actions/checkout@v6
         with:

@@ -36,7 +36,8 @@ def measured_rows() -> list[dict[str, Any]]:
                     "commit_latency_ns": [100, 200, 300],
                 }
             )
-    return rows
+    warmups = [{**row, "repeat": 0, "warmup": True} for row in rows[:2]]
+    return warmups + rows
 
 
 @pytest.fixture
@@ -57,7 +58,10 @@ def sealed_failures(tmp_path: Path) -> Path:
         "packages_after": {},
         "native_library": "evidence/native.so",
         "installation_lock_sha256": compare._digest(evidence / "requirements.lock"),
-        "preflight": [{"engine": engine, "status": "UNAVAILABLE", "exit_code": 1} for engine in compare.ENGINES],
+        "preflight": [
+            {"engine": engine, "status": "UNAVAILABLE", "exit_code": 1}
+            for engine in compare.ENGINES
+        ],
     }
     rows = []
     for index, condition in enumerate(manifest["schedule"]):
@@ -88,28 +92,51 @@ def test_schedule_fixed_conditions_counts_and_rotating_engines() -> None:
 
     assert len(schedule) == 216
     assert sum(not row["warmup"] for row in schedule) == 180
-    assert [row["engine"] for row in schedule[6:12]] == list(compare.ENGINES[1:] + compare.ENGINES[:1])
+    assert [row["engine"] for row in schedule[6:12]] == list(
+        compare.ENGINES[1:] + compare.ENGINES[:1]
+    )
     assert len({tuple(sorted(row.items())) for row in schedule}) == 216
 
 
-def test_analyze_hand_calculated_throughput_latency_and_pairing(measured_rows: list[dict[str, Any]]) -> None:
-    result = compare._analyze_rows(measured_rows)
-    tote = next(group for group in result["groups"] if group["engine"] == "tote" and group["pass_count"])
-    ratio = next(row for row in result["paired_ratios"] if row["engine"] == "lmdb" and row["status"] == "PASS")
+def test_analyze_hand_calculated_throughput_latency_and_pairing(
+    measured_rows: list[dict[str, Any]],
+) -> None:
+    result = compare._analyze_rows(
+        measured_rows,
+        [{"engine": engine, "status": "PASS"} for engine in compare.ENGINES],
+    )
+    tote = next(
+        group
+        for group in result["groups"]
+        if group["engine"] == "tote" and group["pass_count"]
+    )
+    ratio = next(
+        row
+        for row in result["paired_ratios"]
+        if row["engine"] == "lmdb" and row["status"] == "PASS"
+    )
 
     assert tote["ops_per_s"] == {"median": 512.0, "min": 512.0, "max": 512.0}
-    assert tote["per_trial"][0]["transaction_latency_ns"] == {"p50": 200, "p95": 290, "p99": 298}
+    assert tote["per_trial"][0]["transaction_latency_ns"] == {
+        "p50": 200,
+        "p95": 290,
+        "p99": 298,
+    }
     assert ratio["median"] == 2
     assert ratio["median_bootstrap_95pct"] == [2, 2]
     assert "32 pairs, not per op" in result["latency_unit"]
     assert result["outlier_removal"] is False
 
 
-def test_missing_or_failed_pair_is_incomparable(measured_rows: list[dict[str, Any]]) -> None:
+def test_missing_or_failed_pair_is_incomparable(
+    measured_rows: list[dict[str, Any]],
+) -> None:
     measured_rows[-1]["status"] = "ERROR"
 
     assert compare._paired_ratios(measured_rows, "lmdb")["status"] == "INCOMPARABLE"
-    assert compare._paired_ratios(measured_rows[:-1], "lmdb")["status"] == "INCOMPARABLE"
+    assert (
+        compare._paired_ratios(measured_rows[:-1], "lmdb")["status"] == "INCOMPARABLE"
+    )
     assert "ops_per_s" not in compare._analyze_rows([])["groups"][0]
 
 
@@ -125,17 +152,70 @@ def test_prepare_same_payload_key_shape_and_batch_counts() -> None:
     assert second[3] == b"o\x00\x00\x00\x00\x00\x00\x00\x01"
 
 
-def test_verify_all_unavailable_preserves_incomparability(sealed_failures: Path) -> None:
+def test_verify_all_unavailable_preserves_incomparability(
+    sealed_failures: Path,
+) -> None:
     result = compare._verify(sealed_failures)
     summary = json.loads((sealed_failures / "summary.json").read_bytes())
 
-    assert result == {"status": "PASS", "trials": 216, "trial_failures": 216}
-    assert all(group["status"] == "INCOMPARABLE" and "ops_per_s" not in group for group in summary["groups"])
-    assert "ACK queue" in summary["boundary"] and "concurrent RMW" in summary["boundary"]
+    assert result == {
+        "status": "PASS",
+        "trials": 216,
+        "trial_failures": 216,
+        "preflight_failures": 6,
+    }
+    assert all(
+        group["status"] == "INCOMPARABLE" and "ops_per_s" not in group
+        for group in summary["groups"]
+    )
+    assert (
+        "ACK queue" in summary["boundary"] and "concurrent RMW" in summary["boundary"]
+    )
+
+
+@pytest.mark.parametrize("fault", ["warmup-error", "warmup-missing", "preflight-error"])
+def test_failed_prerequisites_exclude_comparison(
+    measured_rows: list[dict[str, Any]], fault: str
+) -> None:
+    controls = [{"engine": engine, "status": "PASS"} for engine in compare.ENGINES]
+    if fault == "warmup-error":
+        measured_rows[1]["status"] = "ERROR"
+    elif fault == "warmup-missing":
+        measured_rows.pop(1)
+    else:
+        next(row for row in controls if row["engine"] == "lmdb")["status"] = "ERROR"
+    result = compare._analyze_rows(measured_rows, controls)
+    group = next(
+        row
+        for row in result["groups"]
+        if row["engine"] == "lmdb"
+        and row["workload"] == "write"
+        and row["payload_bytes"] == 256
+    )
+    ratio = next(
+        row
+        for row in result["paired_ratios"]
+        if row["engine"] == "lmdb"
+        and row["workload"] == "write"
+        and row["payload_bytes"] == 256
+    )
+    assert group["status"] == ratio["status"] == "INCOMPARABLE"
+    assert "ops_per_s" not in group
+
+
+def test_verify_cli_fails_on_failed_trials(
+    sealed_failures: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(
+        sys, "argv", ["local-db", "verify", "--output", str(sealed_failures)]
+    )
+    assert compare.main() == 1
 
 
 @pytest.mark.parametrize("mutation", ["tamper", "missing", "drop", "summary", "extra"])
-def test_verify_rejects_tamper_missing_drop_and_inconsistent_aggregate(sealed_failures: Path, mutation: str) -> None:
+def test_verify_rejects_tamper_missing_drop_and_inconsistent_aggregate(
+    sealed_failures: Path, mutation: str
+) -> None:
     root = sealed_failures
     if mutation == "tamper":
         (root / "trials/0000/stderr.log").write_text("changed")
@@ -159,9 +239,16 @@ def test_verify_rejects_tamper_missing_drop_and_inconsistent_aggregate(sealed_fa
 
 @pytest.mark.parametrize("engine", compare.ENGINES)
 @pytest.mark.parametrize("workload", compare.WORKLOADS)
-def test_actual_small_worker_exact_audit_and_durability(tmp_path: Path, engine: str, workload: str) -> None:
+def test_actual_small_worker_exact_audit_and_durability(
+    tmp_path: Path, engine: str, workload: str
+) -> None:
     root = SCRIPT.parents[1]
-    deps = Path(os.environ.get("LOCAL_DB_COMPARE_TEST_DEPS", root / ".local/runs/local-db-comparison/deps-db"))
+    deps = Path(
+        os.environ.get(
+            "LOCAL_DB_COMPARE_TEST_DEPS",
+            root / ".local/runs/local-db-comparison/deps-db",
+        )
+    )
     library = Path(
         os.environ.get(
             "TOTEDB_LIB",
@@ -181,19 +268,32 @@ def test_actual_small_worker_exact_audit_and_durability(tmp_path: Path, engine: 
         PYTHONNOUSERSITE="1",
         LOCAL_DB_DEPS=str(deps),
     )
-    condition = {"engine": engine, "workload": workload, "payload_bytes": 256, "warmup": True, "repeat": 0}
+    condition = {
+        "engine": engine,
+        "workload": workload,
+        "payload_bytes": 256,
+        "warmup": True,
+        "repeat": 0,
+    }
 
     result = compare._run_trial(condition, tmp_path / engine, env, smoke=True)
 
-    assert result["status"] == "PASS", (result, (tmp_path / engine / "stderr.log").read_text())
+    assert result["status"] == "PASS", (
+        result,
+        (tmp_path / engine / "stderr.log").read_text(),
+    )
     compare._validate_pass(result, 4)
     assert result["completed_operations"] == 4
-    assert result["completed_commits"] == (1 if workload == "atomic-outbox-batch" else 4)
+    assert result["completed_commits"] == (
+        1 if workload == "atomic-outbox-batch" else 4
+    )
     assert result["audit_reopened"]["business"] == 4
     assert result["audit_reopened"]["outbox"] == (0 if workload == "write" else 4)
     assert result["final_files"] == compare._files(tmp_path / engine / "db")
     if engine.startswith("sqlite"):
-        assert result["config"]["journal_mode"] == ("wal" if "wal" in engine else "delete")
+        assert result["config"]["journal_mode"] == (
+            "wal" if "wal" in engine else "delete"
+        )
         assert result["config"]["synchronous"] == 2
     elif engine == "duckdb":
         assert result["config"]["settings"]["threads"] == "1"
@@ -219,7 +319,13 @@ def test_missing_engine_import_records_unavailable_without_speed(
         raise ImportError("deliberately missing native wheel")
 
     monkeypatch.setattr(compare, "_open_database", unavailable)
-    condition = {"engine": "lmdb", "workload": "write", "payload_bytes": 256, "repeat": 0, "warmup": True}
+    condition = {
+        "engine": "lmdb",
+        "workload": "write",
+        "payload_bytes": 256,
+        "repeat": 0,
+        "warmup": True,
+    }
 
     result = compare._worker(condition, tmp_path, 4)
 
@@ -229,7 +335,9 @@ def test_missing_engine_import_records_unavailable_without_speed(
     assert (tmp_path / "db").is_dir()
 
 
-def test_timeout_kills_process_group_and_preserves_raw(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_timeout_kills_process_group_and_preserves_raw(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     killed = []
 
     class TimedOutProcess:
@@ -246,12 +354,22 @@ def test_timeout_kills_process_group_and_preserves_raw(tmp_path: Path, monkeypat
             return -9
 
     monkeypatch.setattr(compare.subprocess, "Popen", TimedOutProcess)
-    monkeypatch.setattr(compare.os, "killpg", lambda pid, sig: killed.append((pid, sig)))
-    condition = {"engine": "lmdb", "workload": "write", "payload_bytes": 256, "repeat": 1, "warmup": False}
+    monkeypatch.setattr(
+        compare.os, "killpg", lambda pid, sig: killed.append((pid, sig))
+    )
+    condition = {
+        "engine": "lmdb",
+        "workload": "write",
+        "payload_bytes": 256,
+        "repeat": 1,
+        "warmup": False,
+    }
 
     result = compare._run_trial(condition, tmp_path / "timeout", dict(os.environ))
 
     assert result["status"] == "TIMEOUT" and result["completed_operations"] is None
     assert killed == [(244, compare.signal.SIGKILL)]
-    assert (tmp_path / "timeout/stderr.log").read_bytes() == b"partial engine diagnostics\n"
+    assert (
+        tmp_path / "timeout/stderr.log"
+    ).read_bytes() == b"partial engine diagnostics\n"
     assert (tmp_path / "timeout/stdout.json").is_file()
