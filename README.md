@@ -1,10 +1,3 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/totedb-icon.png">
-    <img src="docs/assets/totedb-icon.png" alt="ToteDB 로고" width="96">
-  </picture>
-</p>
-
 <h1 align="center">ToteDB</h1>
 
 <p align="center">
