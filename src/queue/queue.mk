@@ -24,7 +24,7 @@ TOTEDB_SHARED_LIB = $(BUILD_DIR)/lib/libtotedb.$(TOTEDB_SHARED_EXT)
 TOTEDB_SHARED_SRCS = $(patsubst $(BUILD_DIR)/%.o,$(SRC_DIR)/%.c,$(DATABASE_OBJS)) \
                     src/sql/session.c src/queue/ack_queue.c src/queue/ack_queue_sql.c src/capi/totedb.c
 
-$(TOTEDB_SHARED_LIB): $(TOTEDB_SHARED_SRCS) $(wildcard include/*/*.h) $(wildcard src/queue/*.h) src/benchmark.h $(BUILD_FINGERPRINT)
+$(TOTEDB_SHARED_LIB): $(TOTEDB_SHARED_SRCS) $(wildcard include/*.h include/*/*.h) $(wildcard src/queue/*.h) src/benchmark.h $(BUILD_FINGERPRINT)
 	@mkdir -p $(dir $@)
 	$(CC) $(SHARED_CFLAGS) -fPIC -shared -o $@ $(TOTEDB_SHARED_SRCS) $(LDLIBS)
 

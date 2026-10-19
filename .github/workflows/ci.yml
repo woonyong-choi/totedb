@@ -91,8 +91,12 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
+      - name: Install Python contract reference dependencies
+        run: python3 -m pip install pytest 'persist-queue==1.1.0'
       - name: Build the public Python library
         run: make SANITIZE= all
+      - name: Check Python contracts including the reference adapter
+        run: make SANITIZE= test-ack-queue-python
       - name: Check queue semantics, concurrent trials and evidence verification
         run: python3 -m unittest discover -s tests -p 'test_queue*.py' -v
       - name: Preserve queue contention checks

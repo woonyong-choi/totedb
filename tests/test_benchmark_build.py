@@ -163,6 +163,22 @@ class BenchmarkBuildTest(unittest.TestCase):
                             record["operation"],
                             ("tote_begin", "tote_exec", "tote_commit"),
                         )
+            header_change = subprocess.run(
+                [
+                    "make",
+                    "-n",
+                    "-W",
+                    "include/totedb.h",
+                    f"BUILD_DIR={native}",
+                    "BENCHMARK=0",
+                    "SANITIZE=",
+                    "all",
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            self.assertIn(f"-o {native / 'lib' / LIBRARY}", header_change.stdout)
             target = native / "storage/page_file.o"
             previous = target.stat().st_mtime_ns
             result = subprocess.run(
