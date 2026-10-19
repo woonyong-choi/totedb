@@ -123,6 +123,14 @@ Linux 자료만으로 H1·H2를 판정하고 기존 계획의 반영 범위를 �
 
 도구 미설치, kernel 지원 부재, 권한 거절, 비Linux는 `unavailable`이다. 비용 0으로 바꾸지 않는다. 실제 trial이 시작해 실패한 경우는 도구 지원 실패와 구분한다. CI는 설치된 실제 perf 실행 파일을 선택하며 `/usr/bin/perf` wrapper만 존재하는 상태를 성공으로 보지 않는다. 권한 조정은 CI에서 `kernel.perf_event_paranoid=1`에 한정하며 collector를 root로 실행하지 않는다.
 
+### 첫 진단 뒤 도구 보완
+
+첫 실행 `39206644421`은 정식 비교와 저장 검사를 완료했지만 perf 실행 파일을 찾지 못해 CPU stack을 수집하지 못했다. 후속 실행은 `/usr/lib/linux-tools-*/perf`와 `/usr/lib/linux-tools/*/perf` 두 설치 위치 및 심볼릭 링크를 확인하고 실제 경로·버전·software event 접근 결과를 보존한다. 기존 실행의 `unavailable`을 성공으로 바꾸지 않는다.
+
+첫 strace의 기본 `-c` 시간은 syscall의 system time이다. 후속 진단은 `-w`로 시작부터 종료까지의 누적 thread wall-clock 시간을 구한다. 두 시간 종류를 합치지 않고, 어느 쪽도 전체 elapsed의 비중으로 해석하지 않는다. 계측 변경은 정식 비교의 조건·표본·채택 기준을 바꾸지 않는다.
+
+Linux에서 새 실행 이미지의 `resources_before.peak_rss_bytes`가 이미 높은 이전 프로세스의 최고치를 물려받을 수 있다. 첫 실행에서는 대부분의 before/after 최고치가 같았으므로 해당 RSS로 엔진 메모리 우위를 판정하지 않는다. CPU는 user/system 누적 차이와 실제 기록 경계를 함께 확인한다.
+
 ### 분석과 채택 기준
 
 도구 자체의 합격 조건은 정확성 검사와 증거 보존 계약이다. 속도 합격선은 없다. elapsed와 연산별 request p50·p95·p99를 보존하고 각 variant의 elapsed median·min·max·n을 보고한다. 반복 번호로 짝지은 `baseline elapsed / candidate elapsed`가 동일 작업량의 candidate/baseline 처리량 비다. 이 비들의 median·min·max·n과 seed 226·10,000회 percentile bootstrap 95% 구간을 계산한다. 비의 중앙값과 두 중앙값의 비를 혼동하지 않는다.

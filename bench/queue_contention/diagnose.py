@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__all__ = ["Invocation", "Variant", "main"]
+__all__ = ["Invocation", "Variant", "find_perf", "main"]
 
 import argparse
 import dataclasses
@@ -72,6 +72,16 @@ def main() -> int:
 
 def _prepare_output(output: Path) -> None:
     output.mkdir(parents=True, exist_ok=False)
+
+
+def find_perf(root: Path = Path("/usr/lib")) -> Path | None:
+    candidates = sorted(root.glob("linux-tools*/perf"))
+    candidates.extend(sorted(root.glob("linux-tools/*/perf")))
+    for path in candidates:
+        resolved = path.resolve()
+        if resolved.is_file() and os.access(resolved, os.X_OK):
+            return resolved
+    return None
 
 
 def _arguments() -> argparse.Namespace:
@@ -528,14 +538,19 @@ def _trace_tool(
         "status": "unavailable",
         "phase": "trace",
         "scope": "whole-trial-process-including-setup-close-audit",
+        "syscall_time_basis": "cumulative-thread-wall-clock"
+        if tool == "strace"
+        else None,
         "expected_library_sha256": _digest(invocation.variant.library),
         "source_sha256": _digest(ROOT / "bench/queue_contention/run.py"),
         "trial_status": "not_started",
         "reason": None,
     }
-    executable = (
-        str(args.perf.resolve()) if tool == "perf" and args.perf else shutil.which(tool)
-    )
+    if tool == "perf":
+        selected = args.perf or find_perf()
+        executable = str(selected.resolve()) if selected else shutil.which(tool)
+    else:
+        executable = shutil.which(tool)
     if sys.platform != "linux" or executable is None:
         metadata["reason"] = (
             "Linux required" if sys.platform != "linux" else "tool not installed"
@@ -588,6 +603,7 @@ def _trace_command(tool: str, executable: str, directory: Path) -> list[str]:
             executable,
             "-f",
             "-c",
+            "-w",
             "-e",
             "trace=fsync,fdatasync,pwrite64,flock",
             "-o",

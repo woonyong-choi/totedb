@@ -279,13 +279,23 @@ jobs:
           mkdir -p "$COST_OUTPUT"
           sudo apt-get update
           sudo apt-get install -y libsqlite3-dev strace linux-tools-generic linux-tools-common
-          perf_binary="$(find /usr/lib/linux-tools -type f -name perf -executable 2> "$COST_OUTPUT/perf-discovery-error.txt" | sort -V | tail -n 1 || true)"
+          perf_binary="$(python3 - <<'PY'
+          from bench.queue_contention.diagnose import find_perf
+          path = find_perf()
+          if path is not None:
+              print(path)
+          PY
+          )"
+          printf '%s\n' "$perf_binary" > "$COST_OUTPUT/perf-discovery.txt"
           if [ -n "$perf_binary" ] && "$perf_binary" --version > "$COST_OUTPUT/perf-version.txt" 2>&1; then
             echo "COST_PERF=$perf_binary" >> "$GITHUB_ENV"
           else
             echo 'COST_PERF=/unavailable/perf' >> "$GITHUB_ENV"
           fi
           sudo sysctl -w kernel.perf_event_paranoid=1 2>&1 | tee "$COST_OUTPUT/perf-permission.txt" || true
+          if [ -n "$perf_binary" ]; then
+            "$perf_binary" stat -e cpu-clock:u -- true > "$COST_OUTPUT/perf-capability-stdout.txt" 2> "$COST_OUTPUT/perf-capability-stderr.txt" || true
+          fi
       - name: Prepare the pinned baseline worktree
         run: |
           git fetch origin main

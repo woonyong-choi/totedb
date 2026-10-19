@@ -16,6 +16,7 @@ from unittest.mock import patch
 from bench.queue_contention.diagnose import (
     Invocation,
     Variant,
+    find_perf,
     _compare,
     _execute,
     _digest,
@@ -25,6 +26,7 @@ from bench.queue_contention.diagnose import (
     _perf_report,
     _read_raw,
     _trace,
+    _trace_command,
     _trace_tool,
 )
 from bench.queue_contention.diagnose_analysis import raw_problems as _raw_problems
@@ -38,6 +40,27 @@ class QueueDiagnoseTest(unittest.TestCase):
     def setUp(self) -> None:
         self.directory = ROOT / ".local/runs/queue-diagnose-tests" / uuid.uuid4().hex
         self.directory.mkdir(parents=True)
+
+    def test_strace_measures_wall_clock_syscall_duration(self) -> None:
+        command = _trace_command("strace", "/usr/bin/strace", self.directory)
+        self.assertIn("-w", command)
+
+    def test_perf_discovery_resolves_versioned_package_symlinks(self) -> None:
+        native = self.directory / "linux-tools-6.8.0-100/perf"
+        native.parent.mkdir()
+        native.write_text("fixture native tool")
+        native.chmod(0o755)
+        link = self.directory / "linux-tools/6.8.0-100-generic/perf"
+        link.parent.mkdir(parents=True)
+        link.symlink_to(native)
+        self.assertEqual(find_perf(self.directory), native.resolve())
+        nested = self.directory / "nested"
+        nested_link = nested / "linux-tools/6.8.0-generic/perf"
+        nested_link.parent.mkdir(parents=True)
+        nested_link.symlink_to(native)
+        self.assertEqual(find_perf(nested), native.resolve())
+        native.chmod(0o644)
+        self.assertIsNone(find_perf(self.directory))
 
     def test_invalid_worker_metrics_refuse_comparison(self) -> None:
         invalid = (None, True, "0", -1, float("inf"), float("nan"), 10**400)
