@@ -6,7 +6,7 @@
 
 ### 추가
 
-- 명시적 benchmark 빌드의 요청별 계측과 배포 바이너리 제외 검사 추가 ([#232](https://github.com/woonyong-choi/totedb/issues/232))
+- 배포에서 제외되는 벤치마크 계측 모드 추가 ([#240](https://github.com/woonyong-choi/totedb/pull/240))
 - 단일 writer 비용 진단과 평가 근거 추가 ([#234](https://github.com/woonyong-choi/totedb/pull/234))
 
 ### 변경
