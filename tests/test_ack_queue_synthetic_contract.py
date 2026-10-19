@@ -44,7 +44,7 @@ def statuses(queue: Any) -> list[tuple[int, str]]:
     return [(row["id"], str(row["status"])) for row in queue.queue()]
 
 
-def run_markchain_flow(open_queue: OpenQueue, directory: Path) -> list[object]:
+def run_synthetic_flow(open_queue: OpenQueue, directory: Path) -> list[object]:
     """Markchain이 runtime에서 부르는 순서를 그대로 밟고 관측값을 모은다."""
     seen: list[object] = []
     queue = open_queue(directory)
@@ -102,8 +102,8 @@ def json_module(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setitem(sys.modules, "persistqueue_json", module)
 
 
-def test_markchain_call_sequence_ours_matches_documented_observations(tmp_path: Path) -> None:
-    seen = run_markchain_flow(open_ours, tmp_path / "ours")
+def test_synthetic_call_sequence_ours_matches_documented_observations(tmp_path: Path) -> None:
+    seen = run_synthetic_flow(open_ours, tmp_path / "ours")
 
     assert seen[0] == ("put ids", [1, 2, 3])
     assert seen[1] == ("rows after put", [(i + 1, request(i), "0") for i in range(3)])
@@ -113,9 +113,9 @@ def test_markchain_call_sequence_ours_matches_documented_observations(tmp_path: 
     assert seen[-1] == ("resumed get", "k-9")
 
 
-def test_markchain_call_sequence_matches_persist_queue_1_1_0(tmp_path: Path) -> None:
-    reference = run_markchain_flow(open_reference, tmp_path / "reference")
-    ours = run_markchain_flow(open_ours, tmp_path / "ours")
+def test_synthetic_call_sequence_matches_persist_queue_1_1_0(tmp_path: Path) -> None:
+    reference = run_synthetic_flow(open_reference, tmp_path / "reference")
+    ours = run_synthetic_flow(open_ours, tmp_path / "ours")
 
     assert ours == reference
 
