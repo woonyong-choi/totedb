@@ -1,0 +1,33 @@
+{
+  "run_id": "20261019T102202Z-c595a64",
+  "source_commit": "c595a647fcb9b32bdb27fbd9ed449230efe51b2c",
+  "plan_commits": [
+    "d2400865",
+    "c595a647"
+  ],
+  "workflow_run": 39236890565,
+  "artifact": {
+    "id": 12179063130,
+    "name": "release-cost-evidence",
+    "digest": "sha256:0613bc26697e994b71e9883f0252ddb7c3e6cab2459d7b0d3dfed04993efe0c0",
+    "size_in_bytes": 234539680,
+    "expires_at": "2027-01-17T10:21:36Z"
+  },
+  "summary_sha256": "04d5559c19e7e43c55417f17751b443f00fd17b2180170327cc4db54d08fbe58",
+  "checksums_sha256": "20509b574e72b004249030c8df41fcf4f77bd2eb2e197bbb6183897d296ea474",
+  "previous_attempt": {
+    "workflow_run": 39236213098,
+    "source_commit": "3f831d8e",
+    "state": "cancelled during collection after independent review",
+    "reason": "clarify H2 controls; preflight failure guard; external database hash scope",
+    "native_measured": 60,
+    "native_preflight": 12,
+    "ycsb_trial_count": 0,
+    "queue_trial_count": 0,
+    "included_in_current_statistics": false
+  },
+  "local_verification": {
+    "suite_verify": "passed",
+    "summary_regeneration": "byte-identical"
+  }
+}
