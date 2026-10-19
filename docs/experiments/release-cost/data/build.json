@@ -1,0 +1,149 @@
+{
+  "artifacts": {
+    "build-benchmark/configuration": "CONFIG_ID=b0c187b421a82d5f02aa1ee4f674b460ee0412e0bb6ca5da4f2d9e259ccf7f61\nBENCHMARK=1\nCC=gcc\nCFLAGS=-Wall -Wextra -Werror -g -Iinclude  -UTOTE_BENCHMARK -DTOTE_BENCHMARK=1\nSHARED_CFLAGS=-O2 -g -Wall -Wextra -Werror -Iinclude -UTOTE_BENCHMARK -DTOTE_BENCHMARK=1\nLDFLAGS=\n",
+    "build-benchmark/counter_driver": "c177e8fa83428ba59f492693bd1a317468e67a1a37e14e605e905d2a342811c7",
+    "build-benchmark/lib/libtotedb.so": "8c28636453c36d6594a8058ac6dd14f1a3743e81423fc8f3b4237e13482a5fbb",
+    "build/configuration": "CONFIG_ID=43ad3e61e11f00676e41664d1179977ac9daefda2884638a18d088efd33b901f\nBENCHMARK=0\nCC=gcc\nCFLAGS=-Wall -Wextra -Werror -g -Iinclude  -UTOTE_BENCHMARK\nSHARED_CFLAGS=-O2 -g -Wall -Wextra -Werror -Iinclude -UTOTE_BENCHMARK\nLDFLAGS=\n",
+    "build/counter_driver": "631a6454441a3e3aa862f521ebb2cc4e225fe4e0cb65f296a73ec253832a54c3",
+    "build/lib/libtotedb.so": "21d8d24384a91828a942449a9ad3ea97382841d6b640acdf36d71989286ca76f"
+  },
+  "commands": {
+    "compiler-flags": {
+      "exit_code": 0,
+      "shared_flags_without_benchmark_define": [
+        [
+          "-O2",
+          "-g",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Iinclude"
+        ],
+        [
+          "-O2",
+          "-g",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-Iinclude"
+        ]
+      ],
+      "timed_out": false
+    },
+    "control-off": {
+      "command": [
+        "/usr/bin/python3",
+        "/home/runner/work/totedb/totedb/tools/verify_benchmark.py",
+        "/home/runner/work/totedb/totedb/build/lib/libtotedb.so"
+      ],
+      "cwd": "/home/runner/work/totedb/totedb",
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T10:22:29.892676+00:00",
+      "forced_environment": {
+        "BENCHMARK": "0",
+        "BUILD_DIR": "build",
+        "PYTHON": "/usr/bin/python3",
+        "SANITIZE": "",
+        "TOTEDB_LIB": "/home/runner/work/totedb/totedb/build/lib/libtotedb.so"
+      },
+      "pid": 2902,
+      "started_utc": "2026-10-19T10:22:22.713113+00:00",
+      "timed_out": false,
+      "timeout_s": 30,
+      "wall_s": 7.179557711000001
+    },
+    "control-on": {
+      "command": [
+        "/usr/bin/python3",
+        "/home/runner/work/totedb/totedb/tools/verify_benchmark.py",
+        "/home/runner/work/totedb/totedb/build-benchmark/lib/libtotedb.so",
+        "--enabled"
+      ],
+      "cwd": "/home/runner/work/totedb/totedb",
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T10:22:30.007169+00:00",
+      "forced_environment": {
+        "BENCHMARK": "0",
+        "BUILD_DIR": "build",
+        "PYTHON": "/usr/bin/python3",
+        "SANITIZE": "",
+        "TOTEDB_LIB": "/home/runner/work/totedb/totedb/build/lib/libtotedb.so"
+      },
+      "pid": 2907,
+      "started_utc": "2026-10-19T10:22:29.893079+00:00",
+      "timed_out": false,
+      "timeout_s": 30,
+      "wall_s": 0.1140857350000033
+    },
+    "off": {
+      "command": [
+        "make",
+        "SANITIZE=",
+        "BENCHMARK=0",
+        "BUILD_DIR=build",
+        "counter-driver"
+      ],
+      "cwd": "/home/runner/work/totedb/totedb",
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T10:22:13.105485+00:00",
+      "forced_environment": {
+        "BENCHMARK": "0",
+        "BUILD_DIR": "build",
+        "PYTHON": "/usr/bin/python3",
+        "SANITIZE": "",
+        "TOTEDB_LIB": "/home/runner/work/totedb/totedb/build/lib/libtotedb.so"
+      },
+      "pid": 2660,
+      "started_utc": "2026-10-19T10:22:04.767792+00:00",
+      "timed_out": false,
+      "timeout_s": 600,
+      "wall_s": 8.337690164999998
+    },
+    "on": {
+      "command": [
+        "make",
+        "SANITIZE=",
+        "BENCHMARK=1",
+        "BUILD_DIR=build-benchmark",
+        "counter-driver"
+      ],
+      "cwd": "/home/runner/work/totedb/totedb",
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T10:22:19.836953+00:00",
+      "forced_environment": {
+        "BENCHMARK": "0",
+        "BUILD_DIR": "build",
+        "PYTHON": "/usr/bin/python3",
+        "SANITIZE": "",
+        "TOTEDB_LIB": "/home/runner/work/totedb/totedb/build/lib/libtotedb.so"
+      },
+      "pid": 2750,
+      "started_utc": "2026-10-19T10:22:13.105849+00:00",
+      "timed_out": false,
+      "timeout_s": 600,
+      "wall_s": 6.731081302999996
+    },
+    "ycsb": {
+      "command": [
+        "/usr/bin/python3",
+        "/home/runner/work/totedb/totedb/bench/ycsb/run.py",
+        "build"
+      ],
+      "cwd": "/home/runner/work/totedb/totedb",
+      "exit_code": 0,
+      "finished_utc": "2026-10-19T10:22:22.712707+00:00",
+      "forced_environment": {
+        "BENCHMARK": "0",
+        "BUILD_DIR": "build",
+        "PYTHON": "/usr/bin/python3",
+        "SANITIZE": "",
+        "TOTEDB_LIB": "/home/runner/work/totedb/totedb/build/lib/libtotedb.so"
+      },
+      "pid": 2841,
+      "started_utc": "2026-10-19T10:22:19.837851+00:00",
+      "timed_out": false,
+      "timeout_s": 600,
+      "wall_s": 2.8748515040000058
+    }
+  }
+}
