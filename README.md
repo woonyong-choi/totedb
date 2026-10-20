@@ -153,17 +153,17 @@ SQL 조회·갱신과 JOIN·집계·서브쿼리를 지원합니다. C와 Python
 
 ## 문서
 
-- [시작](docs/architecture.md)
-  - [빌드와 시험](docs/build-and-test.md)
-  - [안전성 시험 결과](docs/safety.md)
-  - [기여 안내](.github/CONTRIBUTING.md)
-- [설계](docs/design/transaction-queue.md)
-- [명세](docs/data.md)
-  - [설정](docs/configuration.md)
-  - [오류](docs/errors.md)
-  - [프로토콜](docs/protocol.md)
-- [기록](docs/experiments/README.md)
-- [문서](docs/README.md)
+- [아키텍처](docs/architecture.md)에서 전체 구조와 저장·게시·복구 원리를 확인하세요.
+- [주문 저장과 작업 등록을 한 트랜잭션으로 처리하기](docs/design/transaction-queue.md)에서 큐의 동작과 보장 경계를 읽을 수 있습니다.
+- [데이터](docs/data.md)는 값·바인딩·저장 형식과 큐 테이블을 설명합니다.
+- [설정](docs/configuration.md)에서 옵션·기본값·한도를 확인하세요.
+- [오류](docs/errors.md)에서 실패 뒤 재시도·rollback·재개방 여부를 판단할 수 있습니다.
+- [프로토콜](docs/protocol.md)은 C 결과 버퍼를 해석할 때 사용합니다.
+- [빌드와 시험](docs/build-and-test.md)은 빌드·검사·예제 실행을 안내합니다.
+- [안전성 시험 결과](docs/safety.md)에서 장애 시험의 관측과 미검증 범위를 확인하세요.
+- [실험](docs/experiments/README.md)에서 성능 비교와 개선 검증의 결론을 찾을 수 있습니다.
+- [기여 안내](.github/CONTRIBUTING.md)는 변경 제안과 PR 제출 절차를 설명합니다.
+- [전체 문서](docs/README.md)에서 목적에 맞는 읽기 경로를 고르세요.
 
 ## 개발
 

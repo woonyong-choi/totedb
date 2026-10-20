@@ -41,7 +41,9 @@ make SANITIZE= BUILD_DIR=build-nosan test-database
 | `make test-result` | 결과 버퍼 인코딩과 할당 실패 |
 | `make test-benchmark` | 별도 계측 ON/OFF 빌드와 C API 계측 회귀. `test-all`에 포함되지 않는다. |
 
-각 시험의 결과와 실패 주입 시드는 `build/fault/`에 JSON으로 남는다. CI는 이 폴더를 sanitizer별 산출물로 올린다.
+시험 실행기 [fault_runner.py](../tests/fault_runner.py)로 감싼 대상은 실행 결과와 시드 등을 `build/fault/`의 JSON으로 남긴다. `BUILD_DIR`를 바꾸면 이 경로도 해당 디렉터리 아래의 `fault/`로 바뀐다. CI는 기본 `build/fault/`를 sanitizer별 산출물로 올린다.
+
+모든 시험이 이 실행기를 거치는 것은 아니다. `make test-ack-queue-python`은 pytest를 직접 호출하므로 결과를 콘솔과 CI 작업 로그에서 확인한다. `make test-benchmark`의 직접 실행 항목도 콘솔에 결과를 남긴다. 이 실행들의 결과와 시드가 모두 `build/fault/`에 JSON으로 모인다고 가정하지 않는다.
 
 ### 요청 단위 내부 계측
 
