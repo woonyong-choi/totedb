@@ -1,0 +1,10 @@
+diagramplay
+title "색인 값과 물리 행 페이지의 간접 참조"
+box index "색인" "색인 root" {
+  text "stamp = heap root"
+  text "순번 · slot"
+}
+box directory "디렉터리" "heap root" tone=blue appearance=filled
+box record "행 페이지" "물리 page ID · slot"
+index -> directory "locator 순번"
+directory -> record "순번 → ID"

@@ -1,0 +1,15 @@
+diagramplay
+title "제어에서 행과 큰 값까지의 참조"
+box control "제어 슬롯" "현재 · 이전" {
+  text "빈 목록 · 체인"
+}
+box catalog "카탈로그" "table ID 0" tone=blue appearance=filled {
+  text "테이블별 루트"
+}
+box directory "디렉터리" "`LHD2` · `LHD3`"
+box record "행 페이지" "page ID · slot"
+box overflow "큰 값" "overflow 체인"
+control -> catalog "head · size"
+catalog -> directory "heap root"
+directory -> record "순번 → ID"
+record -> overflow "head · size"

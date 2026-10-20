@@ -1,0 +1,52 @@
+diagramplay
+title "서로 다른 잠금 대상과 게시 대기"
+subtitle "설계: 독립 핸들 사이의 보유 상태이며 재생 시간은 실측값이 아니다"
+box writer "writer" "거래 작업 · COW"
+box writerlock "쓰기 잠금" "`<db>-lock`" tone=blue appearance=filled {
+  text "writer가 EXCLUSIVE 보유"
+}
+box reader "reader" "독립 핸들 · 한 문장"
+box filelock "게시 잠금" "DB 파일 flock" tone=blue appearance=filled {
+  text "reader가 SHARED 보유"
+}
+box control "제어 상태" "control generation" {
+  graph "현재 -> 옛 카탈로그"
+}
+box cache "읽기 캐시" "페이지 · 카탈로그" {
+  text "옛 세대"
+}
+writer -> writerlock "거래 내내 보유"
+reader -> filelock "문장 동안 보유"
+writer -> filelock "게시 때만 요청"
+filelock -> control "잠금 안 접근"
+reader -> cache "세대 확인 · 적재"
+scene "읽기와 게시" mode=loop
+  light writerlock filelock
+  wait 1400ms
+  writer -> filelock time=900ms
+  clear filelock
+  show filelock "writer EXCLUSIVE 대기"
+  show filelock "reader SHARED 유지"
+  wait 1400ms
+  light reader filelock
+  clear filelock
+  show filelock "reader 종료 · SHARED 해제"
+  wait 900ms
+  writer -> filelock time=900ms
+  clear filelock
+  show filelock "writer EXCLUSIVE 보유"
+  filelock -> control time=900ms
+  clear control
+  show control graph "현재 -> 새 카탈로그"
+  clear filelock
+  show filelock "제어 write · fsync 뒤 해제"
+  clear writerlock
+  show writerlock "거래 종료 · writer 해제"
+  wait 900ms
+  reader -> filelock time=800ms
+  clear filelock
+  show filelock "다음 문장 SHARED 보유"
+  reader -> cache time=900ms
+  clear cache
+  show cache "새 세대 · 무효화 뒤 재적재"
+  wait 1500ms

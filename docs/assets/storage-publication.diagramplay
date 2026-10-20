@@ -1,0 +1,44 @@
+diagramplay
+title "작업 참조와 게시 참조의 교체"
+subtitle "설계: old/new는 설명용 참조 이름이며 시간은 실측값이 아니다"
+box work "작업 상태" "`database.work`" tone=blue appearance=filled {
+  graph "작업 -> 새 루트"
+  text "batch의 fresh · old"
+}
+box catalog "새 카탈로그" "overflow · 빈 목록"
+box control "게시 참조" "control · 최종 fsync" tone=blue appearance=filled {
+  graph "현재 -> 옛 루트"
+}
+work -> catalog "루트 저장" no=1
+catalog -> control "제어 쓰기" no=2
+scene "manifest 경로" mode=loop
+  work -> catalog time=1400ms
+  show work "old → pending 등록"
+  show catalog "fresh ≤ 256 · manifest"
+  wait 1000ms
+  catalog -> control time=1200ms
+  show control "시도부터 UNKNOWN"
+  wait 900ms
+  light control
+  clear control
+  show control graph "현재 -> 새 루트"
+  show control "fsync 1회 · APPLIED"
+  clear work
+  show work "게시 카탈로그로 채택"
+  wait 1600ms
+scene "data barrier 경로" mode=loop
+  work -> catalog time=1400ms
+  show work "old → pending 등록"
+  show catalog "manifest 초과 / overwrite"
+  show catalog "데이터 fsync 먼저"
+  wait 2200ms
+  catalog -> control time=1200ms
+  show control "시도부터 UNKNOWN"
+  wait 900ms
+  light control
+  clear control
+  show control graph "현재 -> 새 루트"
+  show control "최종 fsync · 총 2회"
+  clear work
+  show work "게시 카탈로그로 채택"
+  wait 1600ms

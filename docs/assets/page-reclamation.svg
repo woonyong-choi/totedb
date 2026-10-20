@@ -1,0 +1,698 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="fl" width="100%" viewBox="0 0 633.5 420" role="img" data-scene="0" data-mode="loop">
+<title>두 control 세대와 페이지 회수</title><desc>설계: g는 설명용 세대이며 시간 경과가 아니라 성공 commit이 상태를 바꾼다</desc>
+<style>@font-face{font-family:FigSans;font-weight:400;src:url(data:font/woff2;base64,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) format("woff2")}
+/* tokens/tokens.json: 생성물, 손으로 고치지 않음 */
+:root {
+  --color-gray-0: #ffffff;
+  --color-gray-59: #f0f0f0;
+  --color-gray-212: #c9c9c9;
+  --color-gray-282: #b7b7b7;
+  --color-gray-467: #888888;
+  --color-gray-529: #787878;
+  --color-gray-910: #171717;
+  --color-gray-933: #111111;
+  --color-group-title: var(--color-help-title-color);
+  --color-outline: var(--color-gray-529);
+  --color-line: var(--color-gray-282);
+  --color-state-active: var(--color-category-blue-light-border);
+  --color-state-active-text: var(--color-category-blue-light-ink);
+  --color-state-on-active: var(--color-gray-0);
+  --color-ui-focus: var(--color-action-link);
+  --color-data-grid: var(--color-gray-212);
+  --color-data-category-1: var(--color-category-blue-solid);
+  --color-figure-icon: var(--color-category-blue-light-border);
+  --color-figure-queue-empty: var(--color-gray-59);
+  --color-figure-number-fill: var(--primitive-figure-number-fill);
+  --color-figure-number-ink: var(--primitive-figure-number-ink);
+  --color-figure-outline: var(--color-gray-467);
+  --color-figure-selection-fill: var(--color-category-blue-light-tint-3);
+  --color-figure-canvas: var(--primitive-help-bg);
+  --color-figure-flash: var(--primitive-search-hover);
+  --color-figure-active-surface: var(--primitive-help-hover);
+  --color-paint-blue-fill: var(--color-category-blue-light-tint-1);
+  --color-paint-blue-outline: var(--color-category-blue-light-border);
+  --color-paint-blue-ink: var(--color-category-blue-light-ink);
+  --color-ui-card: var(--color-gray-0);
+  --color-ink: var(--primitive-ink);
+  --color-ui-muted: var(--primitive-muted);
+  --color-ui-line: var(--primitive-line);
+  --color-help-title-color: var(--primitive-help-title-color);
+  --color-action-link: var(--primitive-link);
+  --color-category-blue-anchor: #1e6bd6;
+  --color-category-blue-fill: var(--color-category-blue-anchor);
+  --color-category-blue-on: var(--color-gray-0);
+  --color-category-blue-light-border: #1e6bd6;
+  --color-category-blue-light-ink: #1161cb;
+  --color-category-blue-light-tint-1: #f7fafe;
+  --color-category-blue-light-tint-3: #d5e4fa;
+  --color-category-blue-dark-border: #3a85f2;
+  --color-category-blue-dark-ink: #6da8ff;
+  --color-category-blue-dark-tint-1: #303948;
+  --color-category-blue-dark-tint-3: #303d54;
+  --color-category-blue-solid: var(--color-category-blue-fill);
+  --font-figure-sans: FigSans, FigSansSym, FigSansMath, ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --font-figure-mono: FigMono, FigSans, FigSansSym, FigSansMath, ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-card-radius: var(--primitive-card-radius);
+  --text-small-text: var(--primitive-small-text);
+  --text-tiny-text: var(--primitive-tiny-text);
+  --text-figure-meta: 11px;
+  --tracking-text: -0.3px;
+  --font-weight-semibold: 600;
+  --primitive-ink: #303336;
+  --primitive-muted: #55606e;
+  --primitive-line: #dfe3e8;
+  --primitive-link: #2576eb;
+  --primitive-small-text: 15px;
+  --primitive-tiny-text: 13px;
+  --primitive-help-bg: #f6f7fa;
+  --primitive-search-hover: #d9e6ff;
+  --primitive-help-hover: #ebf1ff;
+  --primitive-help-title-color: #3d4856;
+  --primitive-figure-dark-bg: #26272b;
+  --primitive-figure-dark-node: #303136;
+  --primitive-figure-dark-edge: #50535b;
+  --primitive-figure-dark-separator: #454850;
+  --primitive-figure-dark-hover: #343e50;
+  --primitive-figure-dark-selection: #274174;
+  --primitive-figure-dark-muted: #a9adb6;
+  --primitive-figure-dark-line: #7f8793;
+  --primitive-figure-dark-outline: #868686;
+  --primitive-figure-number-fill: #303336;
+  --primitive-figure-number-ink: #ffffff;
+  --primitive-card-radius: 18px;
+  --border-width-thin: 1px;
+  --border-width-hair: 0.75px;
+  --border-width-lifeline: 1.25px;
+  --border-width-edge: 1.75px;
+  --opacity-range: 0.4;
+  --dash-line: 5;
+  --dash-gap: 4;
+  --dash-card: 3;
+  --outline-width-focus: 3px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+  --color-outline: var(--primitive-figure-dark-outline);
+  --color-line: var(--primitive-figure-dark-line);
+  --color-state-active: var(--color-category-blue-dark-border);
+  --color-state-active-text: var(--color-category-blue-dark-ink);
+  --color-state-on-active: var(--color-category-blue-on);
+  --color-data-grid: var(--primitive-figure-dark-edge);
+  --color-figure-icon: var(--color-category-blue-dark-border);
+  --color-figure-queue-empty: var(--color-gray-910);
+  --color-figure-number-fill: var(--color-gray-59);
+  --color-figure-number-ink: var(--color-gray-933);
+  --color-figure-outline: var(--color-line);
+  --color-figure-selection-fill: var(--color-category-blue-dark-tint-3);
+  --color-figure-canvas: var(--primitive-figure-dark-bg);
+  --color-figure-flash: var(--primitive-figure-dark-selection);
+  --color-figure-active-surface: var(--primitive-figure-dark-hover);
+  --color-paint-blue-fill: var(--color-category-blue-dark-tint-1);
+  --color-paint-blue-outline: var(--color-category-blue-dark-border);
+  --color-paint-blue-ink: var(--color-category-blue-dark-ink);
+  --color-ui-card: var(--primitive-figure-dark-node);
+  --color-ink: var(--color-gray-59);
+  --color-ui-muted: var(--primitive-figure-dark-muted);
+  --color-ui-line: var(--primitive-figure-dark-separator);
+  --color-help-title-color: var(--color-ink);
+  color-scheme: dark;
+  }
+}
+[data-theme='dark'] {
+  --color-outline: var(--primitive-figure-dark-outline);
+  --color-line: var(--primitive-figure-dark-line);
+  --color-state-active: var(--color-category-blue-dark-border);
+  --color-state-active-text: var(--color-category-blue-dark-ink);
+  --color-state-on-active: var(--color-category-blue-on);
+  --color-data-grid: var(--primitive-figure-dark-edge);
+  --color-figure-icon: var(--color-category-blue-dark-border);
+  --color-figure-queue-empty: var(--color-gray-910);
+  --color-figure-number-fill: var(--color-gray-59);
+  --color-figure-number-ink: var(--color-gray-933);
+  --color-figure-outline: var(--color-line);
+  --color-figure-selection-fill: var(--color-category-blue-dark-tint-3);
+  --color-figure-canvas: var(--primitive-figure-dark-bg);
+  --color-figure-flash: var(--primitive-figure-dark-selection);
+  --color-figure-active-surface: var(--primitive-figure-dark-hover);
+  --color-paint-blue-fill: var(--color-category-blue-dark-tint-1);
+  --color-paint-blue-outline: var(--color-category-blue-dark-border);
+  --color-paint-blue-ink: var(--color-category-blue-dark-ink);
+  --color-ui-card: var(--primitive-figure-dark-node);
+  --color-ink: var(--color-gray-59);
+  --color-ui-muted: var(--primitive-figure-dark-muted);
+  --color-ui-line: var(--primitive-figure-dark-separator);
+  --color-help-title-color: var(--color-ink);
+  color-scheme: dark;
+}
+[data-theme='light'] {
+  --color-outline: var(--color-gray-529);
+  --color-line: var(--color-gray-282);
+  --color-state-active: var(--color-category-blue-light-border);
+  --color-state-active-text: var(--color-category-blue-light-ink);
+  --color-state-on-active: var(--color-gray-0);
+  --color-data-grid: var(--color-gray-212);
+  --color-figure-icon: var(--color-category-blue-light-border);
+  --color-figure-queue-empty: var(--color-gray-59);
+  --color-figure-number-fill: var(--primitive-figure-number-fill);
+  --color-figure-number-ink: var(--primitive-figure-number-ink);
+  --color-figure-outline: var(--color-gray-467);
+  --color-figure-selection-fill: var(--color-category-blue-light-tint-3);
+  --color-figure-canvas: var(--primitive-help-bg);
+  --color-figure-flash: var(--primitive-search-hover);
+  --color-figure-active-surface: var(--primitive-help-hover);
+  --color-paint-blue-fill: var(--color-category-blue-light-tint-1);
+  --color-paint-blue-outline: var(--color-category-blue-light-border);
+  --color-paint-blue-ink: var(--color-category-blue-light-ink);
+  --color-ui-card: var(--color-gray-0);
+  --color-ink: var(--primitive-ink);
+  --color-ui-muted: var(--primitive-muted);
+  --color-ui-line: var(--primitive-line);
+  --color-help-title-color: var(--primitive-help-title-color);
+  color-scheme: light;
+}
+/* 그림 안 글자와 모양. HTML 재생기와 움직이는 SVG가 같이 쓴다. */
+/* 카드 안 글(label, sub, meta, cell, item, row)의 기준 점(text-anchor)은 글이 정한다(measure/texts.js의 anchor). 여기서는 글꼴과 색만 정한다. */
+/* 글 위계는 셋이다: 제목(공통 디자인.label-size 15: 카드 제목은 regular, 그룹 제목은 semibold), 문장과 이름표(detail-size 13: 부제, 선 라벨, 메모, 이동 글, 카드 줄, 제약, 형식), 작은 표시(micro-size 11: 번호, 태그, 표식, 키, 눈금, 단위). 크기와 굵기는 measure/texts.js의 STYLE이 같은 토큰으로 잰다. */
+.fl text {
+  font-family: var(--font-figure-sans);
+  letter-spacing: var(--tracking-text);
+}
+
+.fl .label {
+  font-size: var(--text-small-text);
+  fill: var(--color-ink);
+}
+
+.fl .sub {
+  font-size: var(--text-tiny-text);
+  fill: var(--color-ui-muted);
+}
+
+.fl .frame {
+  font-size: var(--text-small-text);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-group-title);
+}
+
+.fl .edgelabel {
+  font-size: var(--text-tiny-text);
+  text-anchor: middle;
+  fill: var(--fx-ink-rest);
+}
+
+/* 카드 줄, 메모와 구획 제목 같은 덧붙임 글, 관계 그래프 이름, 표 칸, 격자 칸은 문장이라 같은 크기와 글자색이다. */
+.fl .row,
+.fl .meta,
+.fl .mini,
+.fl .cell,
+.fl .item {
+  font-size: var(--text-tiny-text);
+  fill: var(--color-ink);
+}
+
+.fl .row.mono {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+}
+
+/* 백틱으로 감싼 글. 코드 글꼴로 그린다. */
+.fl .code {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+}
+
+.fl .muted {
+  fill: var(--color-ui-muted);
+}
+
+.fl .tag {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+.fl .mark {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-state-active-text);
+}
+
+/* 값 카드 줄의 값 글자. 줄의 이름(row)은 카드 층이 그리고 값은 오른쪽 끝에 얹힌다. 이름과 같은 크기이고 굵기만 다르다. */
+.fl .value {
+  font-size: var(--text-tiny-text);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+.fl .chip {
+  font-size: var(--text-tiny-text);
+  text-anchor: middle;
+}
+
+.fl .item.gap {
+  fill: var(--color-ui-muted);
+}
+
+/* 열 형식(타입)은 코드 글이라 코드 글꼴의 오른쪽 열이고 이름보다 옅다. NULL 허용 여부는 키 표시(.key)와 같은 작은 표시이고, 삭제 정책은 외래 키 선의 끝 글이다. */
+.fl .cell.type {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+  fill: var(--color-ui-muted);
+}
+
+/* 순서 보기의 메시지, 메모, 구획, 활성 막대는 자기 장면이 보일 때만 보인다. 자리는 늘 같아 판 크기가 변하지 않는다. */
+.fl .fl-off {
+  display: none;
+}
+
+.fl .fl-edge {
+  color: var(--fx-line-rest);
+}
+
+.fl .fl-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--border-width-edge);
+}
+
+/* 열 키(PK, FK, UNQ)는 작은 표시이고 글자색이다. 파랑은 켜진 상태에만 쓴다. */
+.fl .cell .key {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+/* 그룹은 기본 면이 없다(투명). 경계와 제목만 있고, 깊이에 따라 회색 면을 겹치지 않는다. 고른 색은 아래 appearance 역할로 적용한다. */
+.fl .frame-box {
+  --fx-edge-rest: var(--color-figure-outline);
+  fill: none;
+  stroke: var(--fx-edge-rest);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-card {
+  fill: var(--color-ui-card);
+}
+
+.fl .fl-queue-slot {
+  fill: var(--color-figure-queue-empty);
+  stroke: var(--color-outline);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .queue-fill .fl-queue-slot {
+  fill: var(--color-data-category-1);
+  stroke: var(--color-data-category-1);
+}
+
+.fl .fl-shape-external > :is(.fl-stroke, .fl-pulse),
+.fl .frame-box.dashed,
+.fl .fl-path.dashed {
+  stroke-dasharray: var(--dash-line) var(--dash-gap);
+}
+
+.fl .lifeline {
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-lifeline);
+  stroke-dasharray: var(--dash-gap) var(--dash-gap);
+}
+
+.fl .fl-activation {
+  fill: var(--color-ui-card);
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-destroy > circle {
+  fill: var(--color-figure-canvas);
+}
+
+.fl .fl-destruction {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-edge);
+  stroke-linecap: round;
+}
+
+.fl .note-box {
+  fill: var(--color-ui-card);
+  stroke: var(--color-line);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+/* 알약은 모두 같은 중립 흰 면과 평소 경계다: 선 라벨, 배지와 개수. */
+.fl .pill,
+.fl .badge-pill {
+  fill: var(--color-ui-card);
+  stroke: var(--fx-edge-rest);
+}
+
+.fl .fl-mini-pill {
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-mini-pill.fl-mini-lit {
+  fill: var(--fx-row);
+}
+
+.fl .fl-edge.fl-mini-lit {
+  color: var(--fx-edge);
+}
+
+.fl .part-bg {
+  --fx-face: transparent;
+  --fx-face-on: var(--fx-row);
+  fill: var(--fx-face);
+}
+
+.fl .col-line {
+  stroke: var(--color-data-grid);
+  stroke-width: var(--border-width-hair);
+}
+
+.fl .part-head {
+  fill: var(--color-figure-canvas);
+}
+
+.fl .grid-cell {
+  --fx-face: var(--color-ui-card);
+  --fx-face-on: var(--fx-row);
+  fill: var(--fx-face);
+  stroke: var(--color-data-grid);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .grid-tray {
+  fill: var(--color-ui-card);
+}
+
+.fl .grid-cell.gap {
+  --fx-face: var(--color-ui-card);
+  stroke: var(--color-data-grid);
+}
+
+.fl .grid-cell.empty {
+  --fx-face: none;
+  stroke: var(--color-line);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+.fl .fl-edge.mark {
+  --fx-line-rest: var(--color-ink);
+}
+
+/* 이름과 값은 평소 여백으로 구분한다. 명시한 면(face)과 값 갱신 강조만 배경을 더한다. */
+.fl .face {
+  fill: none;
+  stroke: none;
+}
+
+/* 도형 윗줄과 그룹 제목 줄의 장식: 글자 배지, 아이콘 */
+.fl .badge {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  text-anchor: middle;
+  fill: var(--color-ink);
+}
+
+.fl .fl-icon {
+  color: var(--color-figure-icon);
+}
+
+.fl .fl-symbol .fl-icon {
+  color: inherit;
+}
+
+/* 선 번호 원. 흑백 번호이고 라벨 알약과 달리 켜져도 색이 바뀌지 않아 정지 그림과 같은 순서로 읽힌다. */
+.fl .number-pill {
+  fill: var(--color-figure-number-fill);
+}
+
+.fl .number {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  text-anchor: middle;
+  fill: var(--color-figure-number-ink);
+}
+
+/* 도형은 그림자 없는 평면이다. 그림자는 떠 있는 메뉴 같은 조작에만 둔다. */
+.fl :where(.fl-node) > .fl-stroke {
+  stroke: var(--fx-edge-rest);
+  stroke-width: var(--border-width-thin);
+}
+
+/* 구획은 border.hair, 보조 경계는 border.thin, 관계는 border.edge, 생명선은 border.lifeline, 도형 경계는 공통 디자인.node-stroke다. 모든 선은 그림과 함께 확대·축소된다. */
+.fl .fl-path,
+.fl .fl-node > .fl-stroke,
+.fl .grid-cell,
+.fl .col-line,
+.fl .pill,
+.fl .badge-pill {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 화살촉과 몸통은 같은 소유자의 색을 상속한다(draw/arrow.js). 화살촉은 채운 삼각형이다. 연결선은 선 묶음이, 차트 방향선은 역할 class(.arrow-main 등, chart.css)가 소유자다.
+   HTML 문서의 차트 마커 정의는 판 SVG 밖의 정의 전용 SVG에 있어 `.fl` 아래가 아니므로 이 규칙은 `.fl` 범위를 걸지 않는다. */
+.fl-arrowhead {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 효과 한 벌: 켜짐과 평소의 모습을 정하는 유일한 정의다. 움직이는 SVG(animate/animator.js)의 keyframes와 HTML 재생기의 `.on` 규칙이 같은 `--fx-*`를 읽으므로 두 출력과 정지 그림이 늘 같다.
+   - 켜짐(on): --fx-edge 윤곽·그룹 경계·선·알약 테두리, --fx-ink 알약 글자, --fx-row 표 줄과 격자 칸의 면, --fx-face-on 요소의 켜진 면(도형은 아래), --fx-flash 값이 바뀐 순간의 면.
+   - 평소(rest): --fx-edge-rest 도형, 그룹, 알약의 경계, --fx-ink-rest 알약 글자, --fx-line-rest 선, --fx-face 요소의 평소 면.
+   효과는 도형이 고른 색(tone)이나 표현(appearance)과 상관없다. appearance는 고른 색을 평소 값(--fx-face, --fx-edge-rest)에만 적용하고, 켜진 동안은 강조 윤곽에 자리를 내준다. */
+.fl {
+  --paint-fill: var(--color-ui-card);
+  --paint-outline: var(--color-figure-outline);
+  --paint-ink: var(--color-group-title);
+  --fx-edge: var(--color-state-active);
+  --fx-ink: var(--color-state-active-text);
+  --fx-row: var(--color-figure-selection-fill);
+  --fx-flash: var(--color-figure-flash);
+  --fx-edge-rest: var(--color-figure-outline);
+  --fx-ink-rest: var(--color-ui-muted);
+  --fx-line-rest: var(--color-line);
+}
+
+/* 도형의 평소 면과 켜진 면. 옅은 면으로 고른 도형(filled)은 켜져도 면이 같다. 면이 없는 윤곽(fill='none')과 점은 자기 면이 없거나 자기 색이다. */
+.fl .fl-node {
+  --fx-face: var(--color-ui-card);
+  --fx-face-on: var(--color-figure-active-surface);
+}
+
+.fl .fl-node.ap-filled {
+  --fx-face: var(--paint-fill);
+  --fx-face-on: var(--fx-face);
+}
+
+/* 소비자는 쓴 톤의 --paint-* 변수만 연결한다. 면·경계·제목·차트 바탕의 역할은 여기서 한 번 정한다. */
+.fl .fl-node.ap-outline {
+  --fx-edge-rest: var(--paint-outline);
+}
+
+.fl .fl-group.ap-filled > .frame-box {
+  fill: var(--paint-fill);
+}
+
+.fl .fl-group.ap-outline > .frame-box {
+  --fx-edge-rest: var(--paint-outline);
+}
+
+.fl .fl-group:is(.ap-plain, .ap-filled, .ap-outline) > .frame {
+  fill: var(--paint-ink);
+}
+
+.fl .face.ap-filled {
+  fill: var(--paint-fill);
+}
+
+.fl .fl-layer.ap-filled {
+  --chart-ground: var(--paint-fill);
+}
+
+.fl .face.ap-outline {
+  stroke: var(--paint-outline);
+}
+
+.fl .fl-shape-start {
+  --fx-face: var(--color-ink);
+}
+
+.fl .fl-node > .fl-stroke[fill='none'] {
+  --fx-face: none;
+  --fx-face-on: none;
+}
+
+.fl :where(.fl-node) > .fl-stroke:where(:not([fill='none'])) {
+  fill: var(--fx-face);
+}
+
+/* `light`가 명시한 도형: 윤곽이 강조 색이 되고 면은 옅은 강조 면이다(옅은 면으로 고른 도형은 면을 그대로 둔다). 점이 닿은 도형은 도착 후광(.fl-pulse)만 쓴다. */
+.fl .fl-node.on > .fl-stroke {
+  stroke: var(--fx-edge);
+}
+
+.fl .fl-node.on > .fl-stroke:not([fill='none']) {
+  fill: var(--fx-face-on);
+}
+
+/* `light`가 명시한 그룹: 경계선만 강조 색이다. 굵기, 면, 모서리, 점선은 그대로다. */
+.fl .fl-group.on > .frame-box {
+  stroke: var(--fx-edge);
+}
+
+/* 켜진 표 줄(칸)과 격자 칸의 면. 모든 카드가 같은 규칙이다. */
+.fl .fl-part.on :is(.part-bg, .grid-cell) {
+  fill: var(--fx-face-on);
+}
+
+/* 도형에 마우스를 올려도 면이나 선이 켜지지 않는다(장식용 호버 활성 없음). 키보드 초점은 같은 외부 형상 위의 초점 표시이고 윤곽을 두 겹으로 만들지 않는다. */
+/* 브라우저 기본 초점 링은 g 요소의 사각 상자를 두르므로 둥근 도형과 어긋난다. 어떤 방식으로 초점이 가도 기본 링을 끄고, 키보드 초점(:focus-visible)은 도형 윤곽 자체로 표시한다. */
+.fl .fl-node:focus,
+.fl .fl-node:focus-visible {
+  outline: none;
+}
+
+.fl .fl-node:focus-visible > .fl-stroke {
+  stroke: var(--color-ui-focus);
+  stroke-width: var(--outline-width-focus);
+}
+
+/* 값이 바뀔 때 켜지는 배경 면. 도형과 같은 윤곽을 쓰고 테두리를 더하지 않는다. */
+.fl .fl-flash-face {
+  fill-opacity: var(--opacity-range);
+}
+
+.fl .fl-flash {
+  fill: var(--fx-flash);
+  stroke: none;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl .fl-flash {
+    display: none;
+  }
+}
+
+/* 점이 도형에 닿을 때의 테두리 후광: 도형 윤곽과 같은 모양의 겹침 선이다. 면을 칠하지 않고 선 굵기가 윤곽과 같아 도형이 커지지 않는다. 불투명도(80/80/240ms)는 SMIL이나 재생기가 정한다. */
+.fl .fl-pulse {
+  fill: none;
+  stroke: var(--fx-edge);
+  stroke-width: var(--border-width-thin);
+  pointer-events: none;
+}
+
+/* 제어 구획의 경계는 관계선보다 약하며 제목 밑면은 생명선을 가린다. */
+.fl .fl-fragment-border {
+  fill: none;
+  stroke: var(--color-ui-line);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-fragment-divider {
+  fill: none;
+  stroke: var(--color-ui-line);
+  stroke-width: var(--border-width-hair);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+.fl .fl-fragment-heading {
+  fill: var(--color-ui-card);
+}
+
+.fl .fl-fragment-label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.fl .fl-packet > circle:first-child {
+  opacity: 0;
+}
+
+/* 독립 SVG도 재생 판과 같은 바탕과 움직임 줄이기 규칙을 쓴다. */
+.fl .fl-canvas-surface { fill: var(--color-figure-canvas); rx: var(--radius-card-radius); }
+.fl .fl-still { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fl .fl-motion { display: none; }
+  .fl .fl-still { display: inline; }
+}
+
+.fl .tn-blue {
+  --paint-fill: var(--color-paint-blue-fill);
+  --paint-outline: var(--color-paint-blue-outline);
+  --paint-ink: var(--color-paint-blue-ink);
+}
+
+@keyframes a0 { 0%,13.431% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 13.433%,31.342% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 31.343%,46.267% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 46.269%,73.133% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 73.134%,73.134% { fill: var(--fx-face-on); stroke: var(--fx-edge) } 73.134%,100% { fill: var(--fx-face-on); stroke: var(--fx-edge) } }
+.fl .a0 { animation: a0 6.7s infinite linear; }
+@keyframes a1 { 0%,13.431% { opacity: 1; visibility: visible } 13.433%,31.342% { opacity: 1; visibility: visible } 31.343%,46.267% { opacity: 0; visibility: hidden } 46.269%,73.133% { opacity: 0; visibility: hidden } 73.134%,73.134% { opacity: 0; visibility: hidden } 73.134%,100% { opacity: 0; visibility: hidden } }
+.fl .a1 { animation: a1 6.7s infinite linear; }
+@keyframes a2 { 0%,13.431% { opacity: 0; visibility: hidden } 13.433%,31.342% { opacity: 0; visibility: hidden } 31.343%,46.267% { opacity: 1; visibility: visible } 46.269%,73.133% { opacity: 1; visibility: visible } 73.134%,73.134% { opacity: 0; visibility: hidden } 73.134%,100% { opacity: 0; visibility: hidden } }
+.fl .a2 { animation: a2 6.7s infinite linear; }
+@keyframes a3 { 0%,13.431% { opacity: 0; visibility: hidden } 13.433%,31.342% { opacity: 0; visibility: hidden } 31.343%,46.267% { opacity: 0; visibility: hidden } 46.269%,73.133% { opacity: 0; visibility: hidden } 73.134%,73.134% { opacity: 1; visibility: visible } 73.134%,100% { opacity: 1; visibility: visible } }
+.fl .a3 { animation: a3 6.7s infinite linear; }
+@keyframes a4 { 0%,13.431% { opacity: 1 } 13.433%,31.342% { opacity: 1 } 31.343%,46.267% { opacity: 1 } 46.269%,73.133% { opacity: 1 } 73.134%,73.134% { opacity: 1 } 73.134%,100% { opacity: 1 } }
+.fl .a4 { animation: a4 6.7s infinite linear; }
+@keyframes a5 { 0%,13.431% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 13.433%,31.342% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 31.343%,46.267% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 46.269%,73.133% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 73.134%,73.134% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 73.134%,100% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } }
+.fl .a5 { animation: a5 6.7s infinite linear; }
+@keyframes a6 { 0%,13.431% { opacity: 1; visibility: visible } 13.433%,13.433% { opacity: 0; visibility: hidden } 13.433%,31.342% { opacity: 0; visibility: hidden } 31.343%,46.267% { opacity: 0; visibility: hidden } 46.269%,73.133% { opacity: 0; visibility: hidden } 73.134%,73.134% { opacity: 0; visibility: hidden } 73.134%,100% { opacity: 0; visibility: hidden } }
+.fl .a6 { animation: a6 6.7s infinite linear; }
+@keyframes a7 { 0%,13.431% { opacity: 0; visibility: hidden } 13.433%,13.433% { opacity: 1; visibility: visible } 13.433%,31.342% { opacity: 1; visibility: visible } 31.343%,46.267% { opacity: 0; visibility: hidden } 46.269%,73.133% { opacity: 0; visibility: hidden } 73.134%,73.134% { opacity: 0; visibility: hidden } 73.134%,100% { opacity: 0; visibility: hidden } }
+.fl .a7 { animation: a7 6.7s infinite linear; }
+@keyframes a8 { 0%,31.342% { color: var(--fx-line-rest) } 31.343%,46.267% { color: var(--fx-edge) } 46.269%,100% { color: var(--fx-line-rest) } }
+.fl .a8 { animation: a8 6.7s infinite linear; }
+@keyframes a9 { 0%,13.431% { color: var(--fx-edge) } 13.433%,100% { color: var(--fx-line-rest) } }
+.fl .a9 { animation: a9 6.7s infinite linear; }
+@keyframes a10 { 0%,31.342% { stroke: var(--fx-edge-rest) } 31.343%,46.267% { stroke: var(--fx-edge) } 46.269% { stroke: var(--fx-edge) } 52.239%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a10 { animation: a10 6.7s infinite linear; }
+@keyframes a11 { 0%,31.342% { fill: var(--fx-ink-rest) } 31.343%,46.267% { fill: var(--fx-ink) } 46.269% { fill: var(--fx-ink) } 52.239%,100% { fill: var(--fx-ink-rest) } }
+.fl .a11 { animation: a11 6.7s infinite linear; }
+@keyframes a12 { 0%,13.431% { stroke: var(--fx-edge) } 13.433% { stroke: var(--fx-edge) } 19.403%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a12 { animation: a12 6.7s infinite linear; }
+@keyframes a13 { 0%,13.431% { fill: var(--fx-ink) } 13.433% { fill: var(--fx-ink) } 19.403%,100% { fill: var(--fx-ink-rest) } }
+.fl .a13 { animation: a13 6.7s infinite linear; }
+.fl .sa0 { fill: var(--fx-face-on); stroke: var(--fx-edge); }
+.fl .sa1 { opacity: 0; visibility: hidden; }
+.fl .sa2 { opacity: 1; visibility: visible; }
+.fl .sa3 { opacity: 1; }
+.fl .sa4 { fill: var(--fx-face); stroke: var(--fx-edge-rest); }
+</style>
+<defs></defs>
+<rect x="0.5" y="0.5" width="632.5" height="419" class="fl-canvas-surface"/>
+<g class="fl-motion" transform="translate(0 0)">
+
+<g id="n-0" class="fl-node fl-shape-box tn-blue ap-filled" tabindex="0" role="img" aria-label="현재 제어" data-id="current"><rect x="154.9" y="155" width="189.5" height="107" rx="8" class="fl-stroke a0"/><text x="249.6" y="183.9" class="label" text-anchor="middle">현재 제어</text><text x="249.6" y="204.7" class="sub" text-anchor="middle">control 세대</text><rect x="164.9" y="222" width="169.5" height="30" rx="6" opacity="0" class="fl-card a4"/><g id="n-0-c0" opacity="0" visibility="hidden" class="fl-layer a1"><path d="M170.9 222H328.4a6 6 0 0 1 6 6V246a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V228a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="current:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0"/></path><g class="fl-edge"><path d="M 234.6 237 L 250 237" class="fl-path"/></g><rect class="pill fl-mini-pill" x="180.5" y="228" width="54.1" height="18" rx="9"/><rect class="pill fl-mini-pill" x="250" y="228" width="68.7" height="18" rx="9"/><text x="207.6" y="241.7" class="mini" text-anchor="middle">현재 g</text><text x="284.3" y="241.7" class="mini" text-anchor="middle">옛 페이지</text></g><g id="n-0-c1" opacity="0" visibility="hidden" class="fl-layer a2"><path d="M170.9 222H328.4a6 6 0 0 1 6 6V246a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V228a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="current:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0"/></path><g class="fl-edge"><path d="M 244.5 237 L 253.3 237" class="fl-path"/></g><rect class="pill fl-mini-pill" x="177.2" y="228" width="67.3" height="18" rx="9"/><rect class="pill fl-mini-pill" x="253.3" y="228" width="68.7" height="18" rx="9"/><text x="210.9" y="241.7" class="mini" text-anchor="middle">현재 g+1</text><text x="287.6" y="241.7" class="mini" text-anchor="middle">새 페이지</text></g><g id="n-0-c2" opacity="0" visibility="hidden" class="fl-layer a3"><path d="M170.9 222H328.4a6 6 0 0 1 6 6V246a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V228a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="current:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0"/></path><g class="fl-edge"><path d="M 245.7 237 L 253.7 237" class="fl-path"/></g><rect class="pill fl-mini-pill" x="176.9" y="228" width="68.8" height="18" rx="9"/><rect class="pill fl-mini-pill" x="253.7" y="228" width="68.7" height="18" rx="9"/><text x="211.3" y="241.7" class="mini" text-anchor="middle">현재 g+2</text><text x="288" y="241.7" class="mini" text-anchor="middle">새 페이지</text></g></g>
+<g id="n-1" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="이전 제어" data-id="fallback"><rect x="154.9" y="16" width="188" height="107" rx="8" class="fl-stroke a0"/><text x="248.9" y="44.9" class="label" text-anchor="middle">이전 제어</text><text x="248.9" y="65.7" class="sub" text-anchor="middle">fallback</text><rect x="164.9" y="83" width="168" height="30" rx="6" opacity="0" class="fl-card a4"/><g id="n-1-c0" opacity="0" visibility="hidden" class="fl-layer a1"><path d="M170.9 83H326.9a6 6 0 0 1 6 6V107a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V89a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="fallback:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0"/></path><g class="fl-edge"><path d="M 242.3 98 L 251.5 98" class="fl-path"/></g><rect class="pill fl-mini-pill" x="177.5" y="89" width="64.8" height="18" rx="9"/><rect class="pill fl-mini-pill" x="251.5" y="89" width="68.7" height="18" rx="9"/><text x="209.9" y="102.7" class="mini" text-anchor="middle">이전 g-1</text><text x="285.9" y="102.7" class="mini" text-anchor="middle">옛 페이지</text></g><g id="n-1-c1" opacity="0" visibility="hidden" class="fl-layer a2"><path d="M170.9 83H326.9a6 6 0 0 1 6 6V107a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V89a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="fallback:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0"/></path><g class="fl-edge"><path d="M 234.2 98 L 248.8 98" class="fl-path"/></g><rect class="pill fl-mini-pill" x="180.2" y="89" width="54.1" height="18" rx="9"/><rect class="pill fl-mini-pill" x="248.8" y="89" width="68.7" height="18" rx="9"/><text x="207.2" y="102.7" class="mini" text-anchor="middle">이전 g</text><text x="283.2" y="102.7" class="mini" text-anchor="middle">옛 페이지</text></g><g id="n-1-c2" opacity="0" visibility="hidden" class="fl-layer a3"><path d="M170.9 83H326.9a6 6 0 0 1 6 6V107a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V89a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="fallback:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0"/></path><g class="fl-edge"><path d="M 244.2 98 L 252.2 98" class="fl-path"/></g><rect class="pill fl-mini-pill" x="176.9" y="89" width="67.3" height="18" rx="9"/><rect class="pill fl-mini-pill" x="252.2" y="89" width="68.7" height="18" rx="9"/><text x="210.5" y="102.7" class="mini" text-anchor="middle">이전 g+1</text><text x="286.5" y="102.7" class="mini" text-anchor="middle">새 페이지</text></g></g>
+<g id="n-2" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="옛 페이지" data-id="old"><rect x="461.5" y="47.2" width="100" height="67" rx="8" class="fl-stroke a5"/><text x="511.5" y="76.1" class="label" text-anchor="middle">옛 페이지</text><text x="511.5" y="96.8" class="sub" text-anchor="middle">퇴역 대상</text></g>
+<g id="n-3" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="새 페이지" data-id="next"><rect x="461.5" y="192.8" width="100" height="67" rx="8" class="fl-stroke a5"/><rect x="461.5" y="192.8" width="100" height="67" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.46269;0.47463;0.48657;0.52239;1" values="0;0;1;1;0;0"/></rect><text x="511.5" y="221.7" class="label" text-anchor="middle">새 페이지</text><text x="511.5" y="242.5" class="sub" text-anchor="middle">COW 결과</text></g>
+<g id="n-4" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="회수 상태" data-id="state"><rect x="154.9" y="295" width="176" height="109" rx="8" class="fl-stroke a0"/><rect x="154.9" y="295" width="176" height="109" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.13433;0.14627;0.15821;0.19403;1" values="0;0;1;1;0;0"/></rect><text x="242.9" y="323.9" class="label" text-anchor="middle">회수 상태</text><text x="242.9" y="344.7" class="sub" text-anchor="middle">놓은 게시 페이지</text><rect x="164.9" y="362" width="156" height="32" rx="6" opacity="0" class="fl-card a4"/><g id="n-4-c0" opacity="0" visibility="hidden" class="fl-layer a6"><path d="M170.9 362H314.9a6 6 0 0 1 6 6V388a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V368a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="state:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.13433;0.14627;0.15821;0.19403;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0;1;1;0;0"/></path><text x="172.9" y="382.7" class="row">USED</text></g><g id="n-4-c1" opacity="0" visibility="hidden" class="fl-layer a7"><path d="M170.9 362H314.9a6 6 0 0 1 6 6V388a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V368a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="state:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.13433;0.14627;0.15821;0.19403;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0;1;1;0;0"/></path><text x="172.9" y="382.7" class="row">PENDING · 아직 참조 중</text></g><g id="n-4-c2" opacity="0" visibility="hidden" class="fl-layer a2"><path d="M170.9 362H314.9a6 6 0 0 1 6 6V388a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V368a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="state:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.13433;0.14627;0.15821;0.19403;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0;1;1;0;0"/></path><text x="172.9" y="382.7" class="row">AGING · fallback 보호</text></g><g id="n-4-c3" opacity="0" visibility="hidden" class="fl-layer a3"><path d="M170.9 362H314.9a6 6 0 0 1 6 6V388a6 6 0 0 1 -6 6H170.9a6 6 0 0 1 -6 -6V368a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-rf="state:0"><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.13433;0.14627;0.15821;0.19403;0.31343;0.32537;0.33731;0.37313;0.73134;0.74328;0.75522;0.79104;1" values="0;0;1;1;0;0;1;1;0;0;1;1;0;0"/></path><text x="172.9" y="382.7" class="row">REUSABLE · 참조 종료</text></g></g>
+<g id="e-0" class="fl-edge "><defs><marker id="fl-arrow-0" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-0" d="M 344.4 190.7 L 415.5 190.7 Q 437.5 190.7, 437.5 168.7 L 437.5 103.8 Q 437.5 91.8, 449.5 91.8 L 461.5 91.8" class="fl-path" marker-end="url(#fl-arrow-0)"/></g>
+<g id="e-1" class="fl-edge "><defs><marker id="fl-arrow-1" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-1" d="M 342.9 69.5 L 461.5 69.5" class="fl-path" marker-end="url(#fl-arrow-1)"/></g>
+<g id="e-2" class="fl-edge a8"><defs><marker id="fl-arrow-2" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-2" d="M 344.4 226.3 L 461.5 226.3" class="fl-path dashed" marker-end="url(#fl-arrow-2)"/></g>
+<g id="e-3" class="fl-edge a9"><defs><marker id="fl-arrow-3" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-3" d="M 561.5 80.7 L 595.5 80.7 Q 617.5 80.7, 617.5 102.7 L 617.5 256 Q 617.5 278, 595.5 278 L 38 278 Q 16 278, 16 300 L 16 327.5 Q 16 349.5, 38 349.5 L 154.9 349.5" class="fl-path" marker-end="url(#fl-arrow-3)"/></g>
+
+<g class="fl-packet p0-0" opacity="0" fill="var(--color-state-on-active)"><circle r="10" fill="var(--color-state-active)" opacity="0.2"/><circle r="4.5" fill="var(--color-state-active)"/><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.13433" values="1;0"/><animateMotion dur="6.7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.13433;1" keySplines="0 0 1 1;0 0 1 1" keyPoints="0;1;1"><mpath href="#p-3" xlink:href="#p-3"/></animateMotion></g>
+<g class="fl-packet p2-0" opacity="0" fill="var(--color-state-on-active)"><circle r="10" fill="var(--color-state-active)" opacity="0.2"/><circle r="4.5" fill="var(--color-state-active)"/><animate attributeName="opacity" dur="6.7s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31343;0.46269" values="0;1;0"/><animateMotion dur="6.7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.31343;0.46269;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-2" xlink:href="#p-2"/></animateMotion></g>
+<g class="fl-pills"><g id="l-0" class="fl-edge"><g class="fl-pill"><rect x="348.4" y="195.7" width="70.9" height="18" rx="9" class="pill "/><text x="383.8" y="209.3" class="edgelabel ">g 세대 참조</text></g></g><g id="l-1" class="fl-edge"><g class="fl-pill"><rect x="346.9" y="74.5" width="74.6" height="18" rx="9" class="pill "/><text x="384.2" y="88.2" class="edgelabel ">옛 세대 보호</text></g></g><g id="l-2" class="fl-edge"><g class="fl-pill"><rect x="348.4" y="231.3" width="59.3" height="18" rx="9" class="pill a10"/><text x="378" y="245" class="edgelabel a11">g+1 이후</text></g></g><g id="l-3" class="fl-edge"><g class="fl-pill"><rect x="534.6" y="120.7" width="78.9" height="18" rx="9" class="pill a12"/><text x="574" y="134.3" class="edgelabel a13">release 등록</text></g></g></g>
+</g>
+<g class="fl-still" transform="translate(0 0)">
+
+<g id="still-n-0" class="fl-node fl-shape-box tn-blue ap-filled" tabindex="0" role="img" aria-label="현재 제어" data-id="current"><rect x="154.9" y="155" width="189.5" height="107" rx="8" class="fl-stroke sa0"/><text x="249.6" y="183.9" class="label" text-anchor="middle">현재 제어</text><text x="249.6" y="204.7" class="sub" text-anchor="middle">control 세대</text><rect x="164.9" y="222" width="169.5" height="30" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-0-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><g class="fl-edge"><path d="M 234.6 237 L 250 237" class="fl-path"/></g><rect class="pill fl-mini-pill" x="180.5" y="228" width="54.1" height="18" rx="9"/><rect class="pill fl-mini-pill" x="250" y="228" width="68.7" height="18" rx="9"/><text x="207.6" y="241.7" class="mini" text-anchor="middle">현재 g</text><text x="284.3" y="241.7" class="mini" text-anchor="middle">옛 페이지</text></g><g id="still-n-0-c1" opacity="0" visibility="hidden" class="fl-layer sa1"><g class="fl-edge"><path d="M 244.5 237 L 253.3 237" class="fl-path"/></g><rect class="pill fl-mini-pill" x="177.2" y="228" width="67.3" height="18" rx="9"/><rect class="pill fl-mini-pill" x="253.3" y="228" width="68.7" height="18" rx="9"/><text x="210.9" y="241.7" class="mini" text-anchor="middle">현재 g+1</text><text x="287.6" y="241.7" class="mini" text-anchor="middle">새 페이지</text></g><g id="still-n-0-c2" opacity="0" visibility="hidden" class="fl-layer sa2"><g class="fl-edge"><path d="M 245.7 237 L 253.7 237" class="fl-path"/></g><rect class="pill fl-mini-pill" x="176.9" y="228" width="68.8" height="18" rx="9"/><rect class="pill fl-mini-pill" x="253.7" y="228" width="68.7" height="18" rx="9"/><text x="211.3" y="241.7" class="mini" text-anchor="middle">현재 g+2</text><text x="288" y="241.7" class="mini" text-anchor="middle">새 페이지</text></g></g>
+<g id="still-n-1" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="이전 제어" data-id="fallback"><rect x="154.9" y="16" width="188" height="107" rx="8" class="fl-stroke sa0"/><text x="248.9" y="44.9" class="label" text-anchor="middle">이전 제어</text><text x="248.9" y="65.7" class="sub" text-anchor="middle">fallback</text><rect x="164.9" y="83" width="168" height="30" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-1-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><g class="fl-edge"><path d="M 242.3 98 L 251.5 98" class="fl-path"/></g><rect class="pill fl-mini-pill" x="177.5" y="89" width="64.8" height="18" rx="9"/><rect class="pill fl-mini-pill" x="251.5" y="89" width="68.7" height="18" rx="9"/><text x="209.9" y="102.7" class="mini" text-anchor="middle">이전 g-1</text><text x="285.9" y="102.7" class="mini" text-anchor="middle">옛 페이지</text></g><g id="still-n-1-c1" opacity="0" visibility="hidden" class="fl-layer sa1"><g class="fl-edge"><path d="M 234.2 98 L 248.8 98" class="fl-path"/></g><rect class="pill fl-mini-pill" x="180.2" y="89" width="54.1" height="18" rx="9"/><rect class="pill fl-mini-pill" x="248.8" y="89" width="68.7" height="18" rx="9"/><text x="207.2" y="102.7" class="mini" text-anchor="middle">이전 g</text><text x="283.2" y="102.7" class="mini" text-anchor="middle">옛 페이지</text></g><g id="still-n-1-c2" opacity="0" visibility="hidden" class="fl-layer sa2"><g class="fl-edge"><path d="M 244.2 98 L 252.2 98" class="fl-path"/></g><rect class="pill fl-mini-pill" x="176.9" y="89" width="67.3" height="18" rx="9"/><rect class="pill fl-mini-pill" x="252.2" y="89" width="68.7" height="18" rx="9"/><text x="210.5" y="102.7" class="mini" text-anchor="middle">이전 g+1</text><text x="286.5" y="102.7" class="mini" text-anchor="middle">새 페이지</text></g></g>
+<g id="still-n-2" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="옛 페이지" data-id="old"><rect x="461.5" y="47.2" width="100" height="67" rx="8" class="fl-stroke sa4"/><text x="511.5" y="76.1" class="label" text-anchor="middle">옛 페이지</text><text x="511.5" y="96.8" class="sub" text-anchor="middle">퇴역 대상</text></g>
+<g id="still-n-3" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="새 페이지" data-id="next"><rect x="461.5" y="192.8" width="100" height="67" rx="8" class="fl-stroke sa4"/><text x="511.5" y="221.7" class="label" text-anchor="middle">새 페이지</text><text x="511.5" y="242.5" class="sub" text-anchor="middle">COW 결과</text></g>
+<g id="still-n-4" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="회수 상태" data-id="state"><rect x="154.9" y="295" width="176" height="109" rx="8" class="fl-stroke sa0"/><text x="242.9" y="323.9" class="label" text-anchor="middle">회수 상태</text><text x="242.9" y="344.7" class="sub" text-anchor="middle">놓은 게시 페이지</text><rect x="164.9" y="362" width="156" height="32" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-4-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="172.9" y="382.7" class="row">USED</text></g><g id="still-n-4-c1" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="172.9" y="382.7" class="row">PENDING · 아직 참조 중</text></g><g id="still-n-4-c2" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="172.9" y="382.7" class="row">AGING · fallback 보호</text></g><g id="still-n-4-c3" opacity="0" visibility="hidden" class="fl-layer sa2"><text x="172.9" y="382.7" class="row">REUSABLE · 참조 종료</text></g></g>
+<g id="still-e-0" class="fl-edge "><defs><marker id="still-fl-arrow-0" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-0" d="M 344.4 190.7 L 415.5 190.7 Q 437.5 190.7, 437.5 168.7 L 437.5 103.8 Q 437.5 91.8, 449.5 91.8 L 461.5 91.8" class="fl-path" marker-end="url(#still-fl-arrow-0)"/></g>
+<g id="still-e-1" class="fl-edge "><defs><marker id="still-fl-arrow-1" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-1" d="M 342.9 69.5 L 461.5 69.5" class="fl-path" marker-end="url(#still-fl-arrow-1)"/></g>
+<g id="still-e-2" class="fl-edge "><defs><marker id="still-fl-arrow-2" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-2" d="M 344.4 226.3 L 461.5 226.3" class="fl-path dashed" marker-end="url(#still-fl-arrow-2)"/></g>
+<g id="still-e-3" class="fl-edge "><defs><marker id="still-fl-arrow-3" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-3" d="M 561.5 80.7 L 595.5 80.7 Q 617.5 80.7, 617.5 102.7 L 617.5 256 Q 617.5 278, 595.5 278 L 38 278 Q 16 278, 16 300 L 16 327.5 Q 16 349.5, 38 349.5 L 154.9 349.5" class="fl-path" marker-end="url(#still-fl-arrow-3)"/></g>
+
+
+<g class="fl-pills"><g id="still-l-0" class="fl-edge"><g class="fl-pill"><rect x="348.4" y="195.7" width="70.9" height="18" rx="9" class="pill "/><text x="383.8" y="209.3" class="edgelabel ">g 세대 참조</text></g></g><g id="still-l-1" class="fl-edge"><g class="fl-pill"><rect x="346.9" y="74.5" width="74.6" height="18" rx="9" class="pill "/><text x="384.2" y="88.2" class="edgelabel ">옛 세대 보호</text></g></g><g id="still-l-2" class="fl-edge"><g class="fl-pill"><rect x="348.4" y="231.3" width="59.3" height="18" rx="9" class="pill "/><text x="378" y="245" class="edgelabel ">g+1 이후</text></g></g><g id="still-l-3" class="fl-edge"><g class="fl-pill"><rect x="534.6" y="120.7" width="78.9" height="18" rx="9" class="pill "/><text x="574" y="134.3" class="edgelabel ">release 등록</text></g></g></g>
+</g>
+</svg>
