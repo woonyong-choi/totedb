@@ -24,6 +24,25 @@ make SANITIZE= BUILD_DIR=build-nosan test-database
 
 ## 시험 대상
 
+| 대상 | 검사하는 것 |
+|---|---|
+| `make test` | 행 인코딩, overflow, 값, 카탈로그, lexer, 페이지 파일, 카탈로그 저장, 기본 키·TEXT 색인 트리 |
+| `make test-overflow-file` | overflow 체인의 파일 왕복 |
+| `make test-value-sqlite` | 값 비교·변환을 시스템 SQLite와 대조 |
+| `make test-value-varchar` | VARCHAR 경계 값과 UTF-8 판정 |
+| `make test-database` | SQL 문장 parser, heap 저장소, 문장 실행, SQLite 대조, I/O·할당 실패 주입, 메모리 한도 열기, 기본 키 색인 |
+| `make test-transaction` | 트랜잭션 상태 기계, writer 경합, commit 결과, 실패 주입 |
+| `make test-session` | 세션 메모리 예산과 결과 수명 |
+| `make test-ack-queue` | ACK 큐의 C API와 실패 주입 |
+| `make test-ack-queue-python` | Python 바인딩의 DB·트랜잭션·큐 계약 |
+| `make test-all` | 위 대상 전체 |
+| `make test-runner` | 시험 실행기와 실패 판정기 |
+| `make test-fault` | 실패 주입 런타임 |
+| `make test-result` | 결과 버퍼 인코딩과 할당 실패 |
+| `make test-benchmark` | 별도 계측 ON/OFF 빌드와 C API 계측 회귀. `test-all`에 포함되지 않는다. |
+
+각 시험의 결과와 실패 주입 시드는 `build/fault/`에 JSON으로 남는다. CI는 이 폴더를 sanitizer별 산출물로 올린다.
+
 ### 요청 단위 내부 계측
 
 정상 빌드는 `BENCHMARK=0`이며 계측 매크로의 인자와 선언은 전처리 때 사라진다. 런타임 환경 변수로 켤 수 없다. `BENCHMARK=1`만 별도 `build-benchmark`에서 계측 소스를 링크한다. 이 모드에 `BUILD_DIR=build`를 주면 실패한다. 사용자 지정 디렉터리를 재사용해도 모드·컴파일러·플래그 fingerprint가 바뀌면 객체와 공유 라이브러리를 다시 만든다. 실제 플래그는 해당 디렉터리의 `.build-fingerprint`와 Make 출력에 남는다.
@@ -45,25 +64,6 @@ macOS에서는 검사할 라이브러리의 확장자를 `.dylib`로 바꾼다. 
 inclusive 단계 시간은 자식을 포함한다. exclusive만 자식 시간을 제외하므로 부모와 자식을 더하면 안 된다. CPU 시간과 I/O wall 시간을 합쳐 100%로 만들지 않는다. wall−CPU는 미분류 잔여이며 OS off-CPU나 잠금 시간으로 단정하지 않는다. I/O bytes는 커널 호출에 수락된 양이지 물리 장치 전송량이 아니다. SQLite 내부 단계는 측정하지 않았으므로 unknown이며 0비용이 아니다.
 
 wheel과 sdist 재빌드는 환경의 Make 모드 변수를 차단하고 패키징 전용 경로에서 `BENCHMARK=0 SANITIZE=`로 강제 재빌드한다. 복사 전후와 설치 smoke에서 `tb_bench` 정의·참조·TLS 심볼을 검사하여 계측 라이브러리의 배포를 거절한다.
-
-| 대상 | 검사하는 것 |
-|---|---|
-| `make test` | 행 인코딩, overflow, 값, 카탈로그, lexer, 페이지 파일, 카탈로그 저장, 기본 키·TEXT 색인 트리 |
-| `make test-overflow-file` | overflow 체인의 파일 왕복 |
-| `make test-value-sqlite` | 값 비교·변환을 시스템 SQLite와 대조 |
-| `make test-value-varchar` | VARCHAR 경계 값과 UTF-8 판정 |
-| `make test-database` | SQL 문장 parser, heap 저장소, 문장 실행, SQLite 대조, I/O·할당 실패 주입, 메모리 한도 열기, 기본 키 색인 |
-| `make test-transaction` | 트랜잭션 상태 기계, writer 경합, commit 결과, 실패 주입 |
-| `make test-session` | 세션 메모리 예산과 결과 수명 |
-| `make test-ack-queue` | ACK 큐의 C API와 실패 주입 |
-| `make test-ack-queue-python` | Python 바인딩의 DB·트랜잭션·큐 계약 |
-| `make test-all` | 위 대상 전체 |
-| `make test-runner` | 시험 실행기와 실패 판정기 |
-| `make test-fault` | 실패 주입 런타임 |
-| `make test-result` | 결과 버퍼 인코딩과 할당 실패 |
-| `make test-benchmark` | 별도 계측 ON/OFF 빌드와 C API 계측 회귀. `test-all`에 포함되지 않는다. |
-
-각 시험의 결과와 실패 주입 시드는 `build/fault/`에 JSON으로 남는다. CI는 이 폴더를 sanitizer별 산출물로 올린다.
 
 ### 여러 프로세스 outbox 예제
 

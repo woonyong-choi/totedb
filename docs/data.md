@@ -45,21 +45,34 @@ SQL 열 타입은 `INTEGER`, `REAL`, `TEXT`, `BLOB`, `VARCHAR(n)`이다. `VARCHA
 
 다중 바이트 정수는 little-endian이다. 파일 버전과 envelope 버전, 카탈로그 버전은 서로 다른 필드다.
 
-| 부분 | 실제 형식과 값 | 구현 |
-|---|---|---|
-| 물리 페이지 | 8192바이트, 앞 32바이트 envelope와 본문 8160바이트 | [page_file.h](../include/storage/page_file.h) |
-| Envelope | `LRPG`, 버전 `2`, 종류, page ID, table ID, 본문 길이, 0인 예약 8바이트, CRC32C | [page_file.c](../src/storage/page_file.c) |
-| 제어 페이지 | 슬롯 `0`, `1`, 본문 magic `TOTEDB\0\0`, 파일 형식 `3`, 페이지 크기, byte-order 표시 `0x01020304` | [page_file.c](../src/storage/page_file.c) |
-| 제어 참조 | generation, page_count, catalog head·size·generation, reusable·aging 목록과 사슬 참조, manifest | [page_file.h](../include/storage/page_file.h) |
-| 카탈로그 | `LRCT`, 버전 `1`, 길이·generation·다음 table ID·테이블·열·기본값·색인, FNV-1a 체크섬 | [catalog.c](../src/storage/catalog.c) |
-| 행 디렉터리 | `LHD3` 버전 `3` 잎의 record page ID와 빈 공간 힌트, 큰 디렉터리는 `LHD2` 버전 `2` 루트 아래 잎 | [heap_store.h](../include/storage/heap_store.h) |
-| Record page | `LRP2`, slot과 행 바이트, 삭제 slot 번호 재사용 없음 | [record_page.h](../include/storage/record_page.h) |
-| Record codec | 형식 바이트 `0x02`, LEB128 필드 수·코드, 최소 폭 little-endian 정수, TEXT·BLOB 바이트 | [record.c](../src/storage/record.c) |
-| Heap 행 | 행 버전 `1`, 열별 저장 종류와 값, REAL은 8바이트, 큰 값은 head·size 참조 | [heap_store.c](../src/storage/heap_store.c) |
-| Overflow | `LRO2`, 체인 순번·다음 page·chunk 길이·전체 길이·head·CRC32C | [overflow.c](../src/storage/overflow.c) |
-| 정수 색인 | `LPK1` 버전 `1`, leaf의 key와 locator, internal의 하한 key와 child | [pk_tree.h](../include/storage/pk_tree.h) |
-| TEXT 색인 | `LTX1` 버전 `1`, 가변 길이 키와 locator를 담는 COW B+Tree | [text_tree.h](../include/storage/text_tree.h) |
-| 빈 페이지 사슬 | `FREE_LIST` 종류 `6`, 다음 page·번호 개수·page ID 배열 | [page_file.c](../src/storage/page_file.c) |
+| 부분 | 식별값·버전·크기 |
+|---|---|
+| 물리 페이지 | 8192바이트, 앞 32바이트 envelope와 본문 8160바이트 |
+| Envelope | `LRPG`, 버전 `2` |
+| 제어 페이지 | 슬롯 `0`, `1`, 본문 magic `TOTEDB\0\0`, 파일 형식 `3`, byte-order 표시 `0x01020304` |
+| 카탈로그 | `LRCT`, 버전 `1` |
+| 행 디렉터리 | `LHD3` 버전 `3`, `LHD2` 버전 `2` |
+| Record page | `LRP2` |
+| Record codec | 형식 바이트 `0x02` |
+| Heap 행 | 행 버전 `1`, REAL은 8바이트 |
+| Overflow | `LRO2` |
+| 정수 색인 | `LPK1` 버전 `1` |
+| TEXT 색인 | `LTX1` 버전 `1` |
+| 빈 페이지 사슬 | `FREE_LIST` 종류 `6` |
+
+- 물리 페이지의 envelope와 본문 크기는 [page_file.h](../include/storage/page_file.h)에 있다.
+- Envelope는 식별값과 버전 뒤에 종류, page ID, table ID, 본문 길이, 0인 예약 8바이트, CRC32C를 담는다. 구현은 [page_file.c](../src/storage/page_file.c)에 있다.
+- 제어 페이지는 파일 형식 뒤에 페이지 크기와 byte-order 표시를 담는다. 구현은 [page_file.c](../src/storage/page_file.c)에 있다.
+- 제어 참조는 generation, page_count, catalog head·size·generation, reusable·aging 목록과 사슬 참조, manifest를 담는다. 정의는 [page_file.h](../include/storage/page_file.h)에 있다.
+- 카탈로그는 길이·generation·다음 table ID·테이블·열·기본값·색인, FNV-1a 체크섬을 담는다. 구현은 [catalog.c](../src/storage/catalog.c)에 있다.
+- 행 디렉터리의 잎은 record page ID와 빈 공간 힌트를 담는다. 큰 디렉터리는 `LHD2` 루트 아래 `LHD3` 잎을 둔다. 정의는 [heap_store.h](../include/storage/heap_store.h)에 있다.
+- Record page는 slot과 행 바이트를 담으며 삭제 slot 번호를 재사용하지 않는다. 정의는 [record_page.h](../include/storage/record_page.h)에 있다.
+- Record codec은 형식 바이트 뒤에 LEB128 필드 수·코드, 최소 폭 little-endian 정수, TEXT·BLOB 바이트를 담는다. 구현은 [record.c](../src/storage/record.c)에 있다.
+- Heap 행은 열별 저장 종류와 값을 담고 큰 값은 head·size로 참조한다. 구현은 [heap_store.c](../src/storage/heap_store.c)에 있다.
+- Overflow는 체인 순번·다음 page·chunk 길이·전체 길이·head·CRC32C를 담는다. 구현은 [overflow.c](../src/storage/overflow.c)에 있다.
+- 정수 색인은 leaf의 key와 locator, internal의 하한 key와 child를 담는다. 정의는 [pk_tree.h](../include/storage/pk_tree.h)에 있다.
+- TEXT 색인은 가변 길이 키와 locator를 담는 COW B+Tree다. 정의는 [text_tree.h](../include/storage/text_tree.h)에 있다.
+- 빈 페이지 사슬은 다음 page·번호 개수·page ID 배열을 담는다. 구현은 [page_file.c](../src/storage/page_file.c)에 있다.
 
 Record codec의 코드 `0`은 NULL, `1`과 `2`는 정수 0과 1, `3..10`은 1~8바이트 정수다. 코드 `11+2n`은 n바이트 BLOB, `12+2n`은 n바이트 TEXT다. Heap은 이 codec으로 저장 종류와 값을 함께 표현하므로 SQL 열 하나가 codec 필드 하나라는 뜻은 아니다. 전체 offset과 트리 변경 알고리즘은 위 구현이 맡는다.
 
@@ -73,20 +86,20 @@ Record codec의 코드 `0`은 NULL, `1`과 `2`는 정수 0과 1, `3..10`은 1~8�
 
 ### `tote_queue_<name>`
 
-큐 설치가 만드는 작업 본체다. 아래 기본값의 `없음`은 DDL에 `DEFAULT`가 없다는 뜻이다. `put`이 넣는 초기 값은 열 기본값과 다르다.
+큐 설치가 만드는 작업 본체다. 모든 열은 `NOT NULL`이고 DDL에 `DEFAULT`가 없다. `put`이 넣는 초기 값은 열 기본값과 다르다.
 
-| 열 | 타입 | NULL | 기본값 | 뜻 |
-|---|---|---|---|---|
-| `id` | `INTEGER` | 불가 | 없음 | `PRIMARY KEY AUTOINCREMENT` 작업 ID |
-| `state` | `INTEGER` | 불가 | 없음 | `0 READY`, `1 LEASED`, `2 ACKED`, `3 FAILED` |
-| `ready_at` | `INTEGER` | 불가 | 없음 | 다음 claim 가능 시각, 밀리초 |
-| `lease_until` | `INTEGER` | 불가 | 없음 | lease 만료 절대 시각, 밀리초 |
-| `fence` | `INTEGER` | 불가 | 없음 | 재claim마다 증가하는 claim 식별값 |
-| `attempts` | `INTEGER` | 불가 | 없음 | claim 횟수 |
-| `idem` | `TEXT` | 불가 | 없음 | 중복 제거 키, 미사용은 빈 TEXT |
-| `payload` | `BLOB` | 불가 | 없음 | 작업 바이트, 빈 BLOB 허용 |
-| `note` | `TEXT` | 불가 | 없음 | 마지막 이유, 없으면 빈 TEXT |
-| `created_at` | `INTEGER` | 불가 | 없음 | 생성 절대 시각, 밀리초 |
+| 열 | 타입 | 뜻 |
+|---|---|---|
+| `id` | `INTEGER` | `PRIMARY KEY AUTOINCREMENT` 작업 ID |
+| `state` | `INTEGER` | `0 READY`, `1 LEASED`, `2 ACKED`, `3 FAILED` |
+| `ready_at` | `INTEGER` | 다음 claim 가능 시각, 밀리초 |
+| `lease_until` | `INTEGER` | lease 만료 절대 시각, 밀리초 |
+| `fence` | `INTEGER` | 재claim마다 증가하는 claim 식별값 |
+| `attempts` | `INTEGER` | claim 횟수 |
+| `idem` | `TEXT` | 중복 제거 키, 미사용은 빈 TEXT |
+| `payload` | `BLOB` | 작업 바이트, 빈 BLOB 허용 |
+| `note` | `TEXT` | 마지막 이유, 없으면 빈 TEXT |
+| `created_at` | `INTEGER` | 생성 절대 시각, 밀리초 |
 
 | 키와 색인 | 열 |
 |---|---|
@@ -101,13 +114,15 @@ Record codec의 코드 `0`은 NULL, `1`과 `2`는 정수 0과 1, `3..10`은 1~8�
 
 키가 있는 작업을 purge할 때 payload 요약과 만료 시각을 보관한다. 작업 본체가 살아 있는 동안 모든 키를 복제하는 테이블은 아니다.
 
-| 열 | 타입 | NULL | 기본값 | 뜻 |
-|---|---|---|---|---|
-| `seq` | `INTEGER` | 불가 | 없음 | `PRIMARY KEY AUTOINCREMENT` 보관 순번 |
-| `idem` | `TEXT` | 불가 | 없음 | 중복 제거 키 |
-| `job` | `INTEGER` | 불가 | 없음 | 지운 작업 ID, 외래 키 아님 |
-| `digest` | `BLOB` | 불가 | 없음 | 20바이트 payload 요약 |
-| `expires_at` | `INTEGER` | 불가 | 없음 | 보존 만료 절대 시각, 밀리초 |
+모든 열은 `NOT NULL`이고 DDL에 `DEFAULT`가 없다.
+
+| 열 | 타입 | 뜻 |
+|---|---|---|
+| `seq` | `INTEGER` | `PRIMARY KEY AUTOINCREMENT` 보관 순번 |
+| `idem` | `TEXT` | 중복 제거 키 |
+| `job` | `INTEGER` | 지운 작업 ID, 외래 키 아님 |
+| `digest` | `BLOB` | 20바이트 payload 요약 |
+| `expires_at` | `INTEGER` | 보존 만료 절대 시각, 밀리초 |
 
 | 키와 색인 | 열 |
 |---|---|

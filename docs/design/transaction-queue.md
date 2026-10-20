@@ -111,14 +111,52 @@ C `get`의 payload는 `tote_queue_item_free`, 목록 payload는 `tote_queue_list
 
 기준 `1ae11543`의 기본 브랜치에 포함된 구현과 대응 시험을 기준으로 한다. 표는 검증하는 동작을 연결하며 장애 주입과 모형 재생을 같은 검증으로 취급하지 않는다.
 
-| 요구사항 | 검증 계획 |
+| 요구사항 | 확인 동작 |
 |---|---|
-| 큐 없이 SQL을 사용하고 큐 설치는 요청할 때만 수행한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_database_without_queue_supports_crud_and_creates_no_queue_table`, `test_queue_install_creates_table_only_when_requested` |
-| 업무 행과 작업 등록을 같은 트랜잭션에서 함께 게시한다. | [test_ack_queue.c](../../tests/test_ack_queue.c)의 `test_same_transaction` |
-| lease 뒤 같은 작업을 재획득하고 이전 fence를 거절한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_queue_stale_claim_after_lease_expiry_is_rejected`, `test_queue_restart_preserves_state_and_fence_continues` |
-| 업무 변경과 ACK는 함께 게시하거나 취소한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_queue_ack_in_same_transaction_commits_or_rolls_back_with_business_update` |
-| 실패와 반납, 재시도 시각 및 시도 한도를 구분한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_queue_nack_retry_delay_and_terminal_failure` |
-| 키 보존 기간 안의 중복 등록과 충돌을 구분한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_queue_retains_idempotency_key_after_purge` |
+| 큐 없이 SQL을 사용하고 큐 설치는 요청할 때만 수행한다. | SQL 단독 사용·설치 시점 |
+| 업무 행과 작업 등록을 같은 트랜잭션에서 함께 게시한다. | 공동 commit |
+| lease 뒤 같은 작업을 재획득하고 이전 fence를 거절한다. | 만료·재개방 뒤 fence |
+| 업무 변경과 ACK는 함께 게시하거나 취소한다. | ACK의 commit·rollback |
+| 실패와 반납, 재시도 시각 및 시도 한도를 구분한다. | nack의 지연·최종 실패 |
+| 키 보존 기간 안의 중복 등록과 충돌을 구분한다. | purge 뒤 키 보존 |
+
+SQL 단독 사용·설치 시점은 [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 두 시험으로 확인한다.
+
+```text
+test_database_without_queue_supports_crud_and_creates_no_queue_table
+test_queue_install_creates_table_only_when_requested
+```
+
+공동 commit은 [test_ack_queue.c](../../tests/test_ack_queue.c)에서 확인한다.
+
+```text
+test_same_transaction
+```
+
+나머지는 [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)에서 확인한다. 만료·재개방 뒤 fence의 근거는 아래 두 시험이다.
+
+```text
+test_queue_stale_claim_after_lease_expiry_is_rejected
+test_queue_restart_preserves_state_and_fence_continues
+```
+
+ACK의 commit·rollback을 확인한다.
+
+```text
+test_queue_ack_in_same_transaction_commits_or_rolls_back_with_business_update
+```
+
+nack의 지연·최종 실패를 확인한다.
+
+```text
+test_queue_nack_retry_delay_and_terminal_failure
+```
+
+purge 뒤 키 보존을 확인한다.
+
+```text
+test_queue_retains_idempotency_key_after_purge
+```
 
 ## 단점
 

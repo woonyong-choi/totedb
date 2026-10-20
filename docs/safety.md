@@ -6,28 +6,38 @@ ToteDB의 SQL 트랜잭션은 게시된 페이지를 덮어쓰지 않는 COW와 
 
 ## 요약
 
-| 확인한 것 | 결과 | 시험 | 재현 |
-|---|---|---|---|
-| commit 중 모든 쓰기 지점에서 프로세스 종료 | 33곳·57곳(큰 값) 모두 부분 반영 0, 승인한 commit 유실 0 | `tests/test_database_txn.c` `test_crash_points` | `make test-transaction` |
-| commit 중 모든 쓰기·fsync 지점의 I/O 실패 | 32곳·56곳(큰 값) 모두 어긋남 0, 결과를 모르는 2곳은 핸들 poison | 같은 시험 | `make test-transaction` |
-| 문장마다 할당·I/O 실패 주입 | 7850/7850개 검사 통과 | `tests/test_database_fault.c` | `make test-database` |
-| 다시 연 파일의 페이지 회계 | 고아·이중 소유 0 | `database_check_pages`를 쓰는 위 시험들 | `make test-database test-transaction` |
-| 쓰는 도중 SIGKILL된 여러 프로세스 | 남은 프로세스가 계속 쓰고, 행 수와 카운터가 같으며, 회계 0 | `tests/test_database_txn.c` `test_processes_killed_while_writing`, `tests/test_multiprocess.py` `test_killed_writer_leaves_no_half_applied_transaction` | `make test-transaction test-ack-queue-python` |
-| SIGKILL된 reader | 게시가 다시 진행 | `tests/test_page_file.c` `test_locking_and_unpublished_files` | `make test` |
-| 같은 큐를 쓰는 4·16개 프로세스 | 160·640건 유실·중복 0 | `tests/test_multiprocess.py` `test_workers_share_one_queue_without_loss_or_duplicates` | `make test-ack-queue-python` |
-| 큐 연산의 I/O·할당 실패 | 1352개 검사 통과 | `tests/test_ack_queue_fault.c` | `make test-ack-queue` |
-| claim한 worker의 SIGKILL | lease가 끝난 뒤 다른 worker가 처리, 출고 중복 0 | `tests/test_outbox_example.py` | `make example-outbox` |
+| 확인 조건 | 결과 |
+|---|---|
+| commit 중 모든 쓰기 지점에서 프로세스 종료 | 33곳·57곳(큰 값) 모두 부분 반영 0, 승인한 commit 유실 0 |
+| commit 중 모든 쓰기·fsync 지점의 I/O 실패 | 32곳·56곳(큰 값) 모두 어긋남 0, 결과를 모르는 2곳은 핸들 poison |
+| 문장마다 할당·I/O 실패 주입 | 7850/7850개 검사 통과 |
+| 다시 연 파일의 페이지 회계 | 고아·이중 소유 0 |
+| 쓰는 도중 SIGKILL된 여러 프로세스 | 남은 프로세스가 계속 쓰고, 행 수와 카운터가 같으며, 회계 0 |
+| SIGKILL된 reader | 게시가 다시 진행 |
+| 같은 큐를 쓰는 4·16개 프로세스 | 160·640건 유실·중복 0 |
+| 큐 연산의 I/O·할당 실패 | 1352개 검사 통과 |
+| claim한 worker의 SIGKILL | lease가 끝난 뒤 다른 worker가 처리, 출고 중복 0 |
 
 ## 무엇을 어떻게 시험했나
 
 ### 종료 지점
 
-`test_crash_points`는 쓰기 트랜잭션 하나(여러 테이블의 INSERT·UPDATE·DELETE)를 실행하며 파일에 쓰거나 `fsync`하는 지점을 모두 센다. 그 뒤 지점 k마다 fork한 자식이 같은 트랜잭션을 실행하다 k번째 지점에서 곧바로 끝난다. 부모는 파일을 다시 열어 상태가 트랜잭션 전(옛 상태)이거나 트랜잭션 뒤(새 상태)인지 확인한다. 자식이 commit 성공을 받았으면 새 상태여야 한다. 큰 값(15000바이트 overflow 체인)을 넣는 조건으로 한 번 더 실행한다.
+종료 지점 시험은 쓰기 트랜잭션 하나(여러 테이블의 INSERT·UPDATE·DELETE)를 실행하며 파일에 쓰거나 `fsync`하는 지점을 모두 센다. 그 뒤 지점 k마다 fork한 자식이 같은 트랜잭션을 실행하다 k번째 지점에서 곧바로 끝난다. 부모는 파일을 다시 열어 상태가 트랜잭션 전(옛 상태)이거나 트랜잭션 뒤(새 상태)인지 확인한다. 자식이 commit 성공을 받았으면 새 상태여야 한다. 큰 값(15000바이트 overflow 체인)을 넣는 조건으로 한 번 더 실행한다.
 
 | 조건 | 지점 | 종료 | 승인 | 부분 반영·승인 유실 |
 |---|---|---|---|---|
 | 기본 | 33 | 32 | 1 | 0 |
 | 큰 값 | 57 | 56 | 1 | 0 |
+
+시험은 [test_database_txn.c](../tests/test_database_txn.c)의 아래 항목이다. 다음 I/O 실패도 같은 시험에서 확인한다.
+
+```text
+test_crash_points
+```
+
+```sh
+make test-transaction
+```
 
 ### I/O 실패
 
@@ -40,19 +50,93 @@ ToteDB의 SQL 트랜잭션은 게시된 페이지를 덮어쓰지 않는 COW와 
 
 `tests/test_database_fault.c`는 문장 종류마다 할당 실패와 I/O 실패를 차례로 넣는다. 현재 기준 실행은 7850/7850개 검사를 통과했다. 오류 응답 뒤 핸들이 정상인 확정 실패는 게시 상태가 문장 전과 같다. Poison 핸들은 이후 문장을 거절하며, 닫고 다시 열면 문장 전 또는 후 상태다. 제어 페이지 쓰기 뒤 `fsync` 실패는 오류 응답이어도 재개방 시 새 상태가 보이는 불확정 결과다. 무조건 같은 쓰기를 재실행하지 않는다.
 
+문장별 실패 주입의 근거는 [test_database_fault.c](../tests/test_database_fault.c)다.
+
+```sh
+make test-database
+```
+
 ### 페이지 회계
 
 `database_check_pages`는 카탈로그에서 도달하는 페이지와 빈 페이지 목록을 대조해 고아(어디서도 가리키지 않는 페이지)와 이중 소유(두 곳이 가리키거나 빈 목록과 겹치는 페이지)를 센다. 종료·I/O 실패 시험과 여러 프로세스 시험은 다시 열 때마다 이 값이 0인지 확인한다.
 
+요약의 페이지 회계는 위 [test_database_txn.c](../tests/test_database_txn.c)와 [test_database_fault.c](../tests/test_database_fault.c)의 검사에 대응한다.
+
+```sh
+make test-database test-transaction
+```
+
 ### 여러 프로세스
 
-- `test_processes_killed_while_writing`: fork한 writer 셋이 큰 값 갱신·행 추가·카운터 증가를 한 트랜잭션으로 계속 확정한다. 부모가 둘을 쓰는 도중 SIGKILL하고, 그 사이 남은 writer의 카운터가 계속 오르는지, 끝난 뒤 행 수와 카운터가 같은지, 페이지 회계가 0인지 확인한다.
-- `test_workers_share_one_queue_without_loss_or_duplicates`: spawn한 worker 4·16개가 claim, 처리 기록, ack를 한 트랜잭션으로 처리한다. 처리 기록의 기본 키가 작업 id라 같은 작업을 두 번 처리하면 commit이 실패한다.
-- `test_reads_do_not_wait_for_another_process_writing`: 다른 프로세스가 4MB를 쓴 트랜잭션을 쥔 동안 조회 50번이 commit 전 상태를 돌려주고, writer 해제 신호 전에 reader가 끝난다.
-- `test_writer_keeps_committing_while_readers_read_continuously`: reader 넷의 첫 조회 신호를 받은 뒤 writer가 commit 40번을 끝내고, 중지 신호 전까지 reader가 살아 있음을 확인한다.
-- `test_forked_child_cannot_use_the_parent_handle`: fork한 자식이 부모 핸들로 쓰면 `ForkedHandleError`이고 파일 바이트가 그대로다.
+쓰기 중 종료 시험은 fork한 writer 셋이 큰 값 갱신·행 추가·카운터 증가를 한 트랜잭션으로 계속 확정한다. 부모가 둘을 쓰는 도중 SIGKILL하고, 그 사이 남은 writer의 카운터가 계속 오르는지, 끝난 뒤 행 수와 카운터가 같은지, 페이지 회계가 0인지 확인한다. 근거는 [test_database_txn.c](../tests/test_database_txn.c)다.
+
+```text
+test_processes_killed_while_writing
+```
+
+반쪽 반영 검사는 별도로 [test_multiprocess.py](../tests/test_multiprocess.py)에 있다.
+
+```text
+test_killed_writer_leaves_no_half_applied_transaction
+```
+
+```sh
+make test-transaction test-ack-queue-python
+```
+
+공동 큐 시험은 spawn한 worker 4·16개가 claim, 처리 기록, ack를 한 트랜잭션으로 처리한다. 처리 기록의 기본 키가 작업 id라 같은 작업을 두 번 처리하면 commit이 실패한다. 아래 큐·읽기 진행·fork 검사의 근거는 [test_multiprocess.py](../tests/test_multiprocess.py)다.
+
+```text
+test_workers_share_one_queue_without_loss_or_duplicates
+```
+
+```sh
+make test-ack-queue-python
+```
+
+읽기 진행 시험은 다른 프로세스가 4MB를 쓴 트랜잭션을 쥔 동안 조회 50번이 commit 전 상태를 돌려주고, writer 해제 신호 전에 reader가 끝난다.
+
+```text
+test_reads_do_not_wait_for_another_process_writing
+```
+
+쓰기 진행 시험은 reader 넷의 첫 조회 신호를 받은 뒤 writer가 commit 40번을 끝내고, 중지 신호 전까지 reader가 살아 있음을 확인한다.
+
+```text
+test_writer_keeps_committing_while_readers_read_continuously
+```
+
+fork 검사는 자식이 부모 핸들로 쓰면 `ForkedHandleError`이고 파일 바이트가 그대로인지 확인한다.
+
+```text
+test_forked_child_cannot_use_the_parent_handle
+```
 
 두 읽기 진행 시험은 Event 신호와 프로세스 종료 상태를 검사한다. 60초 대기 한도는 멈춘 시험을 끝내기 위한 제한이지 처리 시간이나 성능 합격선이 아니다.
+
+SIGKILL된 reader의 게시 재개는 [test_page_file.c](../tests/test_page_file.c)에서 확인한다.
+
+```text
+test_locking_and_unpublished_files
+```
+
+```sh
+make test
+```
+
+### 큐 실패 주입과 worker 종료
+
+큐 연산의 I/O·할당 실패 검사는 [test_ack_queue_fault.c](../tests/test_ack_queue_fault.c)에 있다.
+
+```sh
+make test-ack-queue
+```
+
+claim한 worker의 SIGKILL 뒤 처리는 [test_outbox_example.py](../tests/test_outbox_example.py)에 있다.
+
+```sh
+make example-outbox
+```
 
 ### 결함 주입으로 시험 자체를 확인
 
@@ -66,10 +150,17 @@ ToteDB의 SQL 트랜잭션은 게시된 페이지를 덮어쓰지 않는 COW와 
 | 다른 프로세스의 게시 뒤 재적재 생략 | `tests/test_multiprocess.py` 4개 |
 | 다른 프로세스의 게시 뒤 빈 목록 재적재 생략 | `test_database_txn` 경계 밖 접근(ASan) |
 | fork 자식의 fd 사본 정리 생략 | `test_page_file` 중단 |
-| writer 우선 관문 생략 | `test_writer_keeps_committing_while_readers_read_continuously`(31초) |
-| SELECT의 writer 잠금 사용 | `test_reads_do_not_wait_for_another_process_writing` |
+| writer 우선 관문 생략 | 쓰기 진행 시험 실패(31초) |
+| SELECT의 writer 잠금 사용 | 읽기 진행 시험 실패 |
 | 큐 연장의 fence 검사 제거 | `tests/test_ack_queue.c` |
 | 예제 worker의 ack 생략 | `tests/test_outbox_example.py` |
+
+위 쓰기·읽기 진행 시험의 정확한 이름은 [test_multiprocess.py](../tests/test_multiprocess.py)의 아래 항목이다. 표의 순서와 같다.
+
+```text
+test_writer_keeps_committing_while_readers_read_continuously
+test_reads_do_not_wait_for_another_process_writing
+```
 
 ## SQLite와의 강제 종료 비교
 

@@ -54,13 +54,36 @@ SQL 문장 하나를 실행하고 행, 명령 또는 SQL 오류 결과를 반환
 
 `u8`, `u32`, `u64`는 부호 없는 1·4·8바이트 수다. `i32`, `i64`는 부호 있는 2의 보수 수이며 `f64`는 IEEE 754 double 비트열이다. 구조체 정렬 padding은 넣지 않는다. 첫 `u8 kind` 뒤에 해당 형식 하나만 온다.
 
-| kind | 뒤따르는 필드 순서 | 종료 |
+| kind | 결과 종류 | 종료 |
 |---|---|---|
-| `0`, rows | `u32 column_count`, 열 metadata 반복, 행 반복 | `u8 0` |
-| `1`, command | `u32 tag_len`, tag 바이트, `u64 affected_rows` | 마지막 수 뒤 |
-| `2`, error | `u32 error_class`, `i32 error_code`, `u32 message_len`, message 바이트 | 메시지 뒤 |
+| `0` | rows | `u8 0` |
+| `1` | command | 마지막 수 뒤 |
+| `2` | error | 메시지 뒤 |
 
-열 metadata는 `u32 name_len`, 이름 바이트, `u8 type`, `u8 nullable` 순서다. Nullable은 `0` 또는 `1`이다. 열 type `0`은 식 타입을 정하지 못했다는 뜻이며 `SELECT NULL`이 그 예다. 각 행은 `u8 1`로 시작하고 metadata의 열 수만큼 cell을 담는다. 행 수 헤더는 없다. Metadata 바로 뒤 `u8 0`이면 정상 0행이다.
+Rows는 kind 뒤에 아래 순서로 온다.
+
+1. `u32 column_count`가 온다.
+2. 열 수만큼 metadata를 반복한다.
+3. 행을 반복하고 `u8 0`으로 끝낸다.
+
+열 metadata 하나의 필드 순서는 `u32 name_len`, 이름 바이트, `u8 type`, `u8 nullable`이다. Nullable은 `0` 또는 `1`이다. 열 type `0`은 식 타입을 정하지 못했다는 뜻이며 `SELECT NULL`이 그 예다.
+
+각 행은 `u8 1`로 시작하고 metadata의 열 수만큼 cell을 담는다.
+
+행 수 헤더는 없다. Metadata 바로 뒤 `u8 0`이면 정상 0행이다.
+
+Command는 kind 뒤에 아래 순서로 온다.
+
+1. `u32 tag_len`이 온다.
+2. tag 바이트가 온다.
+3. `u64 affected_rows`가 오고 끝난다.
+
+Error는 kind 뒤에 아래 순서로 온다.
+
+1. `u32 error_class`가 온다.
+2. `i32 error_code`가 온다.
+3. `u32 message_len`이 온다.
+4. message 바이트가 오고 끝난다.
 
 | Cell type | 뒤따르는 payload |
 |---|---|
