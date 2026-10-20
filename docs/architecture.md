@@ -23,11 +23,11 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 ## 구성 요소
 
 <picture>
-<source media="(max-width: 600px)" srcset="assets/architecture-narrow.svg" width="229" height="675">
-<img src="assets/architecture.svg" alt="설계: 선택 큐와 SQL 호출은 세션에서 합류하고 database가 행과 색인의 루트를 함께 게시한다" width="616">
+<source media="(max-width: 600px)" srcset="assets/architecture-narrow.svg" width="326" height="486">
+<img src="assets/architecture.svg" alt="설계: SQL과 선택 큐는 DB 실행기를 공유하고 행·색인과 카탈로그 저장은 같은 페이지 파일 계층을 사용한다" width="100%">
 </picture>
 
-그림의 선은 호출 방향이다. DB 실행에는 세션·연결·SQL 실행기와 `database` 작업 상태를, 파일 게시에는 `catalog_store`와 `page_file`을 합쳤다. 반환 버퍼와 batch의 새 루트를 호출자에게 돌려주는 선, 실행기 내부의 구문·식 평가 단계는 생략한다. 루트와 페이지 집합의 소유권 인계는 아래 처리 흐름에서 구분한다.
+그림의 선은 호출 방향이다. SQL 직접 호출과 선택 큐는 같은 세션·SQL 실행기를 사용한다. 두 경로 모두 C API를 거치지만, 선택 기능의 의존 방향을 보여 주기 위해 진입점을 나눠 그렸다. 행·색인 페이지 쓰기와 카탈로그 게시도 구분했으며, 두 저장 경로는 `page_file`을 사용한다. 반환 버퍼와 batch의 새 루트를 돌려주는 선, 실행기 내부의 구문·식 평가 단계는 생략한다. 루트와 페이지 집합의 소유권 인계는 아래 처리 흐름에서 구분한다.
 
 | 구성 요소 | 하는 일과 입출력 | 기술 | 위치 |
 |---|---|---|---|
@@ -44,8 +44,8 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 ### 저장 참조
 
 <picture>
-<source media="(max-width: 600px)" srcset="assets/storage-layout-narrow.svg" width="208" height="699">
-<img src="assets/storage-layout.svg" alt="설계: 제어 페이지의 카탈로그 참조에서 디렉터리와 행 페이지를 거쳐 큰 값의 overflow까지 읽는다" width="689">
+<source media="(max-width: 600px)" srcset="assets/storage-layout-narrow.svg" width="208" height="591">
+<img src="assets/storage-layout.svg" alt="설계: 제어 페이지의 카탈로그 참조에서 디렉터리와 행 페이지를 거쳐 큰 값의 overflow까지 읽는다" width="100%">
 </picture>
 
 파일의 제어 슬롯 두 장 중 선택된 `page_file_control_t`가 게시 상태의 입구다. `catalog_head`와 `catalog_size`는 table ID 0인 카탈로그 overflow 체인을 가리킨다. 카탈로그를 읽으면 테이블 schema와 `heap_root`, 기본 키 루트, 보조 색인 루트를 얻는다. 제어 상태가 보관하는 reusable·aging 목록은 지금 재사용할 페이지와 아직 이전 세대를 위해 남겨 둘 페이지를 구분한다.
@@ -53,11 +53,6 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 `heap_root`는 행 페이지가 아니라 페이지 디렉터리의 루트다. 작은 디렉터리는 `LHD3` 잎 한 장이고, 커지면 `LHD2` 루트 아래 `LHD3` 잎들을 둔다. 잎 항목은 물리 행 페이지 ID와 빈 공간 힌트를 담으며, 항목의 순서가 `directory_index`다. 빈 공간은 삽입 후보를 고르는 힌트일 뿐이며 실제 삽입 전 행 페이지에서 다시 확인한다.
 
 색인 잎의 값인 `heap_locator_t`는 `directory_index`와 `slot`이다. 조회는 디렉터리 순번으로 물리 페이지를 고른 뒤 그 페이지의 slot에서 행을 읽는다. 행 페이지를 COW로 교체해도 디렉터리 순번과 slot이 같으면 색인 locator는 유지할 수 있다. 반대로 `UPDATE`가 행을 다른 위치로 옮기면 새 locator를 색인에도 넣는다. locator는 연 heap이나 batch의 수명 안에서만 쓰며 commit 뒤에는 다시 연 heap에서 얻는다.
-
-<picture>
-<source media="(max-width: 600px)" srcset="assets/storage-index-locator-narrow.svg" width="208" height="425">
-<img src="assets/storage-index-locator.svg" alt="설계: 색인은 물리 행 페이지를 직접 가리키지 않고 디렉터리 순번과 slot으로 행을 찾는다" width="670">
-</picture>
 
 행에 다 담지 않는 큰 TEXT·BLOB은 `head`와 `size`로 별도 overflow 체인을 참조한다. 카탈로그와 큰 값은 같은 overflow 모듈을 쓰지만 table ID와 참조 주체가 다르다. 형식의 필드와 검사 조건은 [heap_store.h](../include/storage/heap_store.h), [pk_tree.h](../include/storage/pk_tree.h), [page_file.h](../include/storage/page_file.h)에 있다.
 
@@ -82,11 +77,11 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 4. `database`는 문장 종료 때 SHARED 잠금을 놓는다. 다음 문장은 다른 핸들이 게시한 새 세대를 읽을 수 있으므로 여러 문장에 걸친 고정 read-only snapshot으로 해석하지 않는다.
 
 <picture>
-<source media="(max-width: 600px)" srcset="assets/read-publish-locks-narrow.svg" width="230" height="940">
-<img src="assets/read-publish-locks.svg" alt="설계: writer 잠금과 DB 파일 잠금은 대상이 달라 쓰기 준비 중 읽을 수 있지만 게시 순간에는 서로 기다린다" width="624">
+<source media="(max-width: 600px)" srcset="assets/read-publish-locks-narrow.svg" width="244" height="791">
+<img src="assets/read-publish-locks.svg" alt="설계: reader는 DB 파일의 SHARED 안에서 제어 세대와 캐시를 확인하고 writer는 reader가 끝난 뒤 EXCLUSIVE로 게시한다" width="100%">
 </picture>
 
-[잠금 보유와 대기 재생](assets/read-publish-locks.html)은 독립 핸들의 writer 작업, 게시 대기, 다음 reader의 재적재를 같은 잠금 객체 위에서 보여 준다. writer는 트랜잭션 내내 `<db>-lock`을 쥐지만 DB 파일 EXCLUSIVE는 제어 write와 최종 fsync 구간에만 쥔다. 게시 전 intent 바이트는 새 reader의 양보를 돕는 표시이고, 정확성을 지키는 잠금은 `flock`이다. 표시만으로 기아 방지를 보장하지 않는다.
+[잠금 보유와 대기 재생](assets/read-publish-locks.html)은 독립 핸들의 writer 작업, 게시 대기, 다음 reader의 재적재를 보여 준다. 오른쪽 카드는 잠금 안에서 수행하는 제어·캐시 작업을 묶은 것이다. reader의 제어 세대 확인과 캐시 재적재는 SHARED를 얻은 뒤 수행하며, writer는 기존 reader가 끝나야 DB 파일 EXCLUSIVE를 얻는다. writer는 트랜잭션 내내 `<db>-lock`을 쥐지만 DB 파일 EXCLUSIVE는 제어 write와 최종 fsync 구간에만 쥔다. 게시 전 intent 바이트는 새 reader의 양보를 돕는 표시이고, 정확성을 지키는 잠금은 `flock`이다. 표시만으로 기아 방지를 보장하지 않는다.
 
 같은 핸들의 호출은 별도 문제다. C API는 DB mutex로 실행과 결과 인코딩을 직렬화하고, 같은 core database를 공유하는 세션은 run mutex로 문장·commit·rollback 호출을 직렬화한다. run mutex를 열린 트랜잭션 전체 동안 보유하지는 않는다. 직접 core 핸들을 호출하는 코드와 최종 close를 수행하는 코드는 호출·수명을 직렬화할 책임이 있다. 내부 mutex가 이미 해제된 포인터의 새 접근까지 막지는 않는다.
 
@@ -101,9 +96,11 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 
 ### 최종 게시와 결과 전달
 
+아래 그림은 commit이 끝난 뒤 함께 남아 있는 두 유효 연속 세대의 참조다. 왼쪽의 이전·현재 제어에서 각 카탈로그를 따라가면, 변경한 테이블 T는 서로 다른 루트 묶음을 가리키고 미변경 테이블 U는 같은 루트 묶음을 공유한다. 쓰기 실행 순서나 물리 파일 배치가 아니다.
+
 <picture>
-<source media="(max-width: 600px)" srcset="assets/storage-publication-narrow.svg" width="269" height="853">
-<img src="assets/storage-publication.svg" alt="설계: 게시 완료된 두 유효 연속 세대의 control과 각 catalog는 변경 테이블의 서로 다른 heap·기본 키·보조 색인 루트 묶음을 가리키고 미변경 테이블의 루트 묶음을 공유하며 전체 디스크 배치·물리 덤프·실시간 실행·쓰기 시뮬레이션이 아닌 참조 그래프다" width="620">
+<source media="(max-width: 600px)" srcset="assets/storage-publication-narrow.svg" width="306" height="977">
+<img src="assets/storage-publication.svg" alt="설계: 두 게시 세대의 카탈로그는 T의 서로 다른 루트를 가리키고 U의 루트 묶음은 공유한다" width="100%">
 </picture>
 
 그림은 게시가 끝난 두 유효 연속 세대의 참조 그래프다. 이전 `control g-1`은 옛 카탈로그와 테이블 T의 변경 전 루트 묶음을, 현재 `control g`는 새 카탈로그와 T의 변경 후 루트 묶음을 가리킨다. 두 카탈로그는 바꾸지 않은 테이블 U의 루트 묶음을 공유한다. 각 묶음은 heap·기본 키·보조 색인 루트를 합친 추상화이며, 루트 아래 페이지의 일부 공유는 생략한다. 전체 디스크 배치나 물리 덤프, 실시간 실행, 쓰기 시뮬레이션이 아니다. free-list와 manifest는 생략하며 게시 장벽과 fsync 조건은 아래 표가 맡는다.
@@ -153,7 +150,7 @@ manifest는 이번 기록 집합이지 전체 도달 페이지의 무결성 증�
 
 <picture>
 <source media="(max-width: 600px)" srcset="assets/page-reclamation-narrow.svg" width="176" height="406">
-<img src="assets/page-reclamation.svg" alt="설계: 게시됐던 페이지는 해제를 포함한 commit과 다음 commit이 성공한 뒤에만 재사용한다" width="570">
+<img src="assets/page-reclamation.svg" alt="설계: 게시됐던 페이지는 해제를 포함한 commit과 다음 commit이 성공한 뒤에만 재사용한다" width="100%">
 </picture>
 
 `page_file_release`는 게시됐던 USED 페이지를 PENDING으로 옮긴다. 그 해제를 포함한 commit이 성공하면 AGING이며, 다음 commit까지 성공해야 REUSABLE이다. 그림과 [페이지 회수 재생](assets/page-reclamation.html)의 선은 페이지 하나의 상태 전이지 control의 참조가 아니다. 첫 성공 뒤에는 fallback 제어 슬롯이 옛 페이지를 아직 가리킬 수 있어 즉시 재사용하지 않는다. 다음 성공 commit이 그 슬롯을 교체해야 보호가 끝난다.
@@ -179,20 +176,9 @@ manifest는 이번 기록 집합이지 전체 도달 페이지의 무결성 증�
 
 ### 그림 원본과 재생성
 
-이 문서의 그림은 같은 이름의 `docs/assets/*.diagramplay`가 수정 원본이며 SVG와 HTML은 생성물이다. `storage-layout.svg`는 파일의 읽기 참조를, `storage-index-locator.svg`는 색인의 간접 참조를 맡는다. `-narrow.svg`는 같은 원본을 목표 폭 390px로 다시 배치한 생성물이다. 본문의 `<picture>`는 600px 이하에서 좁은 배치를 고르고 이미지 폭은 각 출력 폭에 맞춰 글자를 늘리거나 줄이지 않는다. SVG를 지우면 본문이 깨지고 HTML을 지우면 재생 링크가 깨진다. 기존 큐 그림과 trace는 별도 원본이므로 이 그림 생성에 덮어쓰지 않는다.
+이 문서의 그림은 같은 이름의 `docs/assets/*.diagramplay`가 수정 원본이며 SVG와 HTML은 생성물이다. 기본 그림은 실제 미리보기의 본문을 기준으로 목표 폭 1000px에 배치하고 문서의 가로폭을 사용한다. 단순히 기존 접힌 그림을 확대하지 않고, 읽기 방향과 연결선이 본문 폭에 맞게 놓였는지 확인한다. `-narrow.svg`는 같은 원본을 목표 폭 390px로 다시 배치한 생성물이다. 본문의 `<picture>`는 600px 이하에서 좁은 배치를 고르며 `<source>`의 치수로 원본 글자 크기를 유지한다. SVG를 지우면 본문이 깨지고 HTML을 지우면 재생 링크가 깨진다. 기존 큐 그림과 trace는 별도 원본이므로 이 그림 생성에 덮어쓰지 않는다.
 
-기존 의존성을 갖춘 DiagramPlay 소스 `0f35febbae5afa541b92ffcf80f954d07b421382`와 Node.js `26.9.0`을 사용한다. `DIAGRAMPLAY_DIR`은 그 소스 작업본 경로다. 저장소 루트에서 각 원본의 이름을 넣어 strict 검사 뒤 생성한다. 구성도와 저장 참조는 정지 SVG를 쓰고, 게시·회수·잠금은 움직이는 SVG와 HTML을 쓴다.
-
-```sh
-node "$DIAGRAMPLAY_DIR/src/cli.js" check docs/assets/architecture.diagramplay --strict
-node "$DIAGRAMPLAY_DIR/src/cli.js" render docs/assets/architecture.diagramplay --strict --static
-node "$DIAGRAMPLAY_DIR/src/cli.js" render docs/assets/storage-layout.diagramplay --strict --static
-node "$DIAGRAMPLAY_DIR/src/cli.js" render docs/assets/storage-index-locator.diagramplay --strict --static
-node "$DIAGRAMPLAY_DIR/src/cli.js" render docs/assets/storage-publication.diagramplay docs/assets/page-reclamation.diagramplay docs/assets/read-publish-locks.diagramplay --strict
-node "$DIAGRAMPLAY_DIR/src/cli.js" render docs/assets/storage-publication.diagramplay docs/assets/page-reclamation.diagramplay docs/assets/read-publish-locks.diagramplay --strict --html --out docs/assets
-```
-
-좁은 배치는 같은 버전의 공개 JavaScript API로 생성한다. 원본·내용·시간표는 바꾸지 않고 `layoutWidth`만 지정한다. 원본을 고쳐 출력 크기가 달라지면 본문의 이미지 폭과 `<source>`의 폭·높이도 새 `viewBox`에 맞춘다.
+기존 의존성을 갖춘 DiagramPlay 소스 `0f35febbae5afa541b92ffcf80f954d07b421382`와 Node.js `26.9.0`을 사용한다. `DIAGRAMPLAY_DIR`은 그 소스 작업본 경로다. 저장소 루트에서 공개 JavaScript API의 `layoutWidth`로 기본 배치와 좁은 배치를 만든다. CLI의 기본 단 폭으로 다시 생성하면 가로 그림이 접힐 수 있으므로 아래 명령을 사용한다. 구성도와 저장 참조는 정지 SVG를 쓰고, 게시·회수·잠금은 움직이는 SVG와 HTML을 쓴다. 원본을 고쳐 출력 크기가 달라지면 `<source>`의 폭·높이도 새 `viewBox`에 맞춘다.
 
 ```sh
 export DIAGRAMPLAY_DIR
@@ -201,16 +187,24 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 const api = pathToFileURL(path.join(process.env.DIAGRAMPLAY_DIR, 'src/index.js'));
-const { buildFigure, toSvg } = await import(api);
-const names = ['architecture', 'storage-layout', 'storage-index-locator',
+const { buildFigure, toSvg, toHtml } = await import(api);
+const names = ['architecture', 'storage-layout',
 	'storage-publication', 'page-reclamation', 'read-publish-locks'];
 for (const [index, name] of names.entries()) {
 	const source = fs.readFileSync(`docs/assets/${name}.diagramplay`, 'utf8');
-	const figure = await buildFigure(source, {
-		baseDir: path.resolve('docs/assets'), strict: true, layoutWidth: 390,
-	});
-	const svg = await toSvg(figure, { isStatic: index < 3 });
-	fs.writeFileSync(`docs/assets/${name}-narrow.svg`, svg);
+	for (const width of [1000, 390]) {
+		const figure = await buildFigure(source, {
+			baseDir: path.resolve('docs/assets'), strict: true, layoutWidth: width,
+		});
+		const suffix = width === 390 ? '-narrow' : '';
+		const svg = await toSvg(figure, {
+			isStatic: index < 2, ...(suffix ? {} : { name }),
+		});
+		fs.writeFileSync(`docs/assets/${name}${suffix}.svg`, svg);
+		if (width === 1000 && index >= 2) {
+			fs.writeFileSync(`docs/assets/${name}.html`, await toHtml(figure, name));
+		}
+	}
 }
 JS
 ```

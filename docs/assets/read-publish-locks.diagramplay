@@ -1,25 +1,22 @@
 diagramplay
 title "서로 다른 잠금 대상과 게시 대기"
 subtitle "설계: 독립 핸들 사이의 보유 상태이며 재생 시간은 실측값이 아니다"
-box writer "writer" "트랜잭션 작업 · COW"
-box writerlock "쓰기 잠금" "`<db>-lock`" tone=blue appearance=filled {
+box writer "writer" "트랜잭션 · COW"
+box writerlock "writer 잠금" "`<db>-lock`" tone=blue appearance=filled {
   text "writer가 EXCLUSIVE 보유"
 }
 box reader "reader" "독립 핸들 · 한 문장"
-box filelock "게시 잠금" "DB 파일 flock" tone=blue appearance=filled {
+box filelock "파일 잠금" "DB 파일 · `flock`" tone=blue appearance=filled {
   text "reader가 SHARED 보유"
 }
-box control "제어 상태" "control generation" {
-  graph "현재 -> 옛 카탈로그"
+box control "제어·캐시" "잠금 안의 작업" {
+  text "reader: 제어 세대 확인"
+  text "변경 시 캐시 재적재"
 }
-box cache "읽기 캐시" "페이지 · 카탈로그" {
-  text "옛 세대"
-}
-writer -> writerlock "트랜잭션 내내 보유"
-reader -> filelock "문장 동안 보유"
-writer -> filelock "게시 때만 요청"
-filelock -> control "잠금 안 접근"
-reader -> cache "세대 확인 · 적재"
+writer -> writerlock "트랜잭션 동안"
+reader -> filelock "한 문장"
+writer -> filelock "게시 EXCLUSIVE 요청"
+filelock -> control "획득 후 접근"
 scene "읽기와 게시" mode=loop
   light writerlock filelock
   wait 1400ms
@@ -37,16 +34,17 @@ scene "읽기와 게시" mode=loop
   show filelock "writer EXCLUSIVE 보유"
   filelock -> control time=900ms
   clear control
-  show control graph "현재 -> 새 카탈로그"
+  show control "제어 write · fsync"
   clear filelock
-  show filelock "제어 write · fsync 뒤 해제"
+  show filelock "게시 완료 · 잠금 해제"
   clear writerlock
-  show writerlock "트랜잭션 종료 · writer 해제"
+  show writerlock "트랜잭션 종료 · 해제"
   wait 900ms
   reader -> filelock time=800ms
   clear filelock
   show filelock "다음 문장 SHARED 보유"
-  reader -> cache time=900ms
-  clear cache
-  show cache "새 세대 · 무효화 뒤 재적재"
+  filelock -> control time=700ms
+  clear control
+  show control "reader: 제어 세대 확인"
+  show control "변경 시 무효화 · 재적재"
   wait 1500ms
