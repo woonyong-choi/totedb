@@ -1,35 +1,33 @@
 # 출처와 기여 경계
 
-현재 엔진에서 이 저장소가 관리하는 구현과 외부 실행·비교 구성 요소를 구분한다. 팀 과제와 옛 엔진의 기여 이력은 아래 별도 절에 보존한다.
+현재 코드, 외부 구성 요소, 과거 팀 기여를 정리한다.
 
 ## 현재 엔진의 구현 범위
 
-SQL 해석·실행과 행·색인·페이지 저장 구현은 [src/sql/](../src/sql/)과 [src/storage/](../src/storage/)에서 관리한다. 기본 공유 라이브러리는 이 C 소스들을 빌드하며, SQLite에 SQL 실행을 넘기는 어댑터로 DB 코어를 대체하지 않는다. C API는 [src/capi/](../src/capi/), Python 바인딩은 [python/totedb/](../python/totedb/)에 있다. 선택형 큐는 [src/queue/](../src/queue/)에서 일반 SQL과 트랜잭션 API를 사용한다.
+SQL 해석·실행과 행·색인·페이지 저장 구현은 [src/sql/](../src/sql/)과 [src/storage/](../src/storage/)에 있다. 기본 공유 라이브러리는 이 C 소스들을 빌드한다. C API는 [src/capi/](../src/capi/), Python 바인딩은 [python/totedb/](../python/totedb/)에 있다. 선택형 큐는 [src/queue/](../src/queue/)에서 일반 SQL과 트랜잭션 API를 사용한다.
 
-이 설명은 현재 코드의 위치와 실행 경계를 나타낸다. 파일이 이 저장소에 있다는 사실만으로 최초 작성자나 외부 코드 차용 여부까지 증명하지는 않는다. 계층별 책임은 [아키텍처](architecture.md), 기본 빌드 구성은 [Makefile](../Makefile)과 [queue.mk](../src/queue/queue.mk)에서 확인한다.
+계층별 책임은 [아키텍처](architecture.md), 기본 빌드 구성은 [Makefile](../Makefile)과 [queue.mk](../src/queue/queue.mk)에 있다.
 
 ## 외부 구성 요소와 비교 도구
 
-- 파일 읽기·쓰기·동기화·잠금은 운영체제의 `pread`, `pwrite`, `fsync`, `flock`을 사용한다. 스레드 동기화와 수학 함수의 기본 링크 의존성은 pthread와 libm이다. COW·게시·복구 로직을 구현한 것과 운영체제 기능을 직접 구현한 것은 구분한다.
-- Python 바인딩 코드는 이 저장소에서 관리하지만, 공유 라이브러리 호출에는 Python 표준 라이브러리의 ctypes를 사용한다. Python 객체의 메모리 관리는 Python 런타임이 맡는다.
-- SQLite와 다른 비교 DB·큐 라이브러리는 [비교 대상 조사](experiments/local-db-comparison/catalog.md)에 구분한 외부 제품이다. 비교에 사용했다는 사실을 해당 엔진이나 큐를 직접 구현했다는 기여로 세지 않는다.
-- 공식 YCSB Client와 workload는 외부 부하 도구다. 이 저장소의 SQL·JNI 연결 코드는 [공식 YCSB 비교 바인딩](../bench/ycsb/README.md)에 설명한다. 공식 자료의 Apache 2.0 LICENSE·NOTICE는 별도로 보존하며 저장소의 MIT 라이선스로 대체하지 않는다.
-- 문서 그림은 별도 도구인 [DiagramPlay](https://github.com/woonyong-choi/diagramplay)로 생성한다. 이는 DB 실행 시 필요한 엔진 의존성이 아니다. 입력 원본과 도구 버전은 [그림 재생성 안내](architecture.md#그림-원본과-재생성)에 있다.
+- 파일 읽기·쓰기·동기화·잠금은 운영체제의 `pread`, `pwrite`, `fsync`, `flock`을 사용한다. 스레드 동기화와 수학 함수의 기본 링크 의존성은 pthread와 libm이다.
+- Python 공유 라이브러리 호출에는 표준 라이브러리의 ctypes를 사용한다. Python 객체의 메모리 관리는 Python 런타임이 맡는다.
+- SQLite와 다른 외부 DB·큐 라이브러리는 비교 대상으로 사용한다. 선정 범위와 역할은 [비교 대상 조사](experiments/local-db-comparison/catalog.md)에 있다.
+- 부하 생성에는 공식 YCSB Client와 workload를 사용한다. 이 저장소의 SQL·JNI 연결 코드는 [공식 YCSB 비교 바인딩](../bench/ycsb/README.md)에 설명한다. 공식 자료의 Apache 2.0 LICENSE·NOTICE는 별도로 보존한다.
+- 문서 그림은 [DiagramPlay](https://github.com/woonyong-choi/diagramplay)로 생성한다. 입력 원본과 도구 버전은 [그림 재생성 안내](architecture.md#그림-원본과-재생성)에 있다.
 
-## 참고 자료와 코드 재사용의 확인 범위
+## 참고 자료와 코드 재사용
 
-실험 통계의 참고 출처는 [YCSB 측정 계획](experiments/ycsb-sqlite/design.md)에 명시되어 있다. 이 계획은 [SciPy bootstrap 문서](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html)의 percentile 정의를 따르고, 계산은 Python 표준 라이브러리로 재현한다고 설명한다. 이는 통계 방법의 참고 출처이며 DB 코어 알고리즘의 기원이나 외부 코드 차용을 증명하지는 않는다.
+YCSB 비교의 bootstrap 구간은 [SciPy bootstrap 문서](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html)의 percentile 정의를 따른다. Python 표준 라이브러리를 사용하는 계산 방법과 조건은 [YCSB 측정 계획](experiments/ycsb-sqlite/design.md)에 있다.
 
-현재 코드와 빌드 구성만으로 COW·B+Tree·인코딩을 구현할 때 실제로 참고한 책·문서·외부 소스나 가져온 코드의 범위를 확정할 수는 없다. 그 이력은 이 문서에서 아직 확인되지 않았다. 이는 외부 자료를 참고하지 않았거나 일반 알고리즘을 새로 발명했다는 뜻이 아니다.
-
-현재 엔진의 기여를 판단할 때는 해당 버전의 커밋과 원문 자료, 차용 범위와 라이선스가 필요하다. 아래의 옛 팀 담당 표를 현재 엔진 전체의 개인 구현 근거로 사용하지 않는다.
+COW·B+Tree·인코딩 개발의 참고 자료와 코드 차용 이력은 미확인이다.
 
 ## 팀 과제
 
 > [!NOTE]
 > 이 절과 다음 개인 확장 절은 팀 과제와 옛 엔진 시기의 기록이다. 표의 parser·planner·executor·pager·bptree·table·lock_table 코드는 커밋 `5e6b265`에서 삭제했다.
 
-이 저장소는 크래프톤 정글 팀 과제([Jungle-12-303/wk08_1](https://github.com/Jungle-12-303/wk08_1))에서 시작했다. 과제 종료 후 개인 저장소에서 수정·학습·확장을 이어갔다. 팀 코드 전체를 개인 구현으로 보지 않는다. 팀 기간의 기여 구분은 원본 저장소의 커밋 저자와 파일별 diff로 확인한다.
+이 저장소는 크래프톤 정글 팀 과제([Jungle-12-303/wk08_1](https://github.com/Jungle-12-303/wk08_1))에서 시작했다. 과제 종료 후 개인 저장소에서 수정과 확장을 이어갔다. 팀 코드 전체를 개인 구현으로 보지 않는다. 팀 기간의 기여 구분은 원본 저장소의 커밋 저자와 파일별 diff로 확인한다.
 
 | 항목 | 내용 |
 |---|---|
