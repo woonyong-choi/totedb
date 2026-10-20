@@ -16,7 +16,7 @@
 
 ## 해결하는 문제
 
-주문을 저장한 뒤 큐에 작업을 등록하기 전에 프로그램이 멈추면 주문만 남는다. 두 변경을 같은 트랜잭션에 넣으면 이 틈을 없앤다. 워커가 DB의 업무 행을 바꾸고 작업을 끝내는 경우에도 업무 변경과 ACK를 같은 거래로 묶어 한쪽만 남는 일을 막는다.
+주문을 저장한 뒤 큐에 작업을 등록하기 전에 프로그램이 멈추면 주문만 남는다. 두 변경을 같은 트랜잭션에 넣으면 이 틈을 없앤다. 워커가 DB의 업무 행을 바꾸고 작업을 끝내는 경우에도 업무 변경과 ACK를 같은 트랜잭션으로 묶어 한쪽만 남는 일을 막는다.
 
 작업을 가져온 뒤 외부 API 호출과 ACK는 별개다. API 호출은 성공했지만 ACK 전에 워커가 멈추면 같은 작업을 다시 받으므로 외부 서비스의 업무 키를 이용한 멱등성 처리가 필요하다. DB 안의 원자성과 외부 작업의 중복 방지는 서로 다른 책임이다.
 
@@ -24,7 +24,7 @@
 
 ### 주문과 작업의 공동 commit
 
-`db`·`queue`와 `orders(id, status)` 준비는 [README](../../README.md#빠른-시작)에 있다. 같은 DB를 가리키는 거래를 두 호출에 넘긴다.
+`db`·`queue`와 `orders(id, status)` 준비는 [README](../../README.md#빠른-시작)에 있다. 같은 DB를 가리키는 트랜잭션을 두 호출에 넘긴다.
 
 ```python
 with db.begin() as txn:
@@ -32,8 +32,8 @@ with db.begin() as txn:
 	queue.put(b"process-order-1", txn=txn)
 ```
 
-1. 거래 안의 SQL과 `put`은 자기 변경을 읽지만 다른 세션에는 아직 보이지 않는다.
-2. 예외 없이 거래를 끝내면 두 변경을 함께 게시한다. 그 뒤 워커가 `get`으로 작업을 받을 수 있다.
+1. 트랜잭션 안의 SQL과 `put`은 자기 변경을 읽지만 다른 세션에는 아직 보이지 않는다.
+2. 예외 없이 트랜잭션을 끝내면 두 변경을 함께 게시한다. 그 뒤 워커가 `get`으로 작업을 받을 수 있다.
 
 ### commit 전 취소
 
@@ -58,7 +58,7 @@ if claim is not None:
 ```
 
 1. `get`은 작업과 현재 처리 권한 번호인 fence를 반환한다. 받을 작업이 없는 정상 결과는 `None`이고, 빈 payload를 받은 성공과 다르다.
-2. 업무 행 변경과 ACK는 함께 게시한다. 거래를 rollback하면 업무 행은 이전 상태이고 작업도 LEASED로 남는다.
+2. 업무 행 변경과 ACK는 함께 게시한다. 트랜잭션을 rollback하면 업무 행은 이전 상태이고 작업도 LEASED로 남는다.
 
 이 코드는 주문 1의 작업을 받는 단일 작업 사례다. 여러 종류의 작업을 처리하는 앱은 payload로 업무 대상을 확인한다. lease 값은 예제의 입력이지 모든 작업에 권장하는 처리 시간은 아니다.
 
@@ -72,11 +72,11 @@ if claim is not None:
 
 ## 작동 방식
 
-### 같은 DB 거래의 경계
+### 같은 DB 트랜잭션의 경계
 
 `Queue(db, name)`은 같은 DB 안에 큐 테이블 `tote_queue_<name>`, 멱등성 키 보존 테이블 `tote_queue_<name>_keys`와 색인을 설치하거나 연다. 별도 저장 엔진이 아니며 DB 코어는 큐를 참조하지 않는다. 업무 테이블 `orders`는 앱이 정하는 예제이지 제품 고정 스키마가 아니다.
 
-`ackq_scope_open`은 호출자 세션에 거래가 있으면 그 거래를 사용한다. 거래 없이 변경 연산을 호출하면 자체 DURABLE 거래를 열고 끝에서 commit한다. 따라서 `txn=txn`으로 실행한 큐 호출의 성공은 아직 영속 성공이 아니며 최종 거래 commit이 필요하다. 다른 DB의 거래는 실행 전에 거절한다. 저장·게시와 잠금은 [아키텍처](../architecture.md#최종-게시와-결과-전달), 실제 분기는 [ack_queue_sql.c](../../src/queue/ack_queue_sql.c)에 있다.
+`ackq_scope_open`은 호출자 세션에 트랜잭션이 있으면 그 트랜잭션을 사용한다. 트랜잭션 없이 변경 연산을 호출하면 자체 DURABLE 트랜잭션을 열고 끝에서 commit한다. 따라서 `txn=txn`으로 실행한 큐 호출의 성공은 아직 영속 성공이 아니며 최종 트랜잭션 commit이 필요하다. 다른 DB의 트랜잭션은 실행 전에 거절한다. 저장·게시와 잠금은 [아키텍처](../architecture.md#최종-게시와-결과-전달), 실제 분기는 [ack_queue_sql.c](../../src/queue/ack_queue_sql.c)에 있다.
 
 ### 상태와 처리 권한
 
@@ -101,11 +101,11 @@ if claim is not None:
 
 큐 옵션은 이름에 저장하는 전역 정책이 아니라 열린 핸들의 값이다. 여러 워커와 재개방 코드가 같은 시도·payload·보존·시계 정책을 전달할 책임이 있다. 정확한 매개변수와 C·Python의 0 변환 차이는 [totedb.h](../../include/totedb.h)와 [queue.py](../../python/totedb/queue.py), 상태 변경 규칙은 [ack_queue.h](../../include/queue/ack_queue.h)에 있다.
 
-### 실패 뒤 거래와 자원
+### 실패 뒤 트랜잭션과 자원
 
-STALE·NOT_FOUND·CONFLICT는 변경 없는 거절이므로 호출자 거래를 실패시키지 않는다. 그 밖의 큐 오류에서는 일부 SQL이 이미 실행됐을 수 있어 호출자 거래 전체를 rollback한다. 불확정 commit은 성공으로 취급하지 않고 DB를 닫아 재개방한 뒤 업무 상태를 확인한다. 같은 DB의 업무 갱신과 ACK를 묶어도 외부 부작용까지 rollback하지는 않는다.
+STALE·NOT_FOUND·CONFLICT는 변경 없는 거절이므로 호출자 트랜잭션을 실패시키지 않는다. 그 밖의 큐 오류에서는 일부 SQL이 이미 실행됐을 수 있어 호출자 트랜잭션 전체를 rollback한다. 불확정 commit은 성공으로 취급하지 않고 DB를 닫아 재개방한 뒤 업무 상태를 확인한다. 같은 DB의 업무 갱신과 ACK를 묶어도 외부 부작용까지 rollback하지는 않는다.
 
-C `get`의 payload는 `tote_queue_item_free`, 목록 payload는 `tote_queue_list_free`로 해제하고 목록 배열 자체는 호출자가 소유한다. Python은 payload를 bytes로 복사하고 native 자원을 해제한다. 거래를 먼저 끝내고 큐·DB를 닫는다. C의 열린 거래나 큐는 DB close를 BUSY로 만들 수 있으며, Python DB close는 등록 큐부터 닫는다. 종료와 오류 규칙은 [totedb.h](../../include/totedb.h), [database.py](../../python/totedb/database.py)에 있다.
+C `get`의 payload는 `tote_queue_item_free`, 목록 payload는 `tote_queue_list_free`로 해제하고 목록 배열 자체는 호출자가 소유한다. Python은 payload를 bytes로 복사하고 native 자원을 해제한다. 트랜잭션을 먼저 끝내고 큐·DB를 닫는다. C의 열린 트랜잭션이나 큐는 DB close를 BUSY로 만들 수 있으며, Python DB close는 등록 큐부터 닫는다. 종료와 오류 규칙은 [totedb.h](../../include/totedb.h), [database.py](../../python/totedb/database.py)에 있다.
 
 ### 요구사항
 
@@ -114,7 +114,7 @@ C `get`의 payload는 `tote_queue_item_free`, 목록 payload는 `tote_queue_list
 | 요구사항 | 검증 계획 |
 |---|---|
 | 큐 없이 SQL을 사용하고 큐 설치는 요청할 때만 수행한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_database_without_queue_supports_crud_and_creates_no_queue_table`, `test_queue_install_creates_table_only_when_requested` |
-| 업무 행과 작업 등록을 같은 거래에서 함께 게시한다. | [test_ack_queue.c](../../tests/test_ack_queue.c)의 `test_same_transaction` |
+| 업무 행과 작업 등록을 같은 트랜잭션에서 함께 게시한다. | [test_ack_queue.c](../../tests/test_ack_queue.c)의 `test_same_transaction` |
 | lease 뒤 같은 작업을 재획득하고 이전 fence를 거절한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_queue_stale_claim_after_lease_expiry_is_rejected`, `test_queue_restart_preserves_state_and_fence_continues` |
 | 업무 변경과 ACK는 함께 게시하거나 취소한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_queue_ack_in_same_transaction_commits_or_rolls_back_with_business_update` |
 | 실패와 반납, 재시도 시각 및 시도 한도를 구분한다. | [test_ack_queue_python.py](../../tests/test_ack_queue_python.py)의 `test_queue_nack_retry_delay_and_terminal_failure` |
@@ -124,4 +124,4 @@ C `get`의 payload는 `tote_queue_item_free`, 목록 payload는 `tote_queue_list
 
 - 큐 변경도 SQL writer를 사용하므로 업무 쓰기와 큐 연산이 같은 파일의 단일 writer를 두고 경합한다.
 - lease 만료 뒤 재전달이 가능하므로 외부 작업은 중복 실행에 대비해야 한다.
-- 같은 DB 거래를 길게 잡으면 다른 writer가 기다리므로 외부 요청을 기다리는 동안 거래를 열어 두지 않는다.
+- 같은 DB 트랜잭션을 길게 잡으면 다른 writer가 기다리므로 외부 요청을 기다리는 동안 트랜잭션을 열어 두지 않는다.

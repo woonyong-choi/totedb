@@ -20,7 +20,7 @@ ToteDB 0.2.0의 `tote_exec`는 같은 프로세스의 C 호출자에게 길이�
 2. 호출자가 출력 포인터를 NULL, 길이를 0으로 초기화하고 `tote_exec`를 부른다.
 3. 호출자가 C status를 검사한다. `TOTE_OK`일 때만 버퍼 kind를 읽는다.
 4. 호출자가 결과를 소비하고 `tote_free(out)`으로 한 번 해제한다.
-5. 호출자가 큐와 거래 핸들을 끝내고 `tote_close`로 DB를 닫는다.
+5. 호출자가 큐와 트랜잭션 핸들을 끝내고 `tote_close`로 DB를 닫는다.
 
 성공한 반환 버퍼는 호출자 소유이며 다음 실행, rollback, DB close 뒤에도 해제 전까지 유효하다. CAPI는 내부 `result_t`를 인코딩 직후 해제한다. DB mutex는 실행·인코딩·내부 결과 해제 구간을 보호하며 호출자가 반환 버퍼를 읽고 해제하는 동안 보유하는 잠금이 아니다. Python은 바이트를 복사해 decode하고 `finally`에서 native 버퍼를 해제한다.
 
@@ -33,7 +33,7 @@ SQL 문장 하나를 실행하고 행, 명령 또는 SQL 오류 결과를 반환
 | 항목 | 값 |
 |---|---|
 | 방향 | 호출자에서 `libtotedb`, 결과는 호출자에게 반환 |
-| 부작용 | SQL에 따른 DB 변경, 거래 밖 변경 문장은 자동 commit |
+| 부작용 | SQL에 따른 DB 변경, 트랜잭션 밖 변경 문장은 자동 commit |
 | 순서 | `db`와 선택적 `txn`이 유효해야 하며 `txn`은 같은 DB 소속 |
 
 #### 매개변수
@@ -41,7 +41,7 @@ SQL 문장 하나를 실행하고 행, 명령 또는 SQL 오류 결과를 반환
 | 이름 | 타입 | 필수 | 뜻 |
 |---|---|---|---|
 | `db` | `tote_db_t *` | 예 | 열린 DB |
-| `txn` | `tote_txn_t *` | 아니오 | NULL이면 기본 세션, 아니면 명시적 거래 |
+| `txn` | `tote_txn_t *` | 아니오 | NULL이면 기본 세션, 아니면 명시적 트랜잭션 |
 | `sql` | `const char *` | 예 | NUL 종료 SQL, 내부 `strlen` 길이 |
 | `params` | `const tote_param_t *` | 인자가 있으면 예 | type과 값 필드를 담은 배열 |
 | `param_count` | `size_t` | 예 | 배열 길이, 인자가 없으면 0 |

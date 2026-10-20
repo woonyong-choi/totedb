@@ -67,7 +67,7 @@ Record codec의 코드 `0`은 NULL, `1`과 `2`는 정수 0과 1, `3..10`은 1~8�
 
 제어 페이지는 카탈로그 overflow를 가리키고, 카탈로그는 각 테이블의 heap과 색인 루트를 담는다. Heap의 디렉터리가 record page를, record page의 slot이 행을 식별한다. 색인 locator는 물리 record page 번호가 아니라 `directory_index: u32`와 `slot: u16`이다. 색인 루트의 stamp는 대응 heap root의 page ID이며 commit generation이 아니다.
 
-큐와 업무 행이 같은 거래에 참여하는 관계는 [트랜잭션 큐 설계](design/transaction-queue.md#작동-방식)의 기존 그림에 있다. 업무 테이블의 schema와 큐 payload가 가리키는 업무 ID는 앱이 정한다. 큐의 `job`도 외래 키가 아니다. Purge 후에는 작업 행이 없어도 보존 키 행이 남는다.
+큐와 업무 행을 같은 트랜잭션에 넣는 호출 예는 [주문과 작업의 공동 commit](design/transaction-queue.md#주문과-작업의-공동-commit)에 있다. 업무 테이블의 schema와 큐 payload가 가리키는 업무 ID는 앱이 정한다. 큐의 `job`도 외래 키가 아니다. Purge 후에는 작업 행이 없어도 보존 키 행이 남는다.
 
 ## 테이블
 

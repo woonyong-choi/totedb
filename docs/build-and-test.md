@@ -7,12 +7,12 @@ README의 빠른 시작에 담지 않은 빌드 변수, 시험 대상, 외부 �
 | 항목 | 내용 |
 |---|---|
 | 언어 | C11, `-Wall -Wextra -Werror` |
-| 도구 | GNU Make, GCC |
+| 도구 | GNU Make, C11을 지원하는 GCC 또는 Clang. `CC` 기본값은 `gcc`, Clang은 `make CC=clang`으로 선택 |
 | 런타임 의존성 | POSIX 파일 I/O와 pthread, libm |
 | Python 바인딩 | 표준 라이브러리 ctypes |
 | 시험 의존성 | `libsqlite3-dev`, `sqlite3` CLI, pytest |
 
-`make all`은 DB와 큐를 묶은 공유 라이브러리 `build/lib/libtotedb.so`(macOS에서는 `.dylib`)를 `-O2`로 만든다. 이 라이브러리는 sanitizer를 켜지 않는다. Python 바인딩은 환경 변수 `TOTEDB_LIB`가 가리키는 파일을 먼저 찾고, 없으면 `build/lib/`를 찾는다.
+`make all`은 DB와 큐를 묶은 공유 라이브러리 `build/lib/libtotedb.so`(macOS에서는 `.dylib`)를 `-O2`로 만든다. 이 라이브러리는 sanitizer를 켜지 않는다. Python 바인딩의 라이브러리 탐색 순서와 존재하지만 로딩에 실패한 후보의 처리는 [설정](configuration.md#우선순위)에 있다.
 
 시험 바이너리는 `SANITIZE` 변수로 sanitizer를 고른다. 기본값은 `address,undefined`이고 Darwin 25 이상에서는 `undefined`다. `BUILD_DIR`를 바꾸면 sanitizer 설정이 다른 빌드를 따로 둘 수 있다.
 
@@ -61,8 +61,24 @@ wheel과 sdist 재빌드는 환경의 Make 모드 변수를 차단하고 패키�
 | `make test-runner` | 시험 실행기와 실패 판정기 |
 | `make test-fault` | 실패 주입 런타임 |
 | `make test-result` | 결과 버퍼 인코딩과 할당 실패 |
+| `make test-benchmark` | 별도 계측 ON/OFF 빌드와 C API 계측 회귀. `test-all`에 포함되지 않는다. |
 
 각 시험의 결과와 실패 주입 시드는 `build/fault/`에 JSON으로 남는다. CI는 이 폴더를 sanitizer별 산출물로 올린다.
+
+### 여러 프로세스 outbox 예제
+
+[run.py](../examples/outbox/run.py)는 Python 생산자가 주문과 작업을 함께 저장하고 C worker가 출고 기록과 ACK를 함께 commit하는 예제다. 외부 출고 API를 호출하지 않고 DB의 출고 행으로 처리 결과를 확인한다. Python 3.9 이상과 위 C 빌드 도구를 준비하고 저장소 루트에서 실행한다.
+
+```sh
+make BENCHMARK=0 SANITIZE= all build/outbox_consumer
+TOTEDB_LIB=build/lib/libtotedb.so PYTHONPATH=python python3 examples/outbox/run.py --consumer build/outbox_consumer --dir build/outbox-example --orders 30 --workers 3 --lease-ms 800
+```
+
+macOS에서는 `TOTEDB_LIB`의 확장자를 `.dylib`로 바꾼다. `--dir`에는 예제 전용 경로만 준다. 스크립트는 그 안의 기존 `shop.totedb`를 삭제하므로 보관할 DB 경로를 주지 않는다. 기본 입력은 주문 30건·worker 3개·lease 800밀리초다. 위 명령은 기본값을 명시하며 DB를 `build/outbox-example`에 남긴다.
+
+실행 중 worker 하나를 claim 직후 SIGKILL한다. 나머지 worker가 lease 만료 뒤 해당 주문을 재전달받아 처리한다. 출력 끝의 `[검증]` 행에서 출고 30건·중복 0·누락 0·큐 acked 30과 재전달을 확인하고, 마지막 `검증 통과` 및 종료 코드 0을 확인한다. worker별 처리 건수와 재전달 대상은 실행마다 다를 수 있다.
+
+스크립트는 강제 종료한 worker를 회수하고 나머지 worker가 끝날 때까지 기다린 뒤 DB를 다시 열어 검증하고 종료한다. 정상 완료 뒤 별도 서버 종료 명령은 없다. `make example-outbox`도 같은 스크립트를 실행하지만 `--dir`을 주지 않아 OS 임시 경로를 만든다. 경로를 지정하려면 위 직접 실행 명령을 쓴다. 자동 회귀시험은 `make test-ack-queue-python`에 포함된 [test_outbox_example.py](../tests/test_outbox_example.py)다. README의 ACK 생략 재생과 달리 실제 프로세스를 종료하는 시험이다.
 
 ## 다른 엔진과 비교
 
@@ -139,7 +155,7 @@ RUN_ID=20261019T031416Z-b590d61-check ./docs/experiments/text-range/run.sh analy
 
 | 작업 | 명령 |
 |---|---|
-| `test` (address, undefined) | `make SANITIZE=<sanitizer> test-all test-runner test-fault test-result` |
+| `test` (address, undefined) | `make SANITIZE=<sanitizer> test-all test-runner test-fault test-result` 뒤 별도 `make SANITIZE=<sanitizer> test-benchmark` |
 | `test` (thread) | `make SANITIZE=thread test-transaction test-session test-ack-queue` |
 | `pg-compat` | PostgreSQL 18 서비스에 `make test-sql-diff`를 실행한 뒤 `make test-sqlite-session-diff` |
 | `actionlint` | 워크플로 파일 검사 |
@@ -161,7 +177,7 @@ Python 패키지 `totedb`는 PyPI에 올린다. 공유 라이브러리를 ctypes
 | `MANIFEST.in` | sdist에 C 소스와 `Makefile`을 넣어 설치 때 다시 빌드 |
 | `tests/package_smoke.py` | 별도 설치 환경에서 패키지 안의 라이브러리로 DB·큐 사용 확인 |
 
-Python 바인딩은 `TOTEDB_LIB`, 설치한 패키지 폴더, 저장소의 `build/lib/` 순서로 라이브러리를 찾는다.
+Python 바인딩의 라이브러리 탐색은 [설정](configuration.md#우선순위)을 따른다.
 
 로컬에서 확인하려면 아래처럼 빌드해 설치한다.
 
@@ -192,11 +208,14 @@ macOS 26(Darwin 25)과 Apple clang 17에서는 ASan 바이너리가 `main()`에 
 
 ## README 그림
 
-[업무 데이터와 작업 큐 원본](assets/transaction-queue.torso)을 Torso로 변환한다. 검증한 도구는 [Torso `14e57b7`](https://github.com/woonyong-choi/torso/tree/14e57b7b274ac791f46d6c7827acf17686a983ed)과 Node.js 26.9.0이다(2026-10-18 확인). Torso 소스 작업본에 의존성을 설치한 뒤, ToteDB 루트에서 그 작업본의 CLI 경로를 지정한다.
+[README 그림 원본](assets/transaction-queue.diagramplay)과 [DB 실행 관측값](assets/transaction-queue.trace.json)이 현재 입력이다. 도구 기준은 [DiagramPlay `0f35feb`](https://github.com/woonyong-choi/diagramplay/tree/0f35febbae5afa541b92ffcf80f954d07b421382)과 Node.js 26.9.0이다. `DIAGRAMPLAY_DIR`은 해당 커밋의 준비된 도구 작업본을 가리킨다. 원본 검사만 하려면 ToteDB 루트에서 아래 명령을 실행한다.
 
 ```sh
-node "$TORSO_DIR/src/cli.js" check docs/assets/transaction-queue.torso --strict
-node "$TORSO_DIR/src/cli.js" render docs/assets/transaction-queue.torso --strict --static
+node "$DIAGRAMPLAY_DIR/src/cli.js" check docs/assets/transaction-queue.diagramplay --strict
 ```
 
-생성된 SVG와 원본을 함께 커밋한다. README는 SVG를 읽으므로 원본만 바꾸면 그림에 반영되지 않는다.
+README는 움직이는 [SVG](assets/transaction-queue.svg)를 읽고 [HTML 재생 화면](assets/transaction-queue.html)으로 시나리오 선택을 연결한다. SVG와 HTML은 서로 다른 생성물이며, 원본의 장면 값과 trace 관측값을 함께 대조한다. `.torso`와 Torso `14e57b7`의 `--static` 명령은 현재 움직이는 SVG의 재생성 절차가 아니므로 사용하지 않는다.
+
+GitHub의 HTML 링크는 재생 화면이 아니라 소스보기다. 장면을 선택하려면 저장소를 내려받은 뒤 `docs/assets/transaction-queue.html`을 로컬 브라우저에서 연다. 아키텍처의 `storage-publication.html`도 같은 방식으로 연다. GitHub에서 움직이는 SVG가 보이는 것과 HTML의 장면 선택 기능은 구분한다.
+
+승인된 SVG·HTML은 이 문서 변경에서 재생성하지 않았다. 재생성이 필요하면 고정 도구의 공개 `buildFigure`·`toSvg` API와 기존 생성 조건을 먼저 확인한다. 원본의 장면 값을 trace와 대조하고 정지 출력으로 덮어쓰지 않는다. 같은 입력으로 두 번 생성한 바이트와 승인본을 대조한다. 현재 README 생성물과의 바이트 동일성은 이번에 확인하지 않았다. 저장 구조 그림의 명령과 검증 조건은 [아키텍처의 재생성](architecture.md#그림-원본과-재생성)에 있다.

@@ -8,7 +8,7 @@
 
 ## 개발 환경
 
-GCC, GNU Make, Python 3, pytest가 필요하다. SQLite 대조 시험에는 `libsqlite3-dev`가 필요하다.
+GCC 또는 Clang, GNU Make, Python 3, pytest가 필요하다. `CC` 기본값은 `gcc`이고 `make CC=clang`으로 Clang을 선택한다. SQLite 대조 시험에는 `libsqlite3-dev`가 필요하다. 플랫폼별 조건과 전체 대상은 [빌드와 시험](../docs/build-and-test.md)에 있다.
 
 ```sh
 git clone https://github.com/woonyong-choi/totedb.git
@@ -18,13 +18,16 @@ make all
 
 ## 검사
 
-PR을 열기 전에 아래 검사가 모두 통과해야 한다. CI가 같은 명령을 AddressSanitizer·UndefinedBehaviorSanitizer·ThreadSanitizer 빌드로 실행한다.
+PR을 열기 전에 아래 검사가 모두 통과해야 한다. CI는 address·undefined 각각에서 일반 시험과 별도 계측 회귀시험을 실행하고, thread에서는 트랜잭션·세션·ACK 큐 시험만 실행한다. SQL 차등 시험은 별도 CI 작업이다.
 
 ```sh
 make test-all test-runner test-fault test-result
+make test-benchmark
 make SANITIZE=thread BUILD_DIR=build-tsan test-transaction test-session test-ack-queue
 make test-sql-diff
 ```
+
+`test-benchmark`는 `test-all`에 포함되지 않는다. 계측 ON/OFF 빌드와 C API 계측의 회귀시험이며 부하 성능 실험이 아니다. Darwin 25 이상에서 기본 sanitizer는 undefined다. Linux CI의 address·thread 실행을 로컬 기본 시험 성공과 같게 보지 않는다.
 
 새 시험은 고치려는 결함을 일부러 넣었을 때 실패해야 한다. PR 본문에 넣어 본 결함과 실패한 시험을 적는다.
 
@@ -43,3 +46,9 @@ make test-sql-diff
 ## 문서
 
 동작·계약·설정을 바꾸면 같은 PR에서 [문서 목록](../docs/README.md)의 해당 문서와 README 상태 표를 고친다. 사용자에게 보이는 변경은 [변경 기록](../CHANGELOG.md)에 적는다.
+
+| 변경 | 함께 확인할 문서 |
+|---|---|
+| 저장 형식·게시·잠금 | [아키텍처](../docs/architecture.md), [데이터](../docs/data.md), [안전성 시험 결과](../docs/safety.md) |
+| 공개 옵션·오류·C 결과 버퍼 | [설정](../docs/configuration.md), [오류](../docs/errors.md), [프로토콜](../docs/protocol.md) |
+| 업무 변경과 큐 연산 | [주문 저장과 작업 등록을 한 트랜잭션으로 처리하기](../docs/design/transaction-queue.md) |
