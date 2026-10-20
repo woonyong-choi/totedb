@@ -1,6 +1,6 @@
 # 아키텍처
 
-ToteDB는 애플리케이션 프로세스 안에서 SQL을 실행하고 테이블을 DB 파일에 저장하는 C11 데이터베이스다. 주문 상태를 바꾸는 `UPDATE`는 Python의 `Database.execute`에서 C API, 세션, SQL 실행기를 거쳐 행 저장소에 도달한다. 선택 기능인 ACK 큐도 같은 세션의 SQL과 트랜잭션을 사용하므로 업무 행과 큐 작업을 한 DB 트랜잭션에서 함께 바꿀 수 있다.
+ToteDB는 C로 구현한 임베디드 SQL 데이터베이스다. 애플리케이션 프로세스 안에서 쿼리를 실행하고 테이블을 DB 파일에 저장한다. 주문 상태를 바꾸는 `UPDATE`는 Python의 `Database.execute`에서 C API, 세션, SQL 실행기를 거쳐 행 저장소에 도달한다. 선택 기능인 ACK 큐도 같은 세션의 SQL과 트랜잭션을 사용하므로 업무 행과 큐 작업을 한 DB 트랜잭션에서 함께 바꿀 수 있다.
 
 DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 테이블의 행 저장소와 색인 루트를 찾는다. 행 저장소의 페이지 디렉터리는 실제 행 페이지(record page)를 가리키고, 행 페이지 안의 slot이 행을 식별한다. 색인은 물리 행 페이지 번호를 직접 저장하지 않고 디렉터리 순번과 slot을 저장한다. 큰 TEXT와 BLOB은 행에서 참조하는 별도 overflow 체인에 둔다.
 
@@ -10,13 +10,13 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 
 ## 외부 연결
 
-| 외부 요소 | 종류 | 주고받는 것 |
-|---|---|---|
-| C 애플리케이션 | 외부 프로그램 | `tote_*` 호출, SQL 바인딩, 소유권을 넘겨받는 결과 버퍼 |
-| Python 애플리케이션 | 외부 프로그램 | `Database`·`Transaction`·`Queue` 호출과 Python 값, ctypes를 통한 공유 라이브러리 호출 |
-| DB 파일 | 파일 | 8192바이트 페이지, 제어 슬롯 두 장, 카탈로그와 행·색인·회수 목록 |
-| writer 잠금 파일 | 파일 | DB 옆 `<db>-lock`의 writer `flock`과 게시 대기 표시 |
-| 운영체제 | 운영체제 | `pread`·`pwrite`·`fsync`, 파일 잠금, pthread 동기화 |
+| 연결 대상 | 주고받는 것 |
+|---|---|
+| C 애플리케이션 | `tote_*` 호출, SQL 바인딩, 소유권을 넘겨받는 결과 버퍼 |
+| Python 애플리케이션 | `Database`, `Transaction`, `Queue` 호출과 Python 값, ctypes를 통한 공유 라이브러리 호출 |
+| DB 파일 | 8192바이트 페이지, 제어 슬롯 두 장, 카탈로그와 행·색인·회수 목록 |
+| writer 잠금 파일 | DB 옆 `<db>-lock`의 writer `flock`과 게시 대기 표시 |
+| 운영체제 | `pread`, `pwrite`, `fsync`, 파일 잠금, pthread 동기화 |
 
 호출은 모두 같은 프로세스 안에서 끝난다. 큐를 열어도 별도 서버나 워커 프로세스를 자동으로 시작하지 않으며, 외부 HTTP나 파일 쓰기는 DB 트랜잭션에 포함하지 않는다.
 
@@ -29,17 +29,29 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 
 그림의 선은 호출 방향이다. SQL 직접 호출과 선택 큐는 같은 세션·SQL 실행기를 사용한다. 두 경로 모두 C API를 거치지만, 선택 기능의 의존 방향을 보여 주기 위해 진입점을 나눠 그렸다. 행·색인 페이지 쓰기와 카탈로그 게시도 구분했으며, 두 저장 경로는 `page_file`을 사용한다. 반환 버퍼와 batch의 새 루트를 돌려주는 선, 실행기 내부의 구문·식 평가 단계는 생략한다. 루트와 페이지 집합의 소유권 인계는 아래 처리 흐름에서 구분한다.
 
-| 구성 요소 | 하는 일과 입출력 | 기술 | 위치 |
-|---|---|---|---|
-| `totedb.Database`·`Transaction`·`Queue` | Python 값을 C 바인딩으로 포장하고 결과를 Python 값으로 복사한 뒤 native 버퍼 해제 | Python, ctypes | [database.py](../python/totedb/database.py), [queue.py](../python/totedb/queue.py) |
-| `tote_db_t`·`tote_exec` | DB mutex와 기본 세션 소유, SQL 결과를 독립 소유 버퍼로 인코딩 | C11, pthread | [totedb.c](../src/capi/totedb.c), [totedb.h](../include/totedb.h) |
-| `ack_queue` | 큐 연산을 SQL로 실행, 호출자 트랜잭션 또는 자체 트랜잭션 선택 | C11 | [ack_queue.c](../src/queue/ack_queue.c), [ack_queue_sql.c](../src/queue/ack_queue_sql.c) |
-| `session`·`database_conn` | 연결별 트랜잭션 관리, 실행 호출 직렬화, 예산·취소와 결과 수명 관리 | C11, pthread | [session.c](../src/sql/session.c), [database_txn.c](../src/sql/database_txn.c) |
-| `lexer`·`sql_statement`·`sql_eval`·`database_*` | SQL과 바인딩을 해석하고 조건을 평가해 행·색인 연산 및 내부 `result_t` 생성 | C11 | [lexer.c](../src/sql/lexer.c), [sql_statement.c](../src/sql/sql_statement.c), [sql_eval.c](../src/sql/sql_eval.c), [database_select.c](../src/sql/database_select.c), [database_update.c](../src/sql/database_update.c), [result.c](../src/sql/result.c) |
-| `heap_store`·`pk_tree`·`text_tree` | 행·큰 값·색인의 COW 변경, 새 루트와 fresh·old 페이지 집합 반환 | C11 | [heap_store.c](../src/storage/heap_store.c), [pk_tree.c](../src/storage/pk_tree.c), [text_tree.c](../src/storage/text_tree.c) |
-| `database`·`transaction` | 게시·작업 카탈로그와 페이지 집합 소유, writer 자리와 commit 결과 관리 | C11 | [database.c](../src/sql/database.c), [database_txn.c](../src/sql/database_txn.c), [transaction.c](../src/storage/transaction.c) |
-| `catalog`·`catalog_store` | 테이블·색인 루트 묶음을 직렬화해 overflow에 쓰고 제어 참조 게시 | C11 | [catalog.c](../src/storage/catalog.c), [catalog_store.c](../src/storage/catalog_store.c) |
-| `page_file`·`page_cache` | 물리 페이지 I/O와 CRC32C 검사, 잠금·제어 슬롯·회수 상태 및 읽기 캐시 관리 | C11, POSIX | [page_file.c](../src/storage/page_file.c), [page_cache.c](../src/storage/page_cache.c) |
+### 호출과 결과
+
+Python의 `Database`, `Transaction`, `Queue`는 Python 값을 C 호출 인자로 바꾸고 반환 데이터를 Python 값으로 복사한다. 복사를 마치면 native 버퍼를 해제한다. 구현은 [database.py](../python/totedb/database.py)와 [queue.py](../python/totedb/queue.py)에 있다.
+
+C API의 `tote_db_t`는 DB mutex와 기본 세션을 소유한다. `tote_exec`는 SQL 결과를 호출자 소유의 버퍼로 인코딩한다. [totedb.c](../src/capi/totedb.c)가 구현이고 [totedb.h](../include/totedb.h)가 공개 선언이다.
+
+`session`과 `database_conn`은 연결별 트랜잭션을 관리하고 실행 호출을 직렬화한다. 메모리 예산, 취소, 내부 결과의 수명도 이 경로에서 관리한다. 관련 코드는 [session.c](../src/sql/session.c)와 [database_txn.c](../src/sql/database_txn.c)에 있다.
+
+### SQL 실행과 선택 큐
+
+어휘 분석은 `lexer`, 구문 분석은 `sql_statement`, 식 평가는 `sql_eval`이 맡는다. `database_*` 실행기는 행·색인을 조회하거나 바꾸고 내부 `result_t`를 만든다. 실행 경로는 [lexer.c](../src/sql/lexer.c), [sql_statement.c](../src/sql/sql_statement.c), [sql_eval.c](../src/sql/sql_eval.c), [database_select.c](../src/sql/database_select.c), [database_update.c](../src/sql/database_update.c), [result.c](../src/sql/result.c)에서 따라갈 수 있다.
+
+선택형 `ack_queue`도 별도 저장 엔진 없이 SQL을 사용한다. 호출자의 트랜잭션에 참여하거나 자체 트랜잭션을 여는 분기는 [ack_queue_sql.c](../src/queue/ack_queue_sql.c)에 있고, 큐 상태를 바꾸는 연산은 [ack_queue.c](../src/queue/ack_queue.c)에 있다.
+
+### 저장과 게시
+
+`heap_store`는 행과 큰 값을, `pk_tree`와 `text_tree`는 색인을 COW로 바꾼다. 변경을 마치면 새 루트와 fresh·old 페이지 집합을 실행기에 돌려준다. 각 구현은 [heap_store.c](../src/storage/heap_store.c), [pk_tree.c](../src/storage/pk_tree.c), [text_tree.c](../src/storage/text_tree.c)에 있다.
+
+`database`가 게시·작업 카탈로그와 페이지 집합을 소유한다. `transaction`은 writer 자리와 commit 결과를 관리한다. 두 계층의 연결은 [database.c](../src/sql/database.c), [database_txn.c](../src/sql/database_txn.c), [transaction.c](../src/storage/transaction.c)에서 이어진다.
+
+`catalog`는 테이블·색인 루트 묶음을 표현한다. `catalog_store`는 이를 overflow 체인에 직렬화하고 제어 참조를 게시한다. 데이터 표현은 [catalog.c](../src/storage/catalog.c), 저장·불러오기는 [catalog_store.c](../src/storage/catalog_store.c)에 있다.
+
+`page_file`은 물리 페이지 I/O와 CRC32C 검사, 파일 잠금, 제어 슬롯, 회수 상태를 관리한다. 읽은 페이지는 `page_cache`가 캐시한다. 구현은 [page_file.c](../src/storage/page_file.c)와 [page_cache.c](../src/storage/page_cache.c)에 있다. C 언어 표준과 빌드 의존성은 [빌드와 시험](build-and-test.md#빌드)에 있다.
 
 ### 저장 참조
 
@@ -161,18 +173,16 @@ manifest는 이번 기록 집합이지 전체 도달 페이지의 무결성 증�
 
 ## 배포
 
-| 프로세스 | 시작 주체 | 수명 |
-|---|---|---|
-| 애플리케이션 | 사용자 | 라이브러리를 로드하고 DB·트랜잭션·큐 핸들을 열어 쓰는 동안, 별도 DB 서버 없음 |
+애플리케이션이 공유 라이브러리를 로드하고 DB·트랜잭션·큐 핸들을 열어 사용한다. 별도 DB 서버 프로세스는 없다.
 
-| 경로 | 내용 | 쓰는 구성 요소 |
-|---|---|---|
-| 앱이 정한 DB 경로 | 제어·카탈로그·행·큰 값·색인·회수 상태 | `page_file` |
-| `<db>-lock` | 트랜잭션 writer 잠금과 게시 대기 표시, 영속 보조 파일 | `page_file` |
-| `<db>.partial` | 최초 생성 중 최종 이름 게시 전 파일 | `page_file_create`·`page_file_publish` |
-| `build/lib/libtotedb.dylib` 또는 `.so` | Python이 로드하는 공유 라이브러리의 개발 빌드 | `totedb` |
+| 경로 | 용도 |
+|---|---|
+| 앱이 정한 DB 경로 | 제어·카탈로그·행·큰 값·색인·회수 상태 |
+| `<db>-lock` | 트랜잭션 writer 잠금과 게시 대기 표시, 영속 보조 파일 |
+| `<db>.partial` | 최초 생성 중 최종 이름 게시 전 파일 |
+| `build/lib/libtotedb.dylib` 또는 `.so` | Python이 로드하는 공유 라이브러리의 개발 빌드 |
 
-최초 생성은 partial 파일에서 초기 commit을 만든 뒤 최종 이름으로 게시하며 디렉터리를 동기화한다. 이름이 보이더라도 정리나 디렉터리 fsync가 실패한 `PUBLISHED_DIRTY`는 이름 내구성까지 성공했다는 뜻이 아니다. 잠금 파일을 임의로 지우거나 사용 중인 DB 파일을 교체하지 않는다. 메모리 캐시와 열린 핸들은 프로세스 수명에 속하며 DB 파일에 저장하는 객체가 아니다. 라이브러리 탐색은 [_native.py](../python/totedb/_native.py), 자식 자원 종료 순서는 [totedb.h](../include/totedb.h)를 따른다.
+`page_file_create`는 partial 파일을 준비한다. DB 생성 경로는 여기에 초기 카탈로그를 쓰고 commit한 뒤 `page_file_publish`로 최종 이름을 게시하며 디렉터리를 동기화한다. 이름이 보이더라도 정리나 디렉터리 fsync가 실패한 `PUBLISHED_DIRTY`는 이름 내구성까지 성공했다는 뜻이 아니다. 잠금 파일을 임의로 지우거나 사용 중인 DB 파일을 교체하지 않는다. 메모리 캐시와 열린 핸들은 프로세스 수명에 속하며 DB 파일에 저장하는 객체가 아니다. 라이브러리 탐색은 [_native.py](../python/totedb/_native.py), 자식 자원 종료 순서는 [totedb.h](../include/totedb.h)를 따른다.
 
 ### 그림 원본과 재생성
 
