@@ -1,39 +1,17 @@
 diagramplay
-title "두 control 세대와 페이지 회수"
-subtitle "설계: g는 설명용 세대이며 시간 경과가 아니라 성공 commit이 상태를 바꾼다"
-box current "현재 제어" "control 세대" tone=blue appearance=filled {
-  graph "현재 g -> 옛 페이지"
-}
-box fallback "이전 제어" "fallback" {
-  graph "이전 g-1 -> 옛 페이지"
-}
-box old "옛 페이지" "퇴역 대상"
-box next "새 페이지" "COW 결과"
-box state "회수 상태" "놓은 게시 페이지" {
-  text "USED"
-}
-current -> old "g 세대 참조"
-fallback -> old "옛 세대 보호"
-current -> next "g+1 이후" dashed
-old -> state "release 등록"
+title "게시 페이지의 회수 상태"
+subtitle "설계: 게시됐던 페이지 하나의 상태 전이이며 게시 성공은 물리 commit 성공을 뜻한다"
+state used "USED"
+state pending "PENDING"
+state aging "AGING"
+state reusable "REUSABLE"
+used -> pending "release 등록"
+pending -> aging "해제 게시 성공"
+aging -> reusable "다음 게시 성공"
 scene "성공 commit 두 번" mode=loop
-  old -> state time=900ms
-  clear state
-  show state "PENDING · 아직 참조 중"
+  used -> pending time=1000ms
   wait 1200ms
-  current -> next time=1000ms
-  clear current
-  show current graph "현재 g+1 -> 새 페이지"
-  clear fallback
-  show fallback graph "이전 g -> 옛 페이지"
-  clear state
-  show state "AGING · fallback 보호"
+  pending -> aging time=1000ms
   wait 1800ms
-  light current fallback state
-  clear current
-  show current graph "현재 g+2 -> 새 페이지"
-  clear fallback
-  show fallback graph "이전 g+1 -> 새 페이지"
-  clear state
-  show state "REUSABLE · 참조 종료"
+  aging -> reusable time=1000ms
   wait 1800ms

@@ -8,7 +8,7 @@ box file "파일 게시" "`catalog_store`" {
   text "`page_file`"
 }
 capi -> queue "큐 호출"
-capi -> sql "SQL · 거래"
+capi -> sql "SQL · 트랜잭션"
 queue -> sql "세션 SQL"
 sql -> heap "batch"
 sql -> file "루트 게시"
