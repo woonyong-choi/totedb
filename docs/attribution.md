@@ -1,11 +1,33 @@
 # 출처와 기여 경계
 
-> [!NOTE]
-> 이 문서는 팀 과제와 옛 엔진 시기의 기록이다. 표의 parser·planner·executor·pager·bptree·table·lock_table 코드는 커밋 `5e6b265`에서 삭제했다.
+현재 코드, 외부 구성 요소, 과거 팀 기여를 정리한다.
 
-이 저장소는 크래프톤 정글 팀 과제([Jungle-12-303/wk08_1](https://github.com/Jungle-12-303/wk08_1))에서 시작했다. 과제 종료 후 개인 저장소에서 수정·학습·확장을 이어갔다. 팀 코드 전체를 개인 구현으로 보지 않는다. 팀 기간의 기여 구분은 원본 저장소의 커밋 저자와 파일별 diff로 확인한다.
+## 현재 엔진의 구현 범위
+
+SQL 해석·실행과 행·색인·페이지 저장 구현은 [src/sql/](../src/sql/)과 [src/storage/](../src/storage/)에 있다. 기본 공유 라이브러리는 이 C 소스들을 빌드한다. C API는 [src/capi/](../src/capi/), Python 바인딩은 [python/totedb/](../python/totedb/)에 있다. 선택형 큐는 [src/queue/](../src/queue/)에서 일반 SQL과 트랜잭션 API를 사용한다.
+
+계층별 책임은 [아키텍처](architecture.md), 기본 빌드 구성은 [Makefile](../Makefile)과 [queue.mk](../src/queue/queue.mk)에 있다.
+
+## 외부 구성 요소와 비교 도구
+
+- 파일 읽기·쓰기·동기화·잠금은 운영체제의 `pread`, `pwrite`, `fsync`, `flock`을 사용한다. 스레드 동기화와 수학 함수의 기본 링크 의존성은 pthread와 libm이다.
+- Python 공유 라이브러리 호출에는 표준 라이브러리의 ctypes를 사용한다. Python 객체의 메모리 관리는 Python 런타임이 맡는다.
+- SQLite와 다른 외부 DB·큐 라이브러리는 비교 대상으로 사용한다. 선정 범위와 역할은 [비교 대상 조사](experiments/local-db-comparison/catalog.md)에 있다.
+- 부하 생성에는 공식 YCSB Client와 workload를 사용한다. 이 저장소의 SQL·JNI 연결 코드는 [공식 YCSB 비교 바인딩](../bench/ycsb/README.md)에 설명한다. 공식 자료의 Apache 2.0 LICENSE·NOTICE는 별도로 보존한다.
+- 문서 그림은 [DiagramPlay](https://github.com/woonyong-choi/diagramplay)로 생성한다. 입력 원본과 도구 버전은 [그림 재생성 안내](architecture.md#그림-원본과-재생성)에 있다.
+
+## 참고 자료와 코드 재사용
+
+YCSB 비교의 bootstrap 구간은 [SciPy bootstrap 문서](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html)의 percentile 정의를 따른다. Python 표준 라이브러리를 사용하는 계산 방법과 조건은 [YCSB 측정 계획](experiments/ycsb-sqlite/design.md)에 있다.
+
+COW·B+Tree·인코딩 개발의 참고 자료와 코드 차용 이력은 미확인이다.
 
 ## 팀 과제
+
+> [!NOTE]
+> 이 절과 다음 개인 확장 절은 팀 과제와 옛 엔진 시기의 기록이다. 표의 parser·planner·executor·pager·bptree·table·lock_table 코드는 커밋 `5e6b265`에서 삭제했다.
+
+이 저장소는 크래프톤 정글 팀 과제([Jungle-12-303/wk08_1](https://github.com/Jungle-12-303/wk08_1))에서 시작했다. 과제 종료 후 개인 저장소에서 수정과 확장을 이어갔다. 팀 코드 전체를 개인 구현으로 보지 않는다. 팀 기간의 기여 구분은 원본 저장소의 커밋 저자와 파일별 diff로 확인한다.
 
 | 항목 | 내용 |
 |---|---|

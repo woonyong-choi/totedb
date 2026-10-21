@@ -82,11 +82,11 @@ with Database("orders.db") as db:
 
 ## SQLite·Python 도구와 비교
 
-2026-10-19의 [비교 실험](https://github.com/woonyong-choi/totedb/blob/main/docs/experiments/local-db-comparison/report.md)에서 ToteDB는 SQLite WAL/FULL보다 DB 기록 처리량이 낮았고, `persist-queue`와 Litequeue보다 ACK 큐 처리도 느렸습니다.
+2026-10-19의 [비교 실험](docs/experiments/local-db-comparison/report.md)에서 ToteDB는 SQLite WAL/FULL보다 DB 기록 처리량이 낮았고, `persist-queue`와 Litequeue보다 ACK 큐 처리도 느렸습니다.
 
 아래 수치는 단일 클라이언트에서 측정한 5회 중앙값입니다. 높을수록 처리량이 많습니다. 현재 배포판을 새로 측정한 결과는 아닙니다.
 
-측정 환경은 Ubuntu 24.04·Python 3.12.15·SQLite 3.45.1입니다. 큐는 `persist-queue` 1.1.0·Litequeue 0.14, ToteDB는 커밋 `a86cf241`을 사용했습니다. 전체 설정은 [실험 보고서](https://github.com/woonyong-choi/totedb/blob/main/docs/experiments/local-db-comparison/report.md)에 있습니다.
+측정 환경은 Ubuntu 24.04·Python 3.12.15·SQLite 3.45.1입니다. 큐는 `persist-queue` 1.1.0·Litequeue 0.14, ToteDB는 커밋 `a86cf241`을 사용했습니다. 전체 설정은 [실험 보고서](docs/experiments/local-db-comparison/report.md)에 있습니다.
 
 ### DB 기록 처리량
 
@@ -116,7 +116,7 @@ ToteDB는 작업마다 커밋할 때 SQLite DELETE/FULL보다 높았지만, WAL/
 
 측정한 네 조건 모두 ToteDB가 느렸습니다. 1,024개·256B 조건에서 반복별 ToteDB/persist-queue 처리량 비의 중앙값은 0.3628, 95% bootstrap 구간은 [0.3458, 0.3639]였습니다. 현재 측정 결과로는 큐 속도를 ToteDB의 장점으로 설명할 수 없습니다.
 
-이 비교는 정상 처리 경로에 한정됩니다. SQLite 큐의 WAL/FULL 설정을 확인했지만 직렬화 등은 각 라이브러리의 방식을 유지했습니다. Lease 만료·재전달·오래된 ACK 거절 등 실패 복구 동작은 서로 다르며, 이 실험에서는 그 비용을 측정하지 않았습니다. 전체 설정·반복별 수치·검사 결과는 [실험 보고서](https://github.com/woonyong-choi/totedb/blob/main/docs/experiments/local-db-comparison/report.md)와 [집계 원본](https://github.com/woonyong-choi/totedb/blob/main/docs/experiments/local-db-comparison/results/summary.json)에 있습니다.
+이 비교는 정상 처리 경로에 한정됩니다. SQLite 큐의 WAL/FULL 설정을 확인했지만 직렬화 등은 각 라이브러리의 방식을 유지했습니다. Lease 만료·재전달·오래된 ACK 거절 등 실패 복구 동작은 서로 다르며, 이 실험에서는 그 비용을 측정하지 않았습니다. 전체 설정·반복별 수치·검사 결과는 [실험 보고서](docs/experiments/local-db-comparison/report.md)와 [집계 원본](docs/experiments/local-db-comparison/results/summary.json)에 있습니다.
 
 ### 기능과 제약
 
@@ -140,7 +140,7 @@ SQLite에서도 주문 테이블과 작업 테이블을 같은 연결로 갱신�
 
 작업을 처리하는 코드는 애플리케이션에서 작성합니다. 워커는 `get`으로 작업을 가져와 처리한 뒤 `ack`로 완료를 알립니다. ACK 없이 처리 기한(Lease)이 지나면 다른 워커가 같은 작업을 다시 가져갈 수 있습니다.
 
-다른 워커가 같은 작업을 가져가면 `fence`가 증가합니다. DB는 이 번호로 현재 작업을 받은 워커의 ACK인지 확인하고, 이전 번호의 ACK는 거절합니다. 롤백과 재전달 과정은 [주문 저장과 작업 등록을 한 트랜잭션으로 처리하기](docs/design/transaction-queue.md)에서 볼 수 있습니다. 저장 방식과 잠금 규칙은 [아키텍처](https://github.com/woonyong-choi/totedb/blob/main/docs/architecture.md)에 있습니다.
+다른 워커가 같은 작업을 가져가면 `fence`가 증가합니다. DB는 이 번호로 현재 작업을 받은 워커의 ACK인지 확인하고, 이전 번호의 ACK는 거절합니다. 롤백과 재전달 과정은 [주문 저장과 작업 등록을 한 트랜잭션으로 처리하기](docs/design/transaction-queue.md)에서 볼 수 있습니다. 저장 방식과 잠금 규칙은 [아키텍처](docs/architecture.md)에 있습니다.
 
 ## 지원 기능과 제약 사항
 
@@ -152,16 +152,21 @@ SQL 조회·갱신과 JOIN·집계·서브쿼리를 지원합니다. C와 Python
 
 더 많은 SQL 기능이 필요하다면 SQLite를, 동시 쓰기와 서버 운영 기능이 필요하다면 PostgreSQL을 함께 검토하세요. 1.0 전에는 파일 형식과 API가 바뀔 수 있습니다.
 
-강제 종료와 I/O 오류에서 확인한 동작은 [안전성 테스트](https://github.com/woonyong-choi/totedb/blob/main/docs/safety.md)에 정리했습니다. 실제 전원 차단까지 검증한 것은 아닙니다.
+강제 종료와 I/O 오류에서 확인한 동작은 [안전성 시험 결과](docs/safety.md)에 정리했습니다. 실제 전원 차단까지 검증한 것은 아닙니다.
 
 ## 문서
 
-- [주문 저장과 작업 등록을 한 트랜잭션으로 처리하기](docs/design/transaction-queue.md)
-- [아키텍처](https://github.com/woonyong-choi/totedb/blob/main/docs/architecture.md)
-  - [빌드 및 테스트](https://github.com/woonyong-choi/totedb/blob/main/docs/build-and-test.md)
-  - [안전성 테스트](https://github.com/woonyong-choi/totedb/blob/main/docs/safety.md)
-- [멀티 프로세스 Outbox 예제](https://github.com/woonyong-choi/totedb/tree/main/examples/outbox)
-- [전체 문서](https://github.com/woonyong-choi/totedb/blob/main/docs/README.md)
+- [아키텍처](docs/architecture.md)에서 전체 구조와 저장·게시·복구 원리를 확인하세요.
+- [주문 저장과 작업 등록을 한 트랜잭션으로 처리하기](docs/design/transaction-queue.md)에서 큐의 동작과 보장 경계를 읽을 수 있습니다.
+- [데이터](docs/data.md)는 값·바인딩·저장 형식과 큐 테이블을 설명합니다.
+- [설정](docs/configuration.md)에서 옵션·기본값·한도를 확인하세요.
+- [오류](docs/errors.md)에서 실패 뒤 재시도·rollback·재개방 여부를 판단할 수 있습니다.
+- [프로토콜](docs/protocol.md)은 C 결과 버퍼를 해석할 때 사용합니다.
+- [빌드와 시험](docs/build-and-test.md)은 빌드·검사·예제 실행을 안내합니다.
+- [안전성 시험 결과](docs/safety.md)에서 장애 시험의 관측과 미검증 범위를 확인하세요.
+- [실험](docs/experiments/README.md)에서 성능 비교와 개선 검증의 결론을 찾을 수 있습니다.
+- [기여 안내](.github/CONTRIBUTING.md)는 변경 제안과 PR 제출 절차를 설명합니다.
+- [전체 문서](docs/README.md)에서 목적에 맞는 읽기 경로를 고르세요.
 
 ## 개발
 
@@ -173,8 +178,8 @@ make test-all test-runner test-fault test-result
 make test-sql-diff
 ```
 
-저장소의 Python 바인딩을 직접 사용할 때는 `PYTHONPATH=python`을 지정하세요. 테스트 범위와 PR 제출 절차는 [기여 안내](https://github.com/woonyong-choi/totedb/blob/main/.github/CONTRIBUTING.md)에 있습니다.
+저장소의 Python 바인딩을 직접 사용할 때는 `PYTHONPATH=python`을 지정하세요. 테스트 범위와 PR 제출 절차는 [기여 안내](.github/CONTRIBUTING.md)에 있습니다.
 
 ## 라이선스
 
-[MIT](https://github.com/woonyong-choi/totedb/blob/main/LICENSE)
+[MIT](LICENSE)
