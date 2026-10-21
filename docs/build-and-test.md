@@ -210,14 +210,14 @@ macOS 26(Darwin 25)과 Apple clang 17에서는 ASan 바이너리가 `main()`에 
 
 ## README 그림
 
-[README 그림 원본](assets/transaction-queue.diagramplay)과 [DB 실행 관측값](assets/transaction-queue.trace.json)이 현재 입력이다. 도구 기준은 [DiagramPlay `0f35feb`](https://github.com/woonyong-choi/diagramplay/tree/0f35febbae5afa541b92ffcf80f954d07b421382)과 Node.js 26.9.0이다. `DIAGRAMPLAY_DIR`은 해당 커밋의 준비된 도구 작업본을 가리킨다. 원본 검사만 하려면 ToteDB 루트에서 아래 명령을 실행한다.
+[README 그림 원본](assets/transaction-queue.diagramplay)과 [DB 실행 관측값](assets/transaction-queue.trace.json)이 현재 입력이다. 도구 기준은 [DiagramPlay `0f35b9b`](https://github.com/woonyong-choi/diagramplay/tree/0f35b9b1c400355e769f8302a3f3f348a07d69f5)과 Node.js 26.9.0이다. `DIAGRAMPLAY_DIR`은 해당 커밋의 준비된 도구 작업본을 가리킨다. 원본 검사만 하려면 ToteDB 루트에서 아래 명령을 실행한다.
 
 ```sh
 node "$DIAGRAMPLAY_DIR/src/cli.js" check docs/assets/transaction-queue.diagramplay --strict
 ```
 
-README는 움직이는 [SVG](assets/transaction-queue.svg)를 읽고 [HTML 재생 화면](assets/transaction-queue.html)으로 시나리오 선택을 연결한다. SVG와 HTML은 서로 다른 생성물이며, 원본의 장면 값과 trace 관측값을 함께 대조한다. `.torso`와 Torso `14e57b7`의 `--static` 명령은 현재 움직이는 SVG의 재생성 절차가 아니므로 사용하지 않는다.
+README는 화면 폭에 따라 움직이는 [기본 SVG](assets/transaction-queue.svg)와 [좁은 SVG](assets/transaction-queue-narrow.svg)를 고른다. 시나리오는 [넓은 HTML 재생 화면](assets/transaction-queue.html)과 [좁은 HTML 재생 화면](assets/transaction-queue-narrow.html)에서 선택한다. SVG와 HTML은 서로 다른 생성물이며, 원본의 장면 값과 trace 관측값을 함께 대조한다. `.torso`와 Torso `14e57b7`의 `--static` 명령은 현재 움직이는 SVG의 재생성 절차가 아니므로 사용하지 않는다.
 
-GitHub의 HTML 링크는 재생 화면이 아니라 소스보기다. 장면을 선택하려면 저장소를 내려받은 뒤 `docs/assets/transaction-queue.html`을 로컬 브라우저에서 연다. 아키텍처의 `storage-publication.html`도 같은 방식으로 연다. GitHub에서 움직이는 SVG가 보이는 것과 HTML의 장면 선택 기능은 구분한다.
+GitHub의 HTML 링크는 재생 화면이 아니라 소스보기다. 장면을 선택하려면 저장소를 내려받은 뒤 `docs/assets/transaction-queue.html` 또는 `transaction-queue-narrow.html`을 로컬 브라우저에서 연다. `storage-publication`과 `queue-lifecycle`의 기본·좁은 HTML도 같은 방식으로 연다. GitHub에서 움직이는 SVG가 보이는 것과 HTML의 장면 선택 기능은 구분한다.
 
-승인된 SVG·HTML은 이 문서 변경에서 재생성하지 않았다. 재생성이 필요하면 고정 도구의 공개 `buildFigure`·`toSvg` API와 기존 생성 조건을 먼저 확인한다. 원본의 장면 값을 trace와 대조하고 정지 출력으로 덮어쓰지 않는다. 같은 입력으로 두 번 생성한 바이트와 승인본을 대조한다. 현재 README 생성물과의 바이트 동일성은 이번에 확인하지 않았다. 저장 구조 그림의 명령과 검증 조건은 [아키텍처의 재생성](architecture.md#그림-원본과-재생성)에 있다.
+재생성은 ToteDB 루트에서 `node tools/render-figures.mjs`로 한다. 큐 2개는 `buildFigure(source, {strict: true, baseDir})`의 기본 폭으로 빌드하고 `toSvg(result, {name})`·`toHtml(result, name)`으로 내보낸다. 좁은 배치는 고정 도구의 내부 `src/build.js`에 있는 `reflowFigure`로 같은 기준 시간표를 유지한다. 원본의 장면 값을 trace와 대조하고 정지 출력으로 덮어쓰지 않는다. 7개 원본과 22개 생성물의 정확한 옵션·환경·바이트 대조는 [아키텍처의 재생성](architecture.md#그림-원본과-재생성)을 따른다.

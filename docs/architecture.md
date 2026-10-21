@@ -23,7 +23,7 @@ DB 파일을 다시 열면 제어 페이지가 가리키는 카탈로그에서 �
 ## 구성 요소
 
 <picture>
-<source media="(max-width: 600px)" srcset="assets/architecture-narrow.svg" width="326" height="486">
+<source media="(max-width: 600px)" srcset="assets/architecture-narrow.svg" width="325.6" height="486">
 <img src="assets/architecture.svg" alt="설계: SQL과 선택 큐는 DB 실행기를 공유하고 행·색인과 카탈로그 저장은 같은 페이지 파일 계층을 사용한다" width="100%">
 </picture>
 
@@ -89,7 +89,7 @@ C API의 `tote_db_t`는 DB mutex와 기본 세션을 소유한다. `tote_exec`�
 4. `database`는 문장 종료 때 SHARED 잠금을 놓는다. 다음 문장은 다른 핸들이 게시한 새 세대를 읽을 수 있으므로 여러 문장에 걸친 고정 read-only snapshot으로 해석하지 않는다.
 
 <picture>
-<source media="(max-width: 600px)" srcset="assets/read-publish-locks-narrow.svg" width="244" height="791">
+<source media="(max-width: 600px)" srcset="assets/read-publish-locks-narrow.svg" width="243.9" height="791">
 <img src="assets/read-publish-locks.svg" alt="설계: reader는 DB 파일의 SHARED 안에서 제어 세대와 캐시를 확인하고 writer는 reader가 끝난 뒤 EXCLUSIVE로 게시한다" width="100%">
 </picture>
 
@@ -111,13 +111,13 @@ C API의 `tote_db_t`는 DB mutex와 기본 세션을 소유한다. `tote_exec`�
 아래 그림은 commit이 끝난 뒤 함께 남아 있는 두 유효 연속 세대의 참조다. 왼쪽의 이전·현재 제어에서 각 카탈로그를 따라가면, 변경한 테이블 T는 서로 다른 루트 묶음을 가리키고 미변경 테이블 U는 같은 루트 묶음을 공유한다. 쓰기 실행 순서나 물리 파일 배치가 아니다.
 
 <picture>
-<source media="(max-width: 600px)" srcset="assets/storage-publication-narrow.svg" width="306" height="977">
+<source media="(max-width: 600px)" srcset="assets/storage-publication-narrow.svg" width="300.2" height="931">
 <img src="assets/storage-publication.svg" alt="설계: 두 게시 세대의 카탈로그는 T의 서로 다른 루트를 가리키고 U의 루트 묶음은 공유한다" width="100%">
 </picture>
 
 그림은 게시가 끝난 두 유효 연속 세대의 참조 그래프다. 이전 `control g-1`은 옛 카탈로그와 테이블 T의 변경 전 루트 묶음을, 현재 `control g`는 새 카탈로그와 T의 변경 후 루트 묶음을 가리킨다. 두 카탈로그는 바꾸지 않은 테이블 U의 루트 묶음을 공유한다. 각 묶음은 heap·기본 키·보조 색인 루트를 합친 추상화이며, 루트 아래 페이지의 일부 공유는 생략한다. 전체 디스크 배치나 물리 덤프, 실시간 실행, 쓰기 시뮬레이션이 아니다. free-list와 manifest는 생략하며 게시 장벽과 fsync 조건은 아래 표가 맡는다.
 
-슬롯 A·B는 설명용 별칭이지 물리 슬롯 0·1의 고정 대응이 아니다. 실제 슬롯은 각 `control.generation % 2`로 정한다. [게시 참조 경로 재생](assets/storage-publication.html)은 같은 게시 완료 상태에서 현재 참조, 이전 참조, 공유 루트로 가는 경로를 차례로 읽는다. 세대 기호와 재생 시간은 설명용이며 실행 관측값이 아니다.
+슬롯 A·B는 설명용 별칭이지 물리 슬롯 0·1의 고정 대응이 아니다. 실제 슬롯은 각 `control.generation % 2`로 정한다. [게시 참조 경로 재생: 넓은 화면](assets/storage-publication.html)과 [좁은 화면](assets/storage-publication-narrow.html)은 같은 게시 완료 상태에서 현재 참조, 이전 참조, 공유 루트로 가는 경로를 차례로 읽는다. 세대 기호와 재생 시간은 설명용이며 실행 관측값이 아니다.
 
 1. `database_work_commit`은 `old_committed`를 먼저 release해 pending으로 등록한다. 작업 카탈로그가 없으면 물리 commit 없이 `APPLIED`를 반환한다.
 2. `catalog_store_save`는 새 카탈로그 overflow를 쓰고 옛 카탈로그 체인의 회수를 등록한 뒤 새 카탈로그 참조를 stage한다. `page_file_commit`은 이 참조와 다음 빈 목록을 담을 제어 페이지를 준비한다. 옛 페이지의 release는 게시 뒤가 아니라 이 준비 단계의 pending 등록이다.
@@ -161,7 +161,7 @@ manifest는 이번 기록 집합이지 전체 도달 페이지의 무결성 증�
 ### 두 세대를 보호하는 회수
 
 <picture>
-<source media="(max-width: 600px)" srcset="assets/page-reclamation-narrow.svg" width="176" height="406">
+<source media="(max-width: 600px)" srcset="assets/page-reclamation-narrow.svg" width="175.7" height="406">
 <img src="assets/page-reclamation.svg" alt="설계: 게시됐던 페이지는 해제를 포함한 commit과 다음 commit이 성공한 뒤에만 재사용한다" width="100%">
 </picture>
 
@@ -186,37 +186,17 @@ manifest는 이번 기록 집합이지 전체 도달 페이지의 무결성 증�
 
 ### 그림 원본과 재생성
 
-이 문서의 그림은 같은 이름의 `docs/assets/*.diagramplay`가 수정 원본이며 SVG와 HTML은 생성물이다. 기본 그림은 실제 미리보기의 본문을 기준으로 목표 폭 1000px에 배치하고 문서의 가로폭을 사용한다. 단순히 기존 접힌 그림을 확대하지 않고, 읽기 방향과 연결선이 본문 폭에 맞게 놓였는지 확인한다. `-narrow.svg`는 같은 원본을 목표 폭 390px로 다시 배치한 생성물이다. 본문의 `<picture>`는 600px 이하에서 좁은 배치를 고르며 `<source>`의 치수로 원본 글자 크기를 유지한다. SVG를 지우면 본문이 깨지고 HTML을 지우면 재생 링크가 깨진다. 기존 큐 그림과 trace는 별도 원본이므로 이 그림 생성에 덮어쓰지 않는다.
+이 문서의 그림과 큐 그림은 같은 이름의 `docs/assets/*.diagramplay` 7개가 수정 원본이며 SVG와 HTML은 생성물이다. `storage-index-locator.diagramplay`는 이 생성 대상이 아니다. 본문의 `<picture>`는 600px 이하에서 `-narrow.svg`를 고른다. `<source>`의 폭·높이는 해당 SVG의 `viewBox`와 맞추며 출력 크기가 달라지면 함께 갱신한다. 실제 표시 글자 크기는 삽입 폭에 따라 달라진다. SVG를 지우면 본문이 깨지고 HTML을 지우면 재생 링크가 깨진다. trace와 `.torso`는 실행 관측 원자료로 보존하며 그림 생성으로 덮어쓰지 않는다.
 
-기존 의존성을 갖춘 DiagramPlay 소스 `0f35febbae5afa541b92ffcf80f954d07b421382`와 Node.js `26.9.0`을 사용한다. `DIAGRAMPLAY_DIR`은 그 소스 작업본 경로다. 저장소 루트에서 공개 JavaScript API의 `layoutWidth`로 기본 배치와 좁은 배치를 만든다. CLI의 기본 단 폭으로 다시 생성하면 가로 그림이 접힐 수 있으므로 아래 명령을 사용한다. 구성도와 저장 참조는 정지 SVG를 쓰고, 게시·회수·잠금은 움직이는 SVG와 HTML을 쓴다. 원본을 고쳐 출력 크기가 달라지면 `<source>`의 폭·높이도 새 `viewBox`에 맞춘다.
+기존 의존성을 갖춘 DiagramPlay 소스 `0f35b9b1c400355e769f8302a3f3f348a07d69f5`와 Node.js `26.9.0`을 사용한다. `DIAGRAMPLAY_DIR`은 해당 커밋의 깨끗한 소스 작업본 경로다. 저장소 루트에서 [그림 생성기](../tools/render-figures.mjs)를 실행한다. 생성기는 도구 커밋과 추적 파일 상태를 검사하고 22개를 같은 조건으로 두 번 생성한다. 바이트가 모두 같을 때만 파일을 저장하고 SHA-256 목록을 출력한다.
 
 ```sh
 export DIAGRAMPLAY_DIR
-node --input-type=module <<'JS'
-import fs from 'node:fs';
-import path from 'node:path';
-import { pathToFileURL } from 'node:url';
-const api = pathToFileURL(path.join(process.env.DIAGRAMPLAY_DIR, 'src/index.js'));
-const { buildFigure, toSvg, toHtml } = await import(api);
-const names = ['architecture', 'storage-layout',
-	'storage-publication', 'page-reclamation', 'read-publish-locks'];
-for (const [index, name] of names.entries()) {
-	const source = fs.readFileSync(`docs/assets/${name}.diagramplay`, 'utf8');
-	for (const width of [1000, 390]) {
-		const figure = await buildFigure(source, {
-			baseDir: path.resolve('docs/assets'), strict: true, layoutWidth: width,
-		});
-		const suffix = width === 390 ? '-narrow' : '';
-		const svg = await toSvg(figure, {
-			isStatic: index < 2, ...(suffix ? {} : { name }),
-		});
-		fs.writeFileSync(`docs/assets/${name}${suffix}.svg`, svg);
-		if (width === 1000 && index >= 2) {
-			fs.writeFileSync(`docs/assets/${name}.html`, await toHtml(figure, name));
-		}
-	}
-}
-JS
+node tools/render-figures.mjs
 ```
 
-같은 입력으로 두 번 생성해 바이트를 대조한 뒤 라이트·다크 본문과 좁은 화면에서 읽는다. 재생 시간은 설명용이고 저장 지연 측정값이 아니다. 도구의 원본·문법은 [DiagramPlay](https://github.com/woonyong-choi/diagramplay/tree/0f35febbae5afa541b92ffcf80f954d07b421382), 일반 개발 명령은 [빌드와 시험](build-and-test.md)에 있다.
+`architecture`·`storage-layout`·`storage-publication`·`page-reclamation`·`read-publish-locks`는 `buildFigure(source, {baseDir, strict: true, layoutWidth: 1000})`으로 기준을 만든다. 큐의 `transaction-queue`·`queue-lifecycle`은 `{baseDir, strict: true}`로 기존 기본 폭을 유지한다. 앞의 두 그림만 정지 SVG이며 나머지는 원본의 장면과 반복을 유지한 SVG·HTML이다. 7개 모두 기본·좁은 SVG를 만들고, 뒤의 5개는 기본 HTML도 만든다. 게시 참조와 큐 2개의 좁은 HTML까지 합쳐 SVG 14개와 HTML 8개다.
+
+좁은 배치는 새로 빌드하지 않고 같은 기준 결과에 `reflowFigure(reference, {layoutWidth: 390, strict: true})`를 적용한다. 이 함수는 공개 루트 export가 아니므로 고정한 소스의 `src/build.js`에서 가져온다. 원본과 사건·장면·구간의 시각은 기준 시간표를 유지하고 경로와 배치만 다시 계산한다. 예전처럼 좁은 폭을 별도 빌드할 때의 경로 길이 기반 파생 시간과는 다를 수 있다. 재생 시간은 설명용이며 원본의 속도 설정이나 trace의 실측값을 바꾸지 않는다.
+
+생성 뒤 라이트·다크 본문의 390px·800px·1000px에서 글자·선·잘림과 움직임을 확인한다. 기본 HTML이 좁은 화면에서 자동 재배치한다고 가정하지 않고, 게시 참조와 큐는 별도 좁은 HTML을 연다. 도구의 원본·문법은 [DiagramPlay](https://github.com/woonyong-choi/diagramplay/tree/0f35b9b1c400355e769f8302a3f3f348a07d69f5), 일반 개발 명령은 [빌드와 시험](build-and-test.md)에 있다.

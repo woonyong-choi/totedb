@@ -68,7 +68,7 @@ if claim is not None:
 2. lease 만료 뒤 시도가 남아 있으면 워커 B가 같은 작업을 다시 받고 더 큰 fence를 얻는다.
 3. A의 옛 fence로 ACK하면 거절하고 B의 현재 fence로 ACK하면 완료한다.
 
-[움직이는 실행 예시](../assets/transaction-queue.html)는 정상 commit, rollback, ACK 생략 장면을 제공한다. [재생에 사용한 값](../assets/transaction-queue.trace.json)은 실제 DB 실행의 주문·큐 관측을 담지만 외부 API 부분은 호출 횟수를 세는 모형이다. 워커 중단은 ACK 생략으로 재현하며 실제 SIGKILL 시험이나 외부 서비스 요청이 아니다. 그림의 세 칸은 표시용이고 제품 큐의 용량이 아니다. 실제 다중 프로세스 예제의 빌드·실행은 [빌드와 시험](../build-and-test.md)의 outbox 안내로 구분한다.
+[움직이는 실행 예시: 넓은 화면](../assets/transaction-queue.html)과 [좁은 화면](../assets/transaction-queue-narrow.html)은 정상 commit, rollback, ACK 생략 장면을 제공한다. [재생에 사용한 값](../assets/transaction-queue.trace.json)은 실제 DB 실행의 주문·큐 관측을 담지만 외부 API 부분은 호출 횟수를 세는 모형이다. 워커 중단은 ACK 생략으로 재현하며 실제 SIGKILL 시험이나 외부 서비스 요청이 아니다. 그림의 세 칸은 표시용이고 제품 큐의 용량이 아니다. 실제 다중 프로세스 예제의 빌드·실행은 [빌드와 시험](../build-and-test.md)의 outbox 안내로 구분한다.
 
 ## 작동 방식
 
@@ -80,9 +80,12 @@ if claim is not None:
 
 ### 상태와 처리 권한
 
-![워커가 작업을 가져와 ACK하면 완료로 표시하고 기한이 지난 작업은 다른 워커가 다시 가져올 수 있다](../assets/queue-lifecycle.svg)
+<picture>
+<source media="(max-width: 600px)" srcset="../assets/queue-lifecycle-narrow.svg" width="321.2" height="297">
+<img src="../assets/queue-lifecycle.svg" alt="워커가 작업을 가져와 ACK하면 완료로 표시하고 기한이 지난 작업은 다른 워커가 다시 가져올 수 있다" width="100%">
+</picture>
 
-[상태 경로 재생](../assets/queue-lifecycle.html)은 READY·LEASED·ACKED와 재획득만 보여 준다. 반납·실패·기한 변경은 그림에 추가하지 않고 아래 상태 표로 구분한다.
+[상태 경로 재생: 넓은 화면](../assets/queue-lifecycle.html)과 [좁은 화면](../assets/queue-lifecycle-narrow.html)은 READY·LEASED·ACKED와 재획득만 보여 준다. 반납·실패·기한 변경은 그림에 추가하지 않고 아래 상태 표로 구분한다.
 
 | 상태 | 뜻 | 다음 상태 |
 |---|---|---|
