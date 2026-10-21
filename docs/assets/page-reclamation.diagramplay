@@ -1,0 +1,17 @@
+diagramplay
+title "게시 페이지의 회수 상태"
+subtitle "설계: 게시됐던 페이지 하나의 상태 전이이며 게시 성공은 물리 commit 성공을 뜻한다"
+state used "USED"
+state pending "PENDING"
+state aging "AGING"
+state reusable "REUSABLE"
+used -> pending "release 등록"
+pending -> aging "해제 게시 성공"
+aging -> reusable "다음 게시 성공"
+scene "성공 commit 두 번" mode=loop
+  used -> pending time=1000ms
+  wait 1200ms
+  pending -> aging time=1000ms
+  wait 1800ms
+  aging -> reusable time=1000ms
+  wait 1800ms

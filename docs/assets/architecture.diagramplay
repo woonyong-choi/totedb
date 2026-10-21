@@ -1,0 +1,14 @@
+diagramplay
+title "SQL과 선택 큐가 사용하는 저장 계층"
+box sqlapi "SQL 호출" "C · Python"
+box queue "선택 큐" "`ack_queue`"
+box sql "DB 실행" "`session` · `database`" tone=blue appearance=filled
+box heap "행과 색인" "heap · trees"
+box catalog "카탈로그" "`catalog_store`"
+box file "페이지 파일" "`page_file`"
+sqlapi -> sql "SQL · 바인딩"
+queue -> sql "세션 SQL"
+sql -> heap "batch"
+sql -> catalog "루트 게시"
+heap -> file "페이지 I/O"
+catalog -> file "기록 · 게시"

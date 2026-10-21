@@ -1,0 +1,663 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="fl" width="100%" viewBox="0 0 820.3 79" role="img" data-scene="0" data-mode="loop">
+<title>게시 페이지의 회수 상태</title><desc>설계: 게시됐던 페이지 하나의 상태 전이이며 게시 성공은 물리 commit 성공을 뜻한다</desc>
+<style>@font-face{font-family:FigSans;font-weight:400;src:url(data:font/woff2;base64,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) format("woff2")}
+/* tokens/tokens.json: 생성물, 손으로 고치지 않음 */
+:root {
+  --color-gray-0: #ffffff;
+  --color-gray-59: #f0f0f0;
+  --color-gray-212: #c9c9c9;
+  --color-gray-282: #b7b7b7;
+  --color-gray-467: #888888;
+  --color-gray-529: #787878;
+  --color-gray-910: #171717;
+  --color-gray-933: #111111;
+  --color-group-title: var(--color-help-title-color);
+  --color-outline: var(--color-gray-529);
+  --color-line: var(--color-gray-282);
+  --color-state-active: var(--color-category-blue-light-border);
+  --color-state-active-text: var(--color-category-blue-light-ink);
+  --color-state-on-active: var(--color-gray-0);
+  --color-ui-focus: var(--color-action-link);
+  --color-data-grid: var(--color-gray-212);
+  --color-data-category-1: var(--color-category-blue-solid);
+  --color-figure-icon: var(--color-category-blue-light-border);
+  --color-figure-queue-empty: var(--color-gray-59);
+  --color-figure-number-fill: var(--primitive-figure-number-fill);
+  --color-figure-number-ink: var(--primitive-figure-number-ink);
+  --color-figure-outline: var(--color-gray-467);
+  --color-figure-selection-fill: var(--color-category-blue-light-tint-3);
+  --color-figure-canvas: var(--primitive-help-bg);
+  --color-figure-flash: var(--primitive-search-hover);
+  --color-figure-active-surface: var(--primitive-help-hover);
+  --color-ui-card: var(--color-gray-0);
+  --color-ink: var(--primitive-ink);
+  --color-ui-muted: var(--primitive-muted);
+  --color-ui-line: var(--primitive-line);
+  --color-help-title-color: var(--primitive-help-title-color);
+  --color-action-link: var(--primitive-link);
+  --color-category-blue-anchor: #1e6bd6;
+  --color-category-blue-fill: var(--color-category-blue-anchor);
+  --color-category-blue-on: var(--color-gray-0);
+  --color-category-blue-light-border: #1e6bd6;
+  --color-category-blue-light-ink: #1161cb;
+  --color-category-blue-light-tint-3: #d5e4fa;
+  --color-category-blue-dark-border: #3a85f2;
+  --color-category-blue-dark-ink: #6da8ff;
+  --color-category-blue-dark-tint-3: #303d54;
+  --color-category-blue-solid: var(--color-category-blue-fill);
+  --font-figure-sans: FigSans, FigSansSym, FigSansMath, ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --font-figure-mono: FigMono, FigSans, FigSansSym, FigSansMath, ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-card-radius: var(--primitive-card-radius);
+  --text-small-text: var(--primitive-small-text);
+  --text-tiny-text: var(--primitive-tiny-text);
+  --text-figure-meta: 11px;
+  --tracking-text: -0.3px;
+  --font-weight-semibold: 600;
+  --primitive-ink: #303336;
+  --primitive-muted: #55606e;
+  --primitive-line: #dfe3e8;
+  --primitive-link: #2576eb;
+  --primitive-small-text: 15px;
+  --primitive-tiny-text: 13px;
+  --primitive-help-bg: #f6f7fa;
+  --primitive-search-hover: #d9e6ff;
+  --primitive-help-hover: #ebf1ff;
+  --primitive-help-title-color: #3d4856;
+  --primitive-figure-dark-bg: #26272b;
+  --primitive-figure-dark-node: #303136;
+  --primitive-figure-dark-edge: #50535b;
+  --primitive-figure-dark-separator: #454850;
+  --primitive-figure-dark-hover: #343e50;
+  --primitive-figure-dark-selection: #274174;
+  --primitive-figure-dark-muted: #a9adb6;
+  --primitive-figure-dark-line: #7f8793;
+  --primitive-figure-dark-outline: #868686;
+  --primitive-figure-number-fill: #303336;
+  --primitive-figure-number-ink: #ffffff;
+  --primitive-card-radius: 18px;
+  --border-width-thin: 1px;
+  --border-width-hair: 0.75px;
+  --border-width-lifeline: 1.25px;
+  --border-width-edge: 1.75px;
+  --opacity-range: 0.4;
+  --dash-line: 5;
+  --dash-gap: 4;
+  --dash-card: 3;
+  --outline-width-focus: 3px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+  --color-outline: var(--primitive-figure-dark-outline);
+  --color-line: var(--primitive-figure-dark-line);
+  --color-state-active: var(--color-category-blue-dark-border);
+  --color-state-active-text: var(--color-category-blue-dark-ink);
+  --color-state-on-active: var(--color-category-blue-on);
+  --color-data-grid: var(--primitive-figure-dark-edge);
+  --color-figure-icon: var(--color-category-blue-dark-border);
+  --color-figure-queue-empty: var(--color-gray-910);
+  --color-figure-number-fill: var(--color-gray-59);
+  --color-figure-number-ink: var(--color-gray-933);
+  --color-figure-outline: var(--color-line);
+  --color-figure-selection-fill: var(--color-category-blue-dark-tint-3);
+  --color-figure-canvas: var(--primitive-figure-dark-bg);
+  --color-figure-flash: var(--primitive-figure-dark-selection);
+  --color-figure-active-surface: var(--primitive-figure-dark-hover);
+  --color-ui-card: var(--primitive-figure-dark-node);
+  --color-ink: var(--color-gray-59);
+  --color-ui-muted: var(--primitive-figure-dark-muted);
+  --color-ui-line: var(--primitive-figure-dark-separator);
+  --color-help-title-color: var(--color-ink);
+  color-scheme: dark;
+  }
+}
+[data-theme='dark'] {
+  --color-outline: var(--primitive-figure-dark-outline);
+  --color-line: var(--primitive-figure-dark-line);
+  --color-state-active: var(--color-category-blue-dark-border);
+  --color-state-active-text: var(--color-category-blue-dark-ink);
+  --color-state-on-active: var(--color-category-blue-on);
+  --color-data-grid: var(--primitive-figure-dark-edge);
+  --color-figure-icon: var(--color-category-blue-dark-border);
+  --color-figure-queue-empty: var(--color-gray-910);
+  --color-figure-number-fill: var(--color-gray-59);
+  --color-figure-number-ink: var(--color-gray-933);
+  --color-figure-outline: var(--color-line);
+  --color-figure-selection-fill: var(--color-category-blue-dark-tint-3);
+  --color-figure-canvas: var(--primitive-figure-dark-bg);
+  --color-figure-flash: var(--primitive-figure-dark-selection);
+  --color-figure-active-surface: var(--primitive-figure-dark-hover);
+  --color-ui-card: var(--primitive-figure-dark-node);
+  --color-ink: var(--color-gray-59);
+  --color-ui-muted: var(--primitive-figure-dark-muted);
+  --color-ui-line: var(--primitive-figure-dark-separator);
+  --color-help-title-color: var(--color-ink);
+  color-scheme: dark;
+}
+[data-theme='light'] {
+  --color-outline: var(--color-gray-529);
+  --color-line: var(--color-gray-282);
+  --color-state-active: var(--color-category-blue-light-border);
+  --color-state-active-text: var(--color-category-blue-light-ink);
+  --color-state-on-active: var(--color-gray-0);
+  --color-data-grid: var(--color-gray-212);
+  --color-figure-icon: var(--color-category-blue-light-border);
+  --color-figure-queue-empty: var(--color-gray-59);
+  --color-figure-number-fill: var(--primitive-figure-number-fill);
+  --color-figure-number-ink: var(--primitive-figure-number-ink);
+  --color-figure-outline: var(--color-gray-467);
+  --color-figure-selection-fill: var(--color-category-blue-light-tint-3);
+  --color-figure-canvas: var(--primitive-help-bg);
+  --color-figure-flash: var(--primitive-search-hover);
+  --color-figure-active-surface: var(--primitive-help-hover);
+  --color-ui-card: var(--color-gray-0);
+  --color-ink: var(--primitive-ink);
+  --color-ui-muted: var(--primitive-muted);
+  --color-ui-line: var(--primitive-line);
+  --color-help-title-color: var(--primitive-help-title-color);
+  color-scheme: light;
+}
+/* 그림 안 글자와 모양. HTML 재생기와 움직이는 SVG가 같이 쓴다. */
+/* 카드 안 글(label, sub, meta, cell, item, row)의 기준 점(text-anchor)은 글이 정한다(measure/texts.js의 anchor). 여기서는 글꼴과 색만 정한다. */
+/* 글 위계는 셋이다: 제목(공통 디자인.label-size 15: 카드 제목은 regular, 그룹 제목은 semibold), 문장과 이름표(detail-size 13: 부제, 선 라벨, 메모, 이동 글, 카드 줄, 제약, 형식), 작은 표시(micro-size 11: 번호, 태그, 표식, 키, 눈금, 단위). 크기와 굵기는 measure/texts.js의 STYLE이 같은 토큰으로 잰다. */
+.fl text {
+  font-family: var(--font-figure-sans);
+  letter-spacing: var(--tracking-text);
+}
+
+.fl .label {
+  font-size: var(--text-small-text);
+  fill: var(--color-ink);
+}
+
+.fl .sub {
+  font-size: var(--text-tiny-text);
+  fill: var(--color-ui-muted);
+}
+
+.fl .frame {
+  font-size: var(--text-small-text);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-group-title);
+}
+
+.fl .edgelabel {
+  font-size: var(--text-tiny-text);
+  text-anchor: middle;
+  fill: var(--fx-ink-rest);
+}
+
+/* 카드 줄, 메모와 구획 제목 같은 덧붙임 글, 관계 그래프 이름, 표 칸, 격자 칸은 문장이라 같은 크기와 글자색이다. */
+.fl .row,
+.fl .meta,
+.fl .mini,
+.fl .cell,
+.fl .item {
+  font-size: var(--text-tiny-text);
+  fill: var(--color-ink);
+}
+
+.fl .row.mono {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+}
+
+/* 백틱으로 감싼 글. 코드 글꼴로 그린다. */
+.fl .code {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+}
+
+.fl .muted {
+  fill: var(--color-ui-muted);
+}
+
+.fl .tag {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+.fl .mark {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-state-active-text);
+}
+
+/* 값 카드 줄의 값 글자. 줄의 이름(row)은 카드 층이 그리고 값은 오른쪽 끝에 얹힌다. 이름과 같은 크기이고 굵기만 다르다. */
+.fl .value {
+  font-size: var(--text-tiny-text);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+.fl .chip {
+  font-size: var(--text-tiny-text);
+  text-anchor: middle;
+}
+
+.fl .item.gap {
+  fill: var(--color-ui-muted);
+}
+
+/* 열 형식(타입)은 코드 글이라 코드 글꼴의 오른쪽 열이고 이름보다 옅다. NULL 허용 여부는 키 표시(.key)와 같은 작은 표시이고, 삭제 정책은 외래 키 선의 끝 글이다. */
+.fl .cell.type {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+  fill: var(--color-ui-muted);
+}
+
+/* 순서 보기의 메시지, 메모, 구획, 활성 막대는 자기 장면이 보일 때만 보인다. 자리는 늘 같아 판 크기가 변하지 않는다. */
+.fl .fl-off {
+  display: none;
+}
+
+.fl .fl-edge {
+  color: var(--fx-line-rest);
+}
+
+.fl .fl-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--border-width-edge);
+}
+
+/* 열 키(PK, FK, UNQ)는 작은 표시이고 글자색이다. 파랑은 켜진 상태에만 쓴다. */
+.fl .cell .key {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+/* 그룹은 기본 면이 없다(투명). 경계와 제목만 있고, 깊이에 따라 회색 면을 겹치지 않는다. 고른 색은 아래 appearance 역할로 적용한다. */
+.fl .frame-box {
+  --fx-edge-rest: var(--color-figure-outline);
+  fill: none;
+  stroke: var(--fx-edge-rest);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-card {
+  fill: var(--color-ui-card);
+}
+
+.fl .fl-queue-slot {
+  fill: var(--color-figure-queue-empty);
+  stroke: var(--color-outline);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .queue-fill .fl-queue-slot {
+  fill: var(--color-data-category-1);
+  stroke: var(--color-data-category-1);
+}
+
+.fl .fl-shape-external > :is(.fl-stroke, .fl-pulse),
+.fl .frame-box.dashed,
+.fl .fl-path.dashed {
+  stroke-dasharray: var(--dash-line) var(--dash-gap);
+}
+
+.fl .lifeline {
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-lifeline);
+  stroke-dasharray: var(--dash-gap) var(--dash-gap);
+}
+
+.fl .fl-activation {
+  fill: var(--color-ui-card);
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-destroy > circle {
+  fill: var(--color-figure-canvas);
+}
+
+.fl .fl-destruction {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-edge);
+  stroke-linecap: round;
+}
+
+.fl .note-box {
+  fill: var(--color-ui-card);
+  stroke: var(--color-line);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+/* 알약은 모두 같은 중립 흰 면과 평소 경계다: 선 라벨, 배지와 개수. */
+.fl .pill,
+.fl .badge-pill {
+  fill: var(--color-ui-card);
+  stroke: var(--fx-edge-rest);
+}
+
+.fl .fl-mini-pill {
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-mini-pill.fl-mini-lit {
+  fill: var(--fx-row);
+}
+
+.fl .fl-edge.fl-mini-lit {
+  color: var(--fx-edge);
+}
+
+.fl .part-bg {
+  --fx-face: transparent;
+  --fx-face-on: var(--fx-row);
+  fill: var(--fx-face);
+}
+
+.fl .col-line {
+  stroke: var(--color-data-grid);
+  stroke-width: var(--border-width-hair);
+}
+
+.fl .part-head {
+  fill: var(--color-figure-canvas);
+}
+
+.fl .grid-cell {
+  --fx-face: var(--color-ui-card);
+  --fx-face-on: var(--fx-row);
+  fill: var(--fx-face);
+  stroke: var(--color-data-grid);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .grid-tray {
+  fill: var(--color-ui-card);
+}
+
+.fl .grid-cell.gap {
+  --fx-face: var(--color-ui-card);
+  stroke: var(--color-data-grid);
+}
+
+.fl .grid-cell.empty {
+  --fx-face: none;
+  stroke: var(--color-line);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+.fl .fl-edge.mark {
+  --fx-line-rest: var(--color-ink);
+}
+
+/* 이름과 값은 평소 여백으로 구분한다. 명시한 면(face)과 값 갱신 강조만 배경을 더한다. */
+.fl .face {
+  fill: none;
+  stroke: none;
+}
+
+/* 도형 윗줄과 그룹 제목 줄의 장식: 글자 배지, 아이콘 */
+.fl .badge {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  text-anchor: middle;
+  fill: var(--color-ink);
+}
+
+.fl .fl-icon {
+  color: var(--color-figure-icon);
+}
+
+.fl .fl-symbol .fl-icon {
+  color: inherit;
+}
+
+/* 선 번호 원. 흑백 번호이고 라벨 알약과 달리 켜져도 색이 바뀌지 않아 정지 그림과 같은 순서로 읽힌다. */
+.fl .number-pill {
+  fill: var(--color-figure-number-fill);
+}
+
+.fl .number {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  text-anchor: middle;
+  fill: var(--color-figure-number-ink);
+}
+
+/* 도형은 그림자 없는 평면이다. 그림자는 떠 있는 메뉴 같은 조작에만 둔다. */
+.fl :where(.fl-node) > .fl-stroke {
+  stroke: var(--fx-edge-rest);
+  stroke-width: var(--border-width-thin);
+}
+
+/* 구획은 border.hair, 보조 경계는 border.thin, 관계는 border.edge, 생명선은 border.lifeline, 도형 경계는 공통 디자인.node-stroke다. 모든 선은 그림과 함께 확대·축소된다. */
+.fl .fl-path,
+.fl .fl-node > .fl-stroke,
+.fl .grid-cell,
+.fl .col-line,
+.fl .pill,
+.fl .badge-pill {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 화살촉과 몸통은 같은 소유자의 색을 상속한다(draw/arrow.js). 화살촉은 채운 삼각형이다. 연결선은 선 묶음이, 차트 방향선은 역할 class(.arrow-main 등, chart.css)가 소유자다.
+   HTML 문서의 차트 마커 정의는 판 SVG 밖의 정의 전용 SVG에 있어 `.fl` 아래가 아니므로 이 규칙은 `.fl` 범위를 걸지 않는다. */
+.fl-arrowhead {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 효과 한 벌: 켜짐과 평소의 모습을 정하는 유일한 정의다. 움직이는 SVG(animate/animator.js)의 keyframes와 HTML 재생기의 `.on` 규칙이 같은 `--fx-*`를 읽으므로 두 출력과 정지 그림이 늘 같다.
+   - 켜짐(on): --fx-edge 윤곽·그룹 경계·선·알약 테두리, --fx-ink 알약 글자, --fx-row 표 줄과 격자 칸의 면, --fx-face-on 요소의 켜진 면(도형은 아래), --fx-flash 값이 바뀐 순간의 면.
+   - 평소(rest): --fx-edge-rest 도형, 그룹, 알약의 경계, --fx-ink-rest 알약 글자, --fx-line-rest 선, --fx-face 요소의 평소 면.
+   효과는 도형이 고른 색(tone)이나 표현(appearance)과 상관없다. appearance는 고른 색을 평소 값(--fx-face, --fx-edge-rest)에만 적용하고, 켜진 동안은 강조 윤곽에 자리를 내준다. */
+.fl {
+  --paint-fill: var(--color-ui-card);
+  --paint-outline: var(--color-figure-outline);
+  --paint-ink: var(--color-group-title);
+  --fx-edge: var(--color-state-active);
+  --fx-ink: var(--color-state-active-text);
+  --fx-row: var(--color-figure-selection-fill);
+  --fx-flash: var(--color-figure-flash);
+  --fx-edge-rest: var(--color-figure-outline);
+  --fx-ink-rest: var(--color-ui-muted);
+  --fx-line-rest: var(--color-outline);
+}
+
+/* 도형의 평소 면과 켜진 면. 옅은 면으로 고른 도형(filled)은 켜져도 면이 같다. 면이 없는 윤곽(fill='none')과 점은 자기 면이 없거나 자기 색이다. */
+.fl .fl-node {
+  --fx-face: var(--color-ui-card);
+  --fx-face-on: var(--color-figure-active-surface);
+}
+
+.fl .fl-node.ap-filled {
+  --fx-face: var(--paint-fill);
+  --fx-face-on: var(--fx-face);
+}
+
+/* 소비자는 쓴 톤의 --paint-* 변수만 연결한다. 면·경계·제목·차트 바탕의 역할은 여기서 한 번 정한다. */
+.fl .fl-node.ap-outline {
+  --fx-edge-rest: var(--paint-outline);
+}
+
+.fl .fl-group.ap-filled > .frame-box {
+  fill: var(--paint-fill);
+}
+
+.fl .fl-group.ap-outline > .frame-box {
+  --fx-edge-rest: var(--paint-outline);
+}
+
+.fl .fl-group:is(.ap-plain, .ap-filled, .ap-outline) > .frame {
+  fill: var(--paint-ink);
+}
+
+.fl .face.ap-filled {
+  fill: var(--paint-fill);
+}
+
+.fl .fl-layer.ap-filled {
+  --chart-ground: var(--paint-fill);
+}
+
+.fl .face.ap-outline {
+  stroke: var(--paint-outline);
+}
+
+.fl .fl-shape-start {
+  --fx-face: var(--color-ink);
+}
+
+.fl .fl-node > .fl-stroke[fill='none'] {
+  --fx-face: none;
+  --fx-face-on: none;
+}
+
+.fl :where(.fl-node) > .fl-stroke:where(:not([fill='none'])) {
+  fill: var(--fx-face);
+}
+
+/* `light`가 명시한 도형: 윤곽이 강조 색이 되고 면은 옅은 강조 면이다(옅은 면으로 고른 도형은 면을 그대로 둔다). 점이 닿은 도형은 도착 후광(.fl-pulse)만 쓴다. */
+.fl .fl-node.on > .fl-stroke {
+  stroke: var(--fx-edge);
+}
+
+.fl .fl-node.on > .fl-stroke:not([fill='none']) {
+  fill: var(--fx-face-on);
+}
+
+/* `light`가 명시한 그룹: 경계선만 강조 색이다. 굵기, 면, 모서리, 점선은 그대로다. */
+.fl .fl-group.on > .frame-box {
+  stroke: var(--fx-edge);
+}
+
+/* 켜진 표 줄(칸)과 격자 칸의 면. 모든 카드가 같은 규칙이다. */
+.fl .fl-part.on :is(.part-bg, .grid-cell) {
+  fill: var(--fx-face-on);
+}
+
+/* 도형에 마우스를 올려도 면이나 선이 켜지지 않는다(장식용 호버 활성 없음). 키보드 초점은 같은 외부 형상 위의 초점 표시이고 윤곽을 두 겹으로 만들지 않는다. */
+/* 브라우저 기본 초점 링은 g 요소의 사각 상자를 두르므로 둥근 도형과 어긋난다. 어떤 방식으로 초점이 가도 기본 링을 끄고, 키보드 초점(:focus-visible)은 도형 윤곽 자체로 표시한다. */
+.fl .fl-node:focus,
+.fl .fl-node:focus-visible {
+  outline: none;
+}
+
+.fl .fl-node:focus-visible > .fl-stroke {
+  stroke: var(--color-ui-focus);
+  stroke-width: var(--outline-width-focus);
+}
+
+/* 값이 바뀔 때 켜지는 배경 면. 도형과 같은 윤곽을 쓰고 테두리를 더하지 않는다. */
+.fl .fl-flash-face {
+  fill-opacity: var(--opacity-range);
+}
+
+.fl .fl-flash {
+  fill: var(--fx-flash);
+  stroke: none;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl .fl-flash {
+    display: none;
+  }
+}
+
+/* 점이 도형에 닿을 때의 테두리 후광: 도형 윤곽과 같은 모양의 겹침 선이다. 면을 칠하지 않고 선 굵기가 윤곽과 같아 도형이 커지지 않는다. 불투명도(80/80/240ms)는 SMIL이나 재생기가 정한다. */
+.fl .fl-pulse {
+  fill: none;
+  stroke: var(--fx-edge);
+  stroke-width: var(--border-width-thin);
+  pointer-events: none;
+}
+
+/* 제어 구획의 경계는 관계선보다 약하며 제목 밑면은 생명선을 가린다. */
+.fl .fl-fragment-border {
+  fill: none;
+  stroke: var(--color-ui-line);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-fragment-divider {
+  fill: none;
+  stroke: var(--color-ui-line);
+  stroke-width: var(--border-width-hair);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+.fl .fl-fragment-heading {
+  fill: var(--color-ui-card);
+}
+
+.fl .fl-fragment-label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.fl .fl-packet > circle:first-child {
+  opacity: 0;
+}
+
+/* 독립 SVG도 재생 판과 같은 바탕과 움직임 줄이기 규칙을 쓴다. */
+.fl .fl-canvas-surface { fill: var(--color-figure-canvas); rx: var(--radius-card-radius); }
+.fl .fl-still { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fl .fl-motion { display: none; }
+  .fl .fl-still { display: inline; }
+}
+
+@keyframes a0 { 0%,12.819% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 12.821%,28.204% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 28.205%,41.024% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 41.026%,64.101% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 64.103%,76.922% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 76.923%,100% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } }
+.fl .a0 { animation: a0 7.8s infinite linear; }
+@keyframes a1 { 0%,12.819% { color: var(--fx-edge) } 12.821%,100% { color: var(--fx-line-rest) } }
+.fl .a1 { animation: a1 7.8s infinite linear; }
+@keyframes a2 { 0%,28.204% { color: var(--fx-line-rest) } 28.205%,41.024% { color: var(--fx-edge) } 41.026%,100% { color: var(--fx-line-rest) } }
+.fl .a2 { animation: a2 7.8s infinite linear; }
+@keyframes a3 { 0%,64.101% { color: var(--fx-line-rest) } 64.103%,76.922% { color: var(--fx-edge) } 76.923%,100% { color: var(--fx-line-rest) } }
+.fl .a3 { animation: a3 7.8s infinite linear; }
+@keyframes a4 { 0%,12.819% { stroke: var(--fx-edge) } 12.821% { stroke: var(--fx-edge) } 17.949%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a4 { animation: a4 7.8s infinite linear; }
+@keyframes a5 { 0%,12.819% { fill: var(--fx-ink) } 12.821% { fill: var(--fx-ink) } 17.949%,100% { fill: var(--fx-ink-rest) } }
+.fl .a5 { animation: a5 7.8s infinite linear; }
+@keyframes a6 { 0%,28.204% { stroke: var(--fx-edge-rest) } 28.205%,41.024% { stroke: var(--fx-edge) } 41.026% { stroke: var(--fx-edge) } 46.154%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a6 { animation: a6 7.8s infinite linear; }
+@keyframes a7 { 0%,28.204% { fill: var(--fx-ink-rest) } 28.205%,41.024% { fill: var(--fx-ink) } 41.026% { fill: var(--fx-ink) } 46.154%,100% { fill: var(--fx-ink-rest) } }
+.fl .a7 { animation: a7 7.8s infinite linear; }
+@keyframes a8 { 0%,64.101% { stroke: var(--fx-edge-rest) } 64.103%,76.922% { stroke: var(--fx-edge) } 76.923% { stroke: var(--fx-edge) } 82.051%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a8 { animation: a8 7.8s infinite linear; }
+@keyframes a9 { 0%,64.101% { fill: var(--fx-ink-rest) } 64.103%,76.922% { fill: var(--fx-ink) } 76.923% { fill: var(--fx-ink) } 82.051%,100% { fill: var(--fx-ink-rest) } }
+.fl .a9 { animation: a9 7.8s infinite linear; }
+.fl .sa0 { fill: var(--fx-face); stroke: var(--fx-edge-rest); }
+</style>
+<defs></defs>
+<rect x="0.5" y="0.5" width="819.3" height="78" class="fl-canvas-surface"/>
+<g class="fl-motion" transform="translate(0 0)">
+
+<g id="n-0" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="USED" data-id="used"><rect x="16" y="16" width="100" height="47" rx="8" class="fl-stroke a0"/><text x="66" y="44.9" class="label" text-anchor="middle">USED</text></g>
+<g id="n-1" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="PENDING" data-id="pending"><rect x="238.9" y="16" width="100" height="47" rx="8" class="fl-stroke a0"/><rect x="238.9" y="16" width="100" height="47" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="7.8s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.12821;0.13846;0.14872;0.17949;1" values="0;0;1;1;0;0"/></rect><text x="288.9" y="44.9" class="label" text-anchor="middle">PENDING</text></g>
+<g id="n-2" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="AGING" data-id="aging"><rect x="468.4" y="16" width="100" height="47" rx="8" class="fl-stroke a0"/><rect x="468.4" y="16" width="100" height="47" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="7.8s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.41026;0.42051;0.43077;0.46154;1" values="0;0;1;1;0;0"/></rect><text x="518.4" y="44.9" class="label" text-anchor="middle">AGING</text></g>
+<g id="n-3" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="REUSABLE" data-id="reusable"><rect x="697.9" y="16" width="106.4" height="47" rx="8" class="fl-stroke a0"/><rect x="697.9" y="16" width="106.4" height="47" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="7.8s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.76923;0.77949;0.78974;0.82051;1" values="0;0;1;1;0;0"/></rect><text x="751.1" y="44.9" class="label" text-anchor="middle">REUSABLE</text></g>
+<g id="e-0" class="fl-edge a1"><defs><marker id="fl-arrow-0" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-0" d="M 116 39.5 L 238.9 39.5" class="fl-path" marker-end="url(#fl-arrow-0)"/></g>
+<g id="e-1" class="fl-edge a2"><defs><marker id="fl-arrow-1" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-1" d="M 338.9 39.5 L 468.4 39.5" class="fl-path" marker-end="url(#fl-arrow-1)"/></g>
+<g id="e-2" class="fl-edge a3"><defs><marker id="fl-arrow-2" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-2" d="M 568.4 39.5 L 697.9 39.5" class="fl-path" marker-end="url(#fl-arrow-2)"/></g>
+
+<g class="fl-packet p0-0" opacity="0" fill="var(--color-state-on-active)"><circle r="10" fill="var(--color-state-active)" opacity="0.2"/><circle r="4.5" fill="var(--color-state-active)"/><animate attributeName="opacity" dur="7.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.12821" values="1;0"/><animateMotion dur="7.8s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.12821;1" keySplines="0 0 1 1;0 0 1 1" keyPoints="0;1;1"><mpath href="#p-0" xlink:href="#p-0"/></animateMotion></g>
+<g class="fl-packet p2-0" opacity="0" fill="var(--color-state-on-active)"><circle r="10" fill="var(--color-state-active)" opacity="0.2"/><circle r="4.5" fill="var(--color-state-active)"/><animate attributeName="opacity" dur="7.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.28205;0.41026" values="0;1;0"/><animateMotion dur="7.8s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.28205;0.41026;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-1" xlink:href="#p-1"/></animateMotion></g>
+<g class="fl-packet p4-0" opacity="0" fill="var(--color-state-on-active)"><circle r="10" fill="var(--color-state-active)" opacity="0.2"/><circle r="4.5" fill="var(--color-state-active)"/><animate attributeName="opacity" dur="7.8s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.64103;0.76923" values="0;1;0"/><animateMotion dur="7.8s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.64103;0.76923;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-2" xlink:href="#p-2"/></animateMotion></g>
+<g class="fl-pills"><g id="l-0" class="fl-edge"><g class="fl-pill"><rect x="120" y="44.5" width="78.9" height="18" rx="9" class="pill a4"/><text x="159.4" y="58.2" class="edgelabel a5">release 등록</text></g></g><g id="l-1" class="fl-edge"><g class="fl-pill"><rect x="342.9" y="44.5" width="85.5" height="18" rx="9" class="pill a6"/><text x="385.6" y="58.2" class="edgelabel a7">해제 게시 성공</text></g></g><g id="l-2" class="fl-edge"><g class="fl-pill"><rect x="572.4" y="44.5" width="85.5" height="18" rx="9" class="pill a8"/><text x="615.2" y="58.2" class="edgelabel a9">다음 게시 성공</text></g></g></g>
+</g>
+<g class="fl-still" transform="translate(0 0)">
+
+<g id="still-n-0" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="USED" data-id="used"><rect x="16" y="16" width="100" height="47" rx="8" class="fl-stroke sa0"/><text x="66" y="44.9" class="label" text-anchor="middle">USED</text></g>
+<g id="still-n-1" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="PENDING" data-id="pending"><rect x="238.9" y="16" width="100" height="47" rx="8" class="fl-stroke sa0"/><text x="288.9" y="44.9" class="label" text-anchor="middle">PENDING</text></g>
+<g id="still-n-2" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="AGING" data-id="aging"><rect x="468.4" y="16" width="100" height="47" rx="8" class="fl-stroke sa0"/><text x="518.4" y="44.9" class="label" text-anchor="middle">AGING</text></g>
+<g id="still-n-3" class="fl-node fl-shape-state" tabindex="0" role="img" aria-label="REUSABLE" data-id="reusable"><rect x="697.9" y="16" width="106.4" height="47" rx="8" class="fl-stroke sa0"/><text x="751.1" y="44.9" class="label" text-anchor="middle">REUSABLE</text></g>
+<g id="still-e-0" class="fl-edge "><defs><marker id="still-fl-arrow-0" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-0" d="M 116 39.5 L 238.9 39.5" class="fl-path" marker-end="url(#still-fl-arrow-0)"/></g>
+<g id="still-e-1" class="fl-edge "><defs><marker id="still-fl-arrow-1" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-1" d="M 338.9 39.5 L 468.4 39.5" class="fl-path" marker-end="url(#still-fl-arrow-1)"/></g>
+<g id="still-e-2" class="fl-edge "><defs><marker id="still-fl-arrow-2" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-2" d="M 568.4 39.5 L 697.9 39.5" class="fl-path" marker-end="url(#still-fl-arrow-2)"/></g>
+
+
+<g class="fl-pills"><g id="still-l-0" class="fl-edge"><g class="fl-pill"><rect x="120" y="44.5" width="78.9" height="18" rx="9" class="pill "/><text x="159.4" y="58.2" class="edgelabel ">release 등록</text></g></g><g id="still-l-1" class="fl-edge"><g class="fl-pill"><rect x="342.9" y="44.5" width="85.5" height="18" rx="9" class="pill "/><text x="385.6" y="58.2" class="edgelabel ">해제 게시 성공</text></g></g><g id="still-l-2" class="fl-edge"><g class="fl-pill"><rect x="572.4" y="44.5" width="85.5" height="18" rx="9" class="pill "/><text x="615.2" y="58.2" class="edgelabel ">다음 게시 성공</text></g></g></g>
+</g>
+</svg>

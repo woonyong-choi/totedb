@@ -1,0 +1,30 @@
+diagramplay
+title "게시 완료된 두 세대의 저장 참조"
+subtitle "설계: 연속한 유효 control 세대의 참조 그래프이며 물리 배치나 쓰기 실행이 아니다"
+group db "DB 파일" dashed {
+  box previous "이전 제어" "`control g-1` · 슬롯 A"
+  box current "현재 제어" "`control g` · 슬롯 B" tone=blue appearance=filled
+  box oldcat "옛 카탈로그" "`catalog overflow`"
+  box newcat "새 카탈로그" "`catalog overflow`"
+  box oldroots "T 옛 루트" "변경한 테이블 T"
+  box shared "공유 루트" "미변경 테이블 U" tone=blue appearance=filled
+  box newroots "T 새 루트" "변경한 테이블 T"
+}
+previous -> oldcat "catalog head · size"
+current -> newcat "catalog head · size"
+oldcat -> oldroots "T: heap · 색인"
+oldcat -> shared "U: heap · 색인"
+newcat -> shared "U: heap · 색인"
+newcat -> newroots "T: heap · 색인"
+scene "현재 참조" mode=loop
+  current -> newcat time=1000ms
+  newcat -> newroots time=1000ms
+  wait 1200ms
+scene "이전 참조" mode=loop
+  previous -> oldcat time=1000ms
+  oldcat -> oldroots time=1000ms
+  wait 1200ms
+scene "공유 루트" mode=loop
+  previous -> oldcat & current -> newcat time=1000ms
+  oldcat -> shared & newcat -> shared time=1000ms
+  wait 1200ms
