@@ -1,0 +1,750 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="fl" width="100%" viewBox="0 0 340.7 2003.1" role="img" data-scene="0" data-mode="loop">
+<title>주문 저장부터 작업 처리까지</title><desc>격리된 DB 실행 기록 재생 · 외부 API는 모의 함수 · 재생 시간은 설명용</desc>
+<style>@font-face{font-family:FigSans;font-weight:400;src:url(data:font/woff2;base64,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) format("woff2")}
+@font-face{font-family:FigSans;font-weight:600;src:url(data:font/woff2;base64,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) format("woff2")}
+/* tokens/tokens.json: 생성물, 손으로 고치지 않음 */
+:root {
+  --color-gray-0: #ffffff;
+  --color-gray-59: #f0f0f0;
+  --color-gray-212: #c9c9c9;
+  --color-gray-282: #b7b7b7;
+  --color-gray-467: #888888;
+  --color-gray-529: #787878;
+  --color-gray-910: #171717;
+  --color-gray-933: #111111;
+  --color-group-title: var(--color-help-title-color);
+  --color-outline: var(--color-gray-529);
+  --color-line: var(--color-gray-282);
+  --color-state-active: var(--color-category-blue-light-border);
+  --color-state-active-text: var(--color-category-blue-light-ink);
+  --color-ui-focus: var(--color-action-link);
+  --color-data-grid: var(--color-gray-212);
+  --color-data-category-1: var(--color-category-blue-solid);
+  --color-data-category-3: var(--color-category-red-solid);
+  --color-data-category-4: var(--color-category-green-solid);
+  --color-data-category-5: var(--color-category-orange-solid);
+  --color-data-category-outline-1: var(--color-category-blue-solid);
+  --color-data-category-outline-4: var(--color-category-green-solid);
+  --color-data-category-on-1: var(--color-category-blue-on-solid);
+  --color-data-category-on-4: var(--color-category-green-on-solid);
+  --color-figure-icon: var(--color-category-blue-light-border);
+  --color-figure-queue-empty: var(--color-gray-59);
+  --color-figure-number-fill: var(--primitive-figure-number-fill);
+  --color-figure-number-ink: var(--primitive-figure-number-ink);
+  --color-figure-outline: var(--color-gray-467);
+  --color-figure-selection-fill: var(--color-category-blue-light-tint-3);
+  --color-figure-canvas: var(--primitive-help-bg);
+  --color-figure-flash: var(--primitive-search-hover);
+  --color-figure-active-surface: var(--primitive-help-hover);
+  --color-ui-card: var(--color-gray-0);
+  --color-ink: var(--primitive-ink);
+  --color-ui-muted: var(--primitive-muted);
+  --color-ui-line: var(--primitive-line);
+  --color-help-title-color: var(--primitive-help-title-color);
+  --color-action-link: var(--primitive-link);
+  --color-category-blue-anchor: #1e6bd6;
+  --color-category-blue-fill: var(--color-category-blue-anchor);
+  --color-category-blue-light-border: #1e6bd6;
+  --color-category-blue-light-ink: #1161cb;
+  --color-category-blue-light-tint-3: #d5e4fa;
+  --color-category-blue-dark-border: #3a85f2;
+  --color-category-blue-dark-ink: #6da8ff;
+  --color-category-blue-dark-tint-3: #303d54;
+  --color-category-blue-solid: var(--color-category-blue-fill);
+  --color-category-blue-on-solid: var(--color-gray-0);
+  --color-category-red-light-ink: #cc0041;
+  --color-category-red-solid: var(--color-category-red-light-ink);
+  --color-category-green-light-ink: #00744e;
+  --color-category-green-dark-border: #269c6e;
+  --color-category-green-solid: var(--color-category-green-light-ink);
+  --color-category-green-on-solid: var(--color-gray-0);
+  --color-category-orange-light-ink: #9d5100;
+  --color-category-orange-solid: var(--color-category-orange-light-ink);
+  --font-figure-sans: FigSans, FigSansSym, FigSansMath, ui-sans-serif, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --font-figure-mono: FigMono, FigSans, FigSansSym, FigSansMath, ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-card-radius: var(--primitive-card-radius);
+  --text-small-text: var(--primitive-small-text);
+  --text-tiny-text: var(--primitive-tiny-text);
+  --text-figure-meta: 11px;
+  --tracking-text: -0.3px;
+  --font-weight-semibold: 600;
+  --primitive-ink: #303336;
+  --primitive-muted: #55606e;
+  --primitive-line: #dfe3e8;
+  --primitive-link: #2576eb;
+  --primitive-small-text: 15px;
+  --primitive-tiny-text: 13px;
+  --primitive-help-bg: #f6f7fa;
+  --primitive-search-hover: #d9e6ff;
+  --primitive-help-hover: #ebf1ff;
+  --primitive-help-title-color: #3d4856;
+  --primitive-figure-dark-bg: #26272b;
+  --primitive-figure-dark-node: #303136;
+  --primitive-figure-dark-edge: #50535b;
+  --primitive-figure-dark-separator: #454850;
+  --primitive-figure-dark-hover: #343e50;
+  --primitive-figure-dark-selection: #274174;
+  --primitive-figure-dark-muted: #a9adb6;
+  --primitive-figure-dark-line: #7f8793;
+  --primitive-figure-dark-outline: #868686;
+  --primitive-figure-number-fill: #303336;
+  --primitive-figure-number-ink: #ffffff;
+  --primitive-card-radius: 18px;
+  --border-width-thin: 1px;
+  --border-width-hair: 0.75px;
+  --border-width-lifeline: 1.25px;
+  --border-width-edge: 1.75px;
+  --opacity-range: 0.4;
+  --dash-line: 5;
+  --dash-gap: 4;
+  --dash-card: 3;
+  --outline-width-focus: 3px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+  --color-outline: var(--primitive-figure-dark-outline);
+  --color-line: var(--primitive-figure-dark-line);
+  --color-state-active: var(--color-category-blue-dark-border);
+  --color-state-active-text: var(--color-category-blue-dark-ink);
+  --color-data-grid: var(--primitive-figure-dark-edge);
+  --color-data-category-outline-1: var(--color-category-blue-dark-border);
+  --color-data-category-outline-4: var(--color-category-green-dark-border);
+  --color-figure-icon: var(--color-category-blue-dark-border);
+  --color-figure-queue-empty: var(--color-gray-910);
+  --color-figure-number-fill: var(--color-gray-59);
+  --color-figure-number-ink: var(--color-gray-933);
+  --color-figure-outline: var(--color-line);
+  --color-figure-selection-fill: var(--color-category-blue-dark-tint-3);
+  --color-figure-canvas: var(--primitive-figure-dark-bg);
+  --color-figure-flash: var(--primitive-figure-dark-selection);
+  --color-figure-active-surface: var(--primitive-figure-dark-hover);
+  --color-ui-card: var(--primitive-figure-dark-node);
+  --color-ink: var(--color-gray-59);
+  --color-ui-muted: var(--primitive-figure-dark-muted);
+  --color-ui-line: var(--primitive-figure-dark-separator);
+  --color-help-title-color: var(--color-ink);
+  color-scheme: dark;
+  }
+}
+[data-theme='dark'] {
+  --color-outline: var(--primitive-figure-dark-outline);
+  --color-line: var(--primitive-figure-dark-line);
+  --color-state-active: var(--color-category-blue-dark-border);
+  --color-state-active-text: var(--color-category-blue-dark-ink);
+  --color-data-grid: var(--primitive-figure-dark-edge);
+  --color-data-category-outline-1: var(--color-category-blue-dark-border);
+  --color-data-category-outline-4: var(--color-category-green-dark-border);
+  --color-figure-icon: var(--color-category-blue-dark-border);
+  --color-figure-queue-empty: var(--color-gray-910);
+  --color-figure-number-fill: var(--color-gray-59);
+  --color-figure-number-ink: var(--color-gray-933);
+  --color-figure-outline: var(--color-line);
+  --color-figure-selection-fill: var(--color-category-blue-dark-tint-3);
+  --color-figure-canvas: var(--primitive-figure-dark-bg);
+  --color-figure-flash: var(--primitive-figure-dark-selection);
+  --color-figure-active-surface: var(--primitive-figure-dark-hover);
+  --color-ui-card: var(--primitive-figure-dark-node);
+  --color-ink: var(--color-gray-59);
+  --color-ui-muted: var(--primitive-figure-dark-muted);
+  --color-ui-line: var(--primitive-figure-dark-separator);
+  --color-help-title-color: var(--color-ink);
+  color-scheme: dark;
+}
+[data-theme='light'] {
+  --color-outline: var(--color-gray-529);
+  --color-line: var(--color-gray-282);
+  --color-state-active: var(--color-category-blue-light-border);
+  --color-state-active-text: var(--color-category-blue-light-ink);
+  --color-data-grid: var(--color-gray-212);
+  --color-data-category-outline-1: var(--color-category-blue-solid);
+  --color-data-category-outline-4: var(--color-category-green-solid);
+  --color-figure-icon: var(--color-category-blue-light-border);
+  --color-figure-queue-empty: var(--color-gray-59);
+  --color-figure-number-fill: var(--primitive-figure-number-fill);
+  --color-figure-number-ink: var(--primitive-figure-number-ink);
+  --color-figure-outline: var(--color-gray-467);
+  --color-figure-selection-fill: var(--color-category-blue-light-tint-3);
+  --color-figure-canvas: var(--primitive-help-bg);
+  --color-figure-flash: var(--primitive-search-hover);
+  --color-figure-active-surface: var(--primitive-help-hover);
+  --color-ui-card: var(--color-gray-0);
+  --color-ink: var(--primitive-ink);
+  --color-ui-muted: var(--primitive-muted);
+  --color-ui-line: var(--primitive-line);
+  --color-help-title-color: var(--primitive-help-title-color);
+  color-scheme: light;
+}
+/* 그림 안 글자와 모양. HTML 재생기와 움직이는 SVG가 같이 쓴다. */
+/* 카드 안 글(label, sub, meta, cell, item, row)의 기준 점(text-anchor)은 글이 정한다(measure/texts.js의 anchor). 여기서는 글꼴과 색만 정한다. */
+/* 글 위계는 셋이다: 제목(공통 디자인.label-size 15: 카드 제목은 regular, 그룹 제목은 semibold), 문장과 이름표(detail-size 13: 부제, 선 라벨, 메모, 이동 글, 카드 줄, 제약, 형식), 작은 표시(micro-size 11: 번호, 태그, 표식, 키, 눈금, 단위). 크기와 굵기는 measure/texts.js의 STYLE이 같은 토큰으로 잰다. */
+.fl text {
+  font-family: var(--font-figure-sans);
+  letter-spacing: var(--tracking-text);
+}
+
+.fl .label {
+  font-size: var(--text-small-text);
+  fill: var(--color-ink);
+}
+
+.fl .sub {
+  font-size: var(--text-tiny-text);
+  fill: var(--color-ui-muted);
+}
+
+.fl .frame {
+  font-size: var(--text-small-text);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-group-title);
+}
+
+.fl .edgelabel {
+  font-size: var(--text-tiny-text);
+  text-anchor: middle;
+  fill: var(--fx-ink-rest);
+}
+
+/* 카드 줄, 메모와 구획 제목 같은 덧붙임 글, 관계 그래프 이름, 표 칸, 격자 칸은 문장이라 같은 크기와 글자색이다. */
+.fl .row,
+.fl .meta,
+.fl .mini,
+.fl .cell,
+.fl .item {
+  font-size: var(--text-tiny-text);
+  fill: var(--color-ink);
+}
+
+.fl .row.mono {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+}
+
+/* 백틱으로 감싼 글. 코드 글꼴로 그린다. */
+.fl .code {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+}
+
+.fl .muted {
+  fill: var(--color-ui-muted);
+}
+
+.fl .tag {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+.fl .mark {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-state-active-text);
+}
+
+/* 값 카드 줄의 값 글자. 줄의 이름(row)은 카드 층이 그리고 값은 오른쪽 끝에 얹힌다. 이름과 같은 크기이고 굵기만 다르다. */
+.fl .value {
+  font-size: var(--text-tiny-text);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+.fl .chip {
+  font-size: var(--text-tiny-text);
+  text-anchor: middle;
+}
+
+.fl .item.gap {
+  fill: var(--color-ui-muted);
+}
+
+/* 열 형식(타입)은 코드 글이라 코드 글꼴의 오른쪽 열이고 이름보다 옅다. NULL 허용 여부는 키 표시(.key)와 같은 작은 표시이고, 삭제 정책은 외래 키 선의 끝 글이다. */
+.fl .cell.type {
+  font-family: var(--font-figure-mono);
+  letter-spacing: normal;
+  fill: var(--color-ui-muted);
+}
+
+/* 순서 보기의 메시지, 메모, 구획, 활성 막대는 자기 장면이 보일 때만 보인다. 자리는 늘 같아 판 크기가 변하지 않는다. */
+.fl .fl-off {
+  display: none;
+}
+
+.fl .fl-edge {
+  color: var(--fx-line-rest);
+}
+
+.fl .fl-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--border-width-edge);
+}
+
+/* 열 키(PK, FK, UNQ)는 작은 표시이고 글자색이다. 파랑은 켜진 상태에만 쓴다. */
+.fl .cell .key {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  fill: var(--color-ink);
+}
+
+/* 그룹은 기본 면이 없다(투명). 경계와 제목만 있고, 깊이에 따라 회색 면을 겹치지 않는다. 고른 색은 아래 appearance 역할로 적용한다. */
+.fl .frame-box {
+  --fx-edge-rest: var(--color-figure-outline);
+  fill: none;
+  stroke: var(--fx-edge-rest);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-card {
+  fill: var(--color-ui-card);
+}
+
+.fl .fl-queue-slot {
+  fill: var(--color-figure-queue-empty);
+  stroke: var(--color-outline);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .queue-fill .fl-queue-slot {
+  fill: var(--color-data-category-1);
+  stroke: var(--color-data-category-1);
+}
+
+.fl .fl-shape-external > :is(.fl-stroke, .fl-pulse),
+.fl .frame-box.dashed,
+.fl .fl-path.dashed {
+  stroke-dasharray: var(--dash-line) var(--dash-gap);
+}
+
+.fl .lifeline {
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-lifeline);
+  stroke-dasharray: var(--dash-gap) var(--dash-gap);
+}
+
+.fl .fl-activation {
+  fill: var(--color-ui-card);
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-destroy > circle {
+  fill: var(--color-figure-canvas);
+}
+
+.fl .fl-destruction {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: var(--border-width-edge);
+  stroke-linecap: round;
+}
+
+.fl .note-box {
+  fill: var(--color-ui-card);
+  stroke: var(--color-line);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+/* 알약은 모두 같은 중립 흰 면과 평소 경계다: 선 라벨, 배지와 개수. */
+.fl .pill,
+.fl .badge-pill {
+  fill: var(--color-ui-card);
+  stroke: var(--fx-edge-rest);
+}
+
+.fl .fl-mini-pill {
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-mini-pill.fl-mini-lit {
+  fill: var(--fx-row);
+}
+
+.fl .fl-edge.fl-mini-lit {
+  color: var(--fx-edge);
+}
+
+.fl .part-bg {
+  --fx-face: transparent;
+  --fx-face-on: var(--fx-row);
+  fill: var(--fx-face);
+}
+
+.fl .col-line {
+  stroke: var(--color-data-grid);
+  stroke-width: var(--border-width-hair);
+}
+
+.fl .part-head {
+  fill: var(--color-figure-canvas);
+}
+
+.fl .grid-cell {
+  --fx-face: var(--color-ui-card);
+  --fx-face-on: var(--fx-row);
+  fill: var(--fx-face);
+  stroke: var(--color-data-grid);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .grid-tray {
+  fill: var(--color-ui-card);
+}
+
+.fl .grid-cell.gap {
+  --fx-face: var(--color-ui-card);
+  stroke: var(--color-data-grid);
+}
+
+.fl .grid-cell.empty {
+  --fx-face: none;
+  stroke: var(--color-line);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+.fl .fl-edge.mark {
+  --fx-line-rest: var(--color-ink);
+}
+
+/* 이름과 값은 평소 여백으로 구분한다. 명시한 면(face)과 값 갱신 강조만 배경을 더한다. */
+.fl .face {
+  fill: none;
+  stroke: none;
+}
+
+/* 도형 윗줄과 그룹 제목 줄의 장식: 글자 배지, 아이콘 */
+.fl .badge {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  text-anchor: middle;
+  fill: var(--color-ink);
+}
+
+.fl .fl-icon {
+  color: var(--color-figure-icon);
+}
+
+.fl .fl-symbol .fl-icon {
+  color: inherit;
+}
+
+/* 선 번호 원. 흑백 번호이고 라벨 알약과 달리 켜져도 색이 바뀌지 않아 정지 그림과 같은 순서로 읽힌다. */
+.fl .number-pill {
+  fill: var(--color-figure-number-fill);
+}
+
+.fl .number {
+  font-size: var(--text-figure-meta);
+  font-weight: var(--font-weight-semibold);
+  text-anchor: middle;
+  fill: var(--color-figure-number-ink);
+}
+
+/* 도형은 그림자 없는 평면이다. 그림자는 떠 있는 메뉴 같은 조작에만 둔다. */
+.fl :where(.fl-node) > .fl-stroke {
+  stroke: var(--fx-edge-rest);
+  stroke-width: var(--border-width-thin);
+}
+
+/* 구획은 border.hair, 보조 경계는 border.thin, 관계는 border.edge, 생명선은 border.lifeline, 도형 경계는 공통 디자인.node-stroke다. 모든 선은 그림과 함께 확대·축소된다. */
+.fl .fl-path,
+.fl .fl-node > .fl-stroke,
+.fl .grid-cell,
+.fl .col-line,
+.fl .pill,
+.fl .badge-pill {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 화살촉과 몸통은 같은 소유자의 색을 상속한다(draw/arrow.js). 화살촉은 채운 삼각형이다. 연결선은 선 묶음이, 차트 방향선은 역할 class(.arrow-main 등, chart.css)가 소유자다.
+   HTML 문서의 차트 마커 정의는 판 SVG 밖의 정의 전용 SVG에 있어 `.fl` 아래가 아니므로 이 규칙은 `.fl` 범위를 걸지 않는다. */
+.fl-arrowhead {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 효과 한 벌: 켜짐과 평소의 모습을 정하는 유일한 정의다. 움직이는 SVG(animate/animator.js)의 keyframes와 HTML 재생기의 `.on` 규칙이 같은 `--fx-*`를 읽으므로 두 출력과 정지 그림이 늘 같다.
+   - 켜짐(on): --fx-edge 윤곽·그룹 경계·선·알약 테두리, --fx-ink 알약 글자, --fx-row 표 줄과 격자 칸의 면, --fx-face-on 요소의 켜진 면(도형은 아래), --fx-flash 값이 바뀐 순간의 면.
+   - 평소(rest): --fx-edge-rest 도형, 그룹, 알약의 경계, --fx-ink-rest 알약 글자, --fx-line-rest 선, --fx-face 요소의 평소 면.
+   효과는 도형이 고른 색(tone)이나 표현(appearance)과 상관없다. appearance는 고른 색을 평소 값(--fx-face, --fx-edge-rest)에만 적용하고, 켜진 동안은 강조 윤곽에 자리를 내준다. */
+.fl {
+  --paint-fill: var(--color-ui-card);
+  --paint-outline: var(--color-figure-outline);
+  --paint-ink: var(--color-group-title);
+  --fx-edge: var(--color-state-active);
+  --fx-ink: var(--color-state-active-text);
+  --fx-row: var(--color-figure-selection-fill);
+  --fx-flash: var(--color-figure-flash);
+  --fx-edge-rest: var(--color-figure-outline);
+  --fx-ink-rest: var(--color-ui-muted);
+  --fx-line-rest: var(--color-outline);
+}
+
+/* 도형의 평소 면과 켜진 면. 옅은 면으로 고른 도형(filled)은 켜져도 면이 같다. 면이 없는 윤곽(fill='none')과 점은 자기 면이 없거나 자기 색이다. */
+.fl .fl-node {
+  --fx-face: var(--color-ui-card);
+  --fx-face-on: var(--color-figure-active-surface);
+}
+
+.fl .fl-node.ap-filled {
+  --fx-face: var(--paint-fill);
+  --fx-face-on: var(--fx-face);
+}
+
+/* 소비자는 쓴 톤의 --paint-* 변수만 연결한다. 면·경계·제목·차트 바탕의 역할은 여기서 한 번 정한다. */
+.fl .fl-node.ap-outline {
+  --fx-edge-rest: var(--paint-outline);
+}
+
+.fl .fl-group.ap-filled > .frame-box {
+  fill: var(--paint-fill);
+}
+
+.fl .fl-group.ap-outline > .frame-box {
+  --fx-edge-rest: var(--paint-outline);
+}
+
+.fl .fl-group:is(.ap-plain, .ap-filled, .ap-outline) > .frame {
+  fill: var(--paint-ink);
+}
+
+.fl .face.ap-filled {
+  fill: var(--paint-fill);
+}
+
+.fl .fl-layer.ap-filled {
+  --chart-ground: var(--paint-fill);
+}
+
+.fl .face.ap-outline {
+  stroke: var(--paint-outline);
+}
+
+.fl .fl-shape-start {
+  --fx-face: var(--color-ink);
+}
+
+.fl .fl-node > .fl-stroke[fill='none'] {
+  --fx-face: none;
+  --fx-face-on: none;
+}
+
+.fl :where(.fl-node) > .fl-stroke:where(:not([fill='none'])) {
+  fill: var(--fx-face);
+}
+
+/* `light`가 명시한 도형: 윤곽이 강조 색이 되고 면은 옅은 강조 면이다(옅은 면으로 고른 도형은 면을 그대로 둔다). 점이 닿은 도형은 도착 후광(.fl-pulse)만 쓴다. */
+.fl .fl-node.on > .fl-stroke {
+  stroke: var(--fx-edge);
+}
+
+.fl .fl-node.on > .fl-stroke:not([fill='none']) {
+  fill: var(--fx-face-on);
+}
+
+/* `light`가 명시한 그룹: 경계선만 강조 색이다. 굵기, 면, 모서리, 점선은 그대로다. */
+.fl .fl-group.on > .frame-box {
+  stroke: var(--fx-edge);
+}
+
+/* 켜진 표 줄(칸)과 격자 칸의 면. 모든 카드가 같은 규칙이다. */
+.fl .fl-part.on :is(.part-bg, .grid-cell) {
+  fill: var(--fx-face-on);
+}
+
+/* 도형에 마우스를 올려도 면이나 선이 켜지지 않는다(장식용 호버 활성 없음). 키보드 초점은 같은 외부 형상 위의 초점 표시이고 윤곽을 두 겹으로 만들지 않는다. */
+/* 브라우저 기본 초점 링은 g 요소의 사각 상자를 두르므로 둥근 도형과 어긋난다. 어떤 방식으로 초점이 가도 기본 링을 끄고, 키보드 초점(:focus-visible)은 도형 윤곽 자체로 표시한다. */
+.fl .fl-node:focus,
+.fl .fl-node:focus-visible {
+  outline: none;
+}
+
+.fl .fl-node:focus-visible > .fl-stroke {
+  stroke: var(--color-ui-focus);
+  stroke-width: var(--outline-width-focus);
+}
+
+/* 값이 바뀔 때 켜지는 배경 면. 도형과 같은 윤곽을 쓰고 테두리를 더하지 않는다. */
+.fl .fl-flash-face {
+  fill-opacity: var(--opacity-range);
+}
+
+.fl .fl-flash {
+  fill: var(--fx-flash);
+  stroke: none;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl .fl-flash {
+    display: none;
+  }
+}
+
+/* 점이 도형에 닿을 때의 테두리 후광: 도형 윤곽과 같은 모양의 겹침 선이다. 면을 칠하지 않고 선 굵기가 윤곽과 같아 도형이 커지지 않는다. 불투명도(80/80/240ms)는 SMIL이나 재생기가 정한다. */
+.fl .fl-pulse {
+  fill: none;
+  stroke: var(--fx-edge);
+  stroke-width: var(--border-width-thin);
+  pointer-events: none;
+}
+
+/* 제어 구획의 경계는 관계선보다 약하며 제목 밑면은 생명선을 가린다. */
+.fl .fl-fragment-border {
+  fill: none;
+  stroke: var(--color-ui-line);
+  stroke-width: var(--border-width-thin);
+}
+
+.fl .fl-fragment-divider {
+  fill: none;
+  stroke: var(--color-ui-line);
+  stroke-width: var(--border-width-hair);
+  stroke-dasharray: var(--dash-card) var(--dash-card);
+}
+
+.fl .fl-fragment-heading {
+  fill: var(--color-ui-card);
+}
+
+.fl .fl-fragment-label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.fl .fl-packet > circle:first-child {
+  opacity: 0;
+}
+
+/* 독립 SVG도 재생 판과 같은 바탕과 움직임 줄이기 규칙을 쓴다. */
+.fl .fl-canvas-surface { fill: var(--color-figure-canvas); rx: var(--radius-card-radius); }
+.fl .fl-still { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fl .fl-motion { display: none; }
+  .fl .fl-still { display: inline; }
+}
+
+@keyframes a0 { 0%,8.138% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 8.14%,16.859% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 16.86%,23.255% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 23.256%,31.976% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 31.977%,38.371% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 38.372%,47.092% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 47.093%,53.487% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 53.488%,62.208% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 62.209%,68.603% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 68.605%,77.324% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 77.326%,83.72% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } 83.721%,100% { fill: var(--fx-face); stroke: var(--fx-edge-rest) } }
+.fl .a0 { animation: a0 8.6s infinite linear; }
+@keyframes a1 { 0%,8.138% { opacity: 1; visibility: visible } 8.14%,16.859% { opacity: 1; visibility: visible } 16.86%,23.255% { opacity: 1; visibility: visible } 23.256%,31.976% { opacity: 1; visibility: visible } 31.977%,38.371% { opacity: 1; visibility: visible } 38.372%,47.092% { opacity: 1; visibility: visible } 47.093%,53.487% { opacity: 1; visibility: visible } 53.488%,62.208% { opacity: 1; visibility: visible } 62.209%,68.603% { opacity: 1; visibility: visible } 68.605%,77.324% { opacity: 1; visibility: visible } 77.326%,83.72% { opacity: 1; visibility: visible } 83.721%,100% { opacity: 1; visibility: visible } }
+.fl .a1 { animation: a1 8.6s infinite linear; }
+@keyframes a2 { 0%,8.138% { opacity: 0; visibility: hidden } 8.14%,16.859% { opacity: 0; visibility: hidden } 16.86%,23.255% { opacity: 0; visibility: hidden } 23.256%,31.976% { opacity: 0; visibility: hidden } 31.977%,38.371% { opacity: 0; visibility: hidden } 38.372%,47.092% { opacity: 0; visibility: hidden } 47.093%,53.487% { opacity: 0; visibility: hidden } 53.488%,62.208% { opacity: 0; visibility: hidden } 62.209%,68.603% { opacity: 0; visibility: hidden } 68.605%,77.324% { opacity: 0; visibility: hidden } 77.326%,83.72% { opacity: 0; visibility: hidden } 83.721%,100% { opacity: 0; visibility: hidden } }
+.fl .a2 { animation: a2 8.6s infinite linear; }
+@keyframes a3 { 0%,8.138% { opacity: 1 } 8.14%,16.859% { opacity: 1 } 16.86%,23.255% { opacity: 1 } 23.256%,31.976% { opacity: 1 } 31.977%,38.371% { opacity: 1 } 38.372%,47.092% { opacity: 1 } 47.093%,53.487% { opacity: 1 } 53.488%,62.208% { opacity: 1 } 62.209%,68.603% { opacity: 1 } 68.605%,77.324% { opacity: 1 } 77.326%,83.72% { opacity: 1 } 83.721%,100% { opacity: 1 } }
+.fl .a3 { animation: a3 8.6s infinite linear; }
+@keyframes a4 { 0%,8.138% { color: var(--fx-line-rest) } 8.14%,16.859% { color: var(--fx-edge) } 16.86%,100% { color: var(--fx-line-rest) } }
+.fl .a4 { animation: a4 8.6s infinite linear; }
+@keyframes a5 { 0%,23.255% { color: var(--fx-line-rest) } 23.256%,31.976% { color: var(--fx-edge) } 31.977%,100% { color: var(--fx-line-rest) } }
+.fl .a5 { animation: a5 8.6s infinite linear; }
+@keyframes a6 { 0%,8.138% { opacity: 0 } 8.14%,16.859% { opacity: 0 } 16.86%,23.255% { opacity: 0 } 23.256%,31.976% { opacity: 0 } 31.977%,38.371% { opacity: 0 } 38.372%,47.092% { opacity: 0 } 47.093%,53.487% { opacity: 0 } 53.488%,62.208% { opacity: 0 } 62.209%,68.603% { opacity: 0 } 68.605%,77.324% { opacity: 0 } 77.326%,83.72% { opacity: 0 } 83.721%,100% { opacity: 0 } }
+.fl .a6 { animation: a6 8.6s infinite linear; }
+@keyframes a7 { 0%,38.371% { color: var(--fx-line-rest) } 38.372%,47.092% { color: var(--fx-edge) } 47.093%,100% { color: var(--fx-line-rest) } }
+.fl .a7 { animation: a7 8.6s infinite linear; }
+@keyframes a8 { 0%,53.487% { color: var(--fx-line-rest) } 53.488%,62.208% { color: var(--fx-edge) } 62.209%,100% { color: var(--fx-line-rest) } }
+.fl .a8 { animation: a8 8.6s infinite linear; }
+@keyframes a9 { 0%,68.603% { color: var(--fx-line-rest) } 68.605%,77.324% { color: var(--fx-edge) } 77.326%,100% { color: var(--fx-line-rest) } }
+.fl .a9 { animation: a9 8.6s infinite linear; }
+@keyframes a10 { 0%,8.138% { stroke: var(--fx-edge-rest) } 8.14%,16.859% { stroke: var(--fx-edge) } 16.86% { stroke: var(--fx-edge) } 21.512%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a10 { animation: a10 8.6s infinite linear; }
+@keyframes a11 { 0%,8.138% { fill: var(--fx-ink-rest) } 8.14%,16.859% { fill: var(--fx-ink) } 16.86% { fill: var(--fx-ink) } 21.512%,100% { fill: var(--fx-ink-rest) } }
+.fl .a11 { animation: a11 8.6s infinite linear; }
+@keyframes a12 { 0%,23.255% { stroke: var(--fx-edge-rest) } 23.256%,31.976% { stroke: var(--fx-edge) } 31.977% { stroke: var(--fx-edge) } 36.628%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a12 { animation: a12 8.6s infinite linear; }
+@keyframes a13 { 0%,23.255% { fill: var(--fx-ink-rest) } 23.256%,31.976% { fill: var(--fx-ink) } 31.977% { fill: var(--fx-ink) } 36.628%,100% { fill: var(--fx-ink-rest) } }
+.fl .a13 { animation: a13 8.6s infinite linear; }
+@keyframes a14 { 0%,38.371% { stroke: var(--fx-edge-rest) } 38.372%,47.092% { stroke: var(--fx-edge) } 47.093% { stroke: var(--fx-edge) } 51.744%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a14 { animation: a14 8.6s infinite linear; }
+@keyframes a15 { 0%,38.371% { fill: var(--fx-ink-rest) } 38.372%,47.092% { fill: var(--fx-ink) } 47.093% { fill: var(--fx-ink) } 51.744%,100% { fill: var(--fx-ink-rest) } }
+.fl .a15 { animation: a15 8.6s infinite linear; }
+@keyframes a16 { 0%,53.487% { stroke: var(--fx-edge-rest) } 53.488%,62.208% { stroke: var(--fx-edge) } 62.209% { stroke: var(--fx-edge) } 66.86%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a16 { animation: a16 8.6s infinite linear; }
+@keyframes a17 { 0%,53.487% { fill: var(--fx-ink-rest) } 53.488%,62.208% { fill: var(--fx-ink) } 62.209% { fill: var(--fx-ink) } 66.86%,100% { fill: var(--fx-ink-rest) } }
+.fl .a17 { animation: a17 8.6s infinite linear; }
+@keyframes a18 { 0%,68.603% { stroke: var(--fx-edge-rest) } 68.605%,77.324% { stroke: var(--fx-edge) } 77.326% { stroke: var(--fx-edge) } 81.977%,100% { stroke: var(--fx-edge-rest) } }
+.fl .a18 { animation: a18 8.6s infinite linear; }
+@keyframes a19 { 0%,68.603% { fill: var(--fx-ink-rest) } 68.605%,77.324% { fill: var(--fx-ink) } 77.326% { fill: var(--fx-ink) } 81.977%,100% { fill: var(--fx-ink-rest) } }
+.fl .a19 { animation: a19 8.6s infinite linear; }
+.fl .sa0 { fill: var(--fx-face); stroke: var(--fx-edge-rest); }
+.fl .sa1 { opacity: 1; visibility: visible; }
+.fl .sa2 { opacity: 0; visibility: hidden; }
+.fl .sa3 { opacity: 1; }
+</style>
+<defs></defs>
+<rect x="0.5" y="0.5" width="339.7" height="2002.1" class="fl-canvas-surface"/>
+<g class="fl-motion" transform="translate(0 0)">
+<g id="g-0" class="fl-group" data-id="database"><rect x="46" y="496.7" width="248.7" height="550.7" rx="8" class="frame-box fl-stroke "/><text x="64" y="516.1" class="frame">같은 DB 파일</text></g>
+<g id="g-1" class="fl-group" data-id="workers"><rect x="32" y="1127.4" width="276.7" height="632.7" rx="8" class="frame-box fl-stroke "/><text x="52.4" y="1146.8" class="frame">처리 워커</text></g>
+
+<g id="n-0" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="주문 요청" data-id="request"><rect x="120.4" y="16" width="100" height="47" rx="8" class="fl-stroke a0"/><text x="170.4" y="44.9" class="label" text-anchor="middle">주문 요청</text></g>
+<g id="n-1" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="쓰기 트랜잭션" data-id="transaction"><rect x="82.4" y="147" width="176" height="161" rx="8" class="fl-stroke a0"/><rect x="82.4" y="147" width="176" height="161" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.1686;0.17791;0.18721;0.21512;1" values="0;0;1;1;0;0"/></rect><text x="170.4" y="175.9" class="label" text-anchor="middle">쓰기 트랜잭션</text><rect x="92.4" y="194" width="156" height="104" rx="6" opacity="0" class="fl-card a3"/><g id="n-1-c0" opacity="0" visibility="hidden" class="fl-layer a1"><path d="M98.4 194H242.4a6 6 0 0 1 6 6V223H92.4V200a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-vf="0"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.1686;0.17791;0.18721;0.21512;0.31977;0.32907;0.33837;0.36628;1" values="0;0;1;1;0;0;1;1;0;0"/></path><path d="M92.4 223H248.4V292a6 6 0 0 1 -6 6H98.4a6 6 0 0 1 -6 -6V223Z" class="fl-flash" opacity="0" data-vf="1"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.1686;0.17791;0.18721;0.21512;0.31977;0.32907;0.33837;0.36628;1" values="0;0;1;1;0;0;1;1;0;0"/></path><text x="100.4" y="214.7" class="row">미확정 주문</text><text x="100.4" y="240.7" class="row">미확정 작업</text></g><g id="n-1-c1" opacity="0" visibility="hidden" class="fl-layer a2"><path d="M92.4 249H248.4V292a6 6 0 0 1 -6 6H98.4a6 6 0 0 1 -6 -6V249Z" class="fl-flash" opacity="0" data-rf="transaction:2"></path><text x="100.4" y="214.7" class="row">미확정 주문</text><text x="100.4" y="240.7" class="row">미확정 작업</text><rect x="100.4" y="255" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="113.6" y="266" class="tag" text-anchor="middle">취소</text><text x="131.8" y="266.7" class="row">미확정 변경을 모두</text><text x="100.4" y="286.7" class="row">취소</text></g></g>
+<g id="n-2" class="fl-node fl-shape-store" tabindex="0" role="img" aria-label="저장된 데이터" data-id="records"><path d="M82.4 705.4 a 88 12 0 0 1 176 0 v 167 a 88 12 0 0 1 -176 0 z" class="fl-stroke a0"/><path d="M82.4 705.4 a 88 12 0 0 0 176 0" fill="none" class="fl-stroke a0"/><path d="M82.4 705.4 a 88 12 0 0 1 176 0 v 167 a 88 12 0 0 1 -176 0 z" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31977;0.32907;0.33837;0.36628;0.77326;0.78256;0.79186;0.81977;1" values="0;0;1;1;0;0;1;1;0;0"/></path><path d="M82.4 705.4 a 88 12 0 0 0 176 0" fill="none" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31977;0.32907;0.33837;0.36628;0.77326;0.78256;0.79186;0.81977;1" values="0;0;1;1;0;0;1;1;0;0"/></path><text x="170.4" y="734.3" class="label" text-anchor="middle">저장된 데이터</text><rect x="92.4" y="752.4" width="156" height="110" rx="6" opacity="0" class="fl-card a3"/><g id="n-2-c0" opacity="0" visibility="hidden" class="fl-layer a1"><path d="M98.4 752.4H242.4a6 6 0 0 1 6 6V781.4H92.4V758.4a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-vf="2"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31977;0.32907;0.33837;0.36628;1" values="0;0;1;1;0;0"/></path><path d="M92.4 781.4H248.4V807.4H92.4V781.4Z" class="fl-flash" opacity="0" data-vf="3"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.47093;0.48023;0.48953;0.51744;0.77326;0.78256;0.79186;0.81977;1" values="0;0;1;1;0;0;1;1;0;0"/></path><path d="M92.4 807.4H248.4V856.4a6 6 0 0 1 -6 6H98.4a6 6 0 0 1 -6 -6V807.4Z" class="fl-flash" opacity="0" data-vf="4"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.77326;0.78256;0.79186;0.81977;1" values="0;0;1;1;0;0"/></path><text x="100.4" y="773.1" class="row">주문</text><text x="100.4" y="799.1" class="row">처리 중</text><text x="100.4" y="825.1" class="row">ACK 완료</text></g><g id="n-2-c1" opacity="0" visibility="hidden" class="fl-layer a2"><path d="M92.4 833.4H248.4V856.4a6 6 0 0 1 -6 6H98.4a6 6 0 0 1 -6 -6V833.4Z" class="fl-flash" opacity="0" data-rf="records:3"></path><text x="100.4" y="773.1" class="row">주문</text><text x="100.4" y="799.1" class="row">처리 중</text><text x="100.4" y="825.1" class="row">ACK 완료</text><rect x="100.4" y="839.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-5)" fill-opacity="0.15"/><text x="113.6" y="850.4" class="tag" text-anchor="middle">만료</text><text x="131.8" y="851.1" class="row">만료돼도 처리 중 유지</text></g></g>
+<g id="n-3" class="fl-node fl-shape-queue" tabindex="0" role="img" aria-label="대기 작업" data-id="shipping"><rect x="120.4" y="924.4" width="100" height="67" rx="8" class="fl-stroke a0"/><rect x="142.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="162.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="182.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="120.4" y="924.4" width="100" height="67" rx="8" class="fl-flash fl-flash-face" opacity="0" data-vf="5"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.31977;0.32907;0.33837;0.36628;0.47093;0.48023;0.48953;0.51744;1" values="0;0;1;1;0;0;1;1;0;0"/></rect><text x="170.4" y="953.3" class="label" text-anchor="middle">대기 작업</text></g>
+<g id="n-4" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="워커 A" data-id="worker-a"><rect x="73.9" y="1199.4" width="176" height="193" rx="8" class="fl-stroke a0"/><rect x="73.9" y="1199.4" width="176" height="193" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.47093;0.48023;0.48953;0.51744;1" values="0;0;1;1;0;0"/></rect><text x="161.9" y="1228.3" class="label" text-anchor="middle">워커 A</text><rect x="83.9" y="1246.4" width="156" height="136" rx="6" opacity="0" class="fl-card a3"/><g id="n-4-c0" opacity="0" visibility="hidden" class="fl-layer a1"><path d="M89.9 1246.4H233.9a6 6 0 0 1 6 6V1275.4H83.9V1252.4a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-vf="6"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.47093;0.48023;0.48953;0.51744;1" values="0;0;1;1;0;0"/></path><path d="M83.9 1275.4H239.9V1301.4H83.9V1275.4Z" class="fl-flash" opacity="0" data-vf="7"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.47093;0.48023;0.48953;0.51744;1" values="0;0;1;1;0;0"/></path><path d="M83.9 1301.4H239.9V1376.4a6 6 0 0 1 -6 6H89.9a6 6 0 0 1 -6 -6V1301.4Z" class="fl-flash" opacity="0" data-vf="8"></path><text x="91.9" y="1267.1" class="row">마지막 작업</text><text x="91.9" y="1293.1" class="row">처리 권한</text><text x="91.9" y="1319.1" class="row">거절된 ACK</text></g><g id="n-4-c1" opacity="0" visibility="hidden" class="fl-layer a2"><path d="M83.9 1327.4H239.9V1376.4a6 6 0 0 1 -6 6H89.9a6 6 0 0 1 -6 -6V1327.4Z" class="fl-flash" opacity="0" data-rf="worker-a:3"></path><text x="91.9" y="1267.1" class="row">마지막 작업</text><text x="91.9" y="1293.1" class="row">처리 권한</text><text x="91.9" y="1319.1" class="row">거절된 ACK</text><rect x="91.9" y="1333.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="105.1" y="1344.4" class="tag" text-anchor="middle">중단</text><text x="123.3" y="1345.1" class="row">ACK 없이 중단</text></g><g id="n-4-c2" opacity="0" visibility="hidden" class="fl-layer a2"><path d="M83.9 1327.4H239.9V1353.4H83.9V1327.4Z" class="fl-flash" opacity="0" data-rf="worker-a:3"></path><path d="M83.9 1353.4H239.9V1376.4a6 6 0 0 1 -6 6H89.9a6 6 0 0 1 -6 -6V1353.4Z" class="fl-flash" opacity="0" data-rf="worker-a:4"></path><text x="91.9" y="1267.1" class="row">마지막 작업</text><text x="91.9" y="1293.1" class="row">처리 권한</text><text x="91.9" y="1319.1" class="row">거절된 ACK</text><rect x="91.9" y="1333.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="105.1" y="1344.4" class="tag" text-anchor="middle">중단</text><text x="123.3" y="1345.1" class="row">ACK 없이 중단</text><rect x="91.9" y="1359.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="105.1" y="1370.4" class="tag" text-anchor="middle">거부</text><text x="123.3" y="1371.1" class="row">이전 권한 ACK 거부</text></g></g>
+<g id="n-5" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="워커 B" data-id="worker-b"><rect x="96.4" y="1444.4" width="176" height="115" rx="8" class="fl-stroke a0"/><text x="184.4" y="1473.3" class="label" text-anchor="middle">워커 B</text><rect x="106.4" y="1491.4" width="156" height="58" rx="6" opacity="0" class="fl-card a3"/><g id="n-5-c0" opacity="0" visibility="hidden" class="fl-layer a1"><path d="M112.4 1491.4H256.4a6 6 0 0 1 6 6V1520.4H106.4V1497.4a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-vf="9"></path><path d="M106.4 1520.4H262.4V1543.4a6 6 0 0 1 -6 6H112.4a6 6 0 0 1 -6 -6V1520.4Z" class="fl-flash" opacity="0" data-vf="10"></path><text x="114.4" y="1512.1" class="row">마지막 작업</text><text x="114.4" y="1538.1" class="row">처리 권한</text></g></g>
+<g id="n-6" class="fl-node fl-shape-external" tabindex="0" role="img" aria-label="외부 API" data-id="api"><rect x="82.4" y="1878.1" width="176" height="109" rx="8" class="fl-stroke ext a0"/><rect x="82.4" y="1878.1" width="176" height="109" rx="8" class="fl-pulse" opacity="0" aria-hidden="true"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.62209;0.6314;0.6407;0.6686;1" values="0;0;1;1;0;0"/></rect><text x="170.4" y="1907" class="label" text-anchor="middle">외부 API</text><text x="170.4" y="1927.8" class="sub" text-anchor="middle">모의 함수</text><rect x="92.4" y="1945.1" width="156" height="32" rx="6" opacity="0" class="fl-card a3"/><g id="n-6-c0" opacity="0" visibility="hidden" class="fl-layer a1"><path d="M98.4 1945.1H242.4a6 6 0 0 1 6 6V1971.1a6 6 0 0 1 -6 6H98.4a6 6 0 0 1 -6 -6V1951.1a6 6 0 0 1 6 -6Z" class="fl-flash" opacity="0" data-vf="11"><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.62209;0.6314;0.6407;0.6686;1" values="0;0;1;1;0;0"/></path><text x="100.4" y="1965.8" class="row">호출 횟수</text></g></g>
+<g id="e-0" class="fl-edge a4"><defs><marker id="fl-arrow-0" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-0" d="M 153.7 63 L 153.7 94.7 Q 153.7 101, 147.4 101 L 147.4 101 Q 141 101, 141 107.3 L 141 147" class="fl-path" marker-end="url(#fl-arrow-0)"/></g>
+<g id="e-1" class="fl-edge a5"><defs><marker id="fl-arrow-1" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><defs><clipPath id="fl-cut-1" clipPathUnits="userSpaceOnUse"><path d="M 139.7 292 h 46.7 v 417.4 h -46.7 Z M 158.6 353.5 h 3.5 v 9.8 h -3.5 Z" clip-rule="evenodd"/></clipPath></defs><path id="p-1" d="M 170.4 308 L 170.4 341 Q 170.4 346, 165.4 346 L 165.4 346 Q 160.4 346, 160.4 351 L 160.4 550.4 Q 160.4 552.7, 158 552.7 L 158 552.7 Q 155.7 552.7, 155.7 555 L 155.7 693.4" class="fl-path" marker-end="url(#fl-arrow-1)" clip-path="url(#fl-cut-1)"/></g>
+<g id="e-2" class="fl-edge quiet a6 a6"><defs><marker id="fl-arrow-2" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-2" d="M 199.7 147 L 199.7 107.3 Q 199.7 101, 193.4 101 L 193.4 101 Q 187 101, 187 94.7 L 187 63" class="fl-path dashed" marker-end="url(#fl-arrow-2)"/></g>
+<g id="e-3" class="fl-edge a7"><defs><marker id="fl-arrow-3" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-3" d="M 153.7 991.4 L 153.7 1001.6 Q 153.7 1007.4, 159.5 1007.4 L 159.5 1007.4 Q 165.4 1007.4, 165.4 1013.2 L 165.4 1199.4" class="fl-path" marker-end="url(#fl-arrow-3)"/></g>
+<g id="e-4" class="fl-edge quiet a6 a6"><defs><marker id="fl-arrow-4" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-4" d="M 187 991.4 L 187 1001.6 Q 187 1007.4, 181.2 1007.4 L 181.2 1007.4 Q 175.4 1007.4, 175.4 1013.2 L 175.4 1161.4 Q 175.4 1183.4, 197.4 1183.4 L 243.9 1183.4 Q 265.9 1183.4, 265.9 1205.4 L 265.9 1406.4 Q 265.9 1428.4, 243.9 1428.4 L 192.4 1428.4 Q 184.4 1428.4, 184.4 1436.4 L 184.4 1444.4" class="fl-path" marker-end="url(#fl-arrow-4)"/></g>
+<g id="e-5" class="fl-edge a8"><defs><marker id="fl-arrow-5" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><defs><clipPath id="fl-cut-5" clipPathUnits="userSpaceOnUse"><path d="M 52.4 1376.4 h 116 v 517.7 h -116 Z M 139.3 1857.2 h 3.5 v 9.8 h -3.5 Z" clip-rule="evenodd"/></clipPath></defs><path id="p-5" d="M 132.5 1392.4 L 132.5 1400.4 Q 132.5 1408.4, 124.5 1408.4 L 90.4 1408.4 Q 68.4 1408.4, 68.4 1430.4 L 68.4 1573.4 Q 68.4 1595.4, 90.4 1595.4 L 130.4 1595.4 Q 152.4 1595.4, 152.4 1617.4 L 152.4 1846.4 Q 152.4 1852.1, 146.7 1852.1 L 146.7 1852.1 Q 141 1852.1, 141 1857.8 L 141 1878.1" class="fl-path" marker-end="url(#fl-arrow-5)" clip-path="url(#fl-cut-5)"/></g>
+<g id="e-6" class="fl-edge quiet a6 a6"><defs><marker id="fl-arrow-6" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-6" d="M 155 1559.4 L 155 1567.4 Q 155 1575.4, 163 1575.4 L 166.7 1575.4 Q 178.4 1575.4, 178.4 1587.1 L 178.4 1851.4 Q 178.4 1862.1, 189 1862.1 L 191.7 1862.1 Q 199.7 1862.1, 199.7 1870.1 L 199.7 1878.1" class="fl-path" marker-end="url(#fl-arrow-6)"/></g>
+<g id="e-7" class="fl-edge a9"><defs><marker id="fl-arrow-7" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-7" d="M 191.2 1392.4 L 191.2 1405.4 Q 191.2 1418.4, 178.2 1418.4 L 101.4 1418.4 Q 79.4 1418.4, 79.4 1440.4 L 79.4 1563.4 Q 79.4 1585.4, 101.4 1585.4 L 140.4 1585.4 Q 162.4 1585.4, 162.4 1607.4 L 162.4 1840.1 Q 162.4 1862.1, 140.4 1862.1 L 38 1862.1 Q 16 1862.1, 16 1840.1 L 16 1110.4 Q 16 1103.4, 23 1103.4 L 23 1103.4 Q 30 1103.4, 30 1096.4 L 30 378 Q 30 356, 52 356 L 148.4 356 Q 170.4 356, 170.4 378 L 170.4 693.4" class="fl-path dashed" marker-end="url(#fl-arrow-7)"/></g>
+<g id="e-8" class="fl-edge quiet a6 a6"><defs><marker id="fl-arrow-8" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="p-8" d="M 213.7 1559.4 L 213.7 1567.4 Q 213.7 1575.4, 205.7 1575.4 L 201 1575.4 Q 188.4 1575.4, 188.4 1588.1 L 188.4 1830.1 Q 188.4 1852.1, 210.4 1852.1 L 302.7 1852.1 Q 324.7 1852.1, 324.7 1830.1 L 324.7 1110.4 Q 324.7 1103.4, 317.7 1103.4 L 317.7 1103.4 Q 310.7 1103.4, 310.7 1096.4 L 310.7 378 Q 310.7 356, 288.7 356 L 202.4 356 Q 180.4 356, 180.4 378 L 180.4 550.4 Q 180.4 552.7, 182.7 552.7 L 182.7 552.7 Q 185 552.7, 185 555 L 185 693.4" class="fl-path dashed" marker-end="url(#fl-arrow-8)"/></g>
+<g class="fl-value"><text x="240.4" y="214.7" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="0" data-t="0">0<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="visible;hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="1;0;1"/></text><text x="240.4" y="214.7" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="0" data-t="3">3<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="hidden;visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="0;1;0"/></text></g>
+<g class="fl-value"><text x="240.4" y="240.7" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="1" data-t="0">0<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="visible;hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="1;0;1"/></text><text x="240.4" y="240.7" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="1" data-t="3">3<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="hidden;visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.1686;0.31977" values="0;1;0"/></text></g>
+<g class="fl-value"><text x="240.4" y="773.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="2" data-t="0">0<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977" values="visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977" values="1;0"/></text><text x="240.4" y="773.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="2" data-t="3">3<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977" values="hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977" values="0;1"/></text></g>
+<g class="fl-value"><text x="240.4" y="799.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="3" data-t="0">0<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093;0.77326" values="visible;hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093;0.77326" values="1;0;1"/></text><text x="240.4" y="799.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="3" data-t="1">1<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093;0.77326" values="hidden;visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093;0.77326" values="0;1;0"/></text></g>
+<g class="fl-value"><text x="240.4" y="825.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="4" data-t="0">0<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.77326" values="visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.77326" values="1;0"/></text><text x="240.4" y="825.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="4" data-t="1">1<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.77326" values="hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.77326" values="0;1"/></text></g>
+<g class="fl-value"><g class="queue-fill" opacity="0" visibility="hidden" data-v="5" data-t="0"><animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977" values="visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977" values="1;0"/></g><g class="queue-fill" opacity="0" visibility="hidden" data-v="5" data-t="3"><rect x="142.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="162.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="182.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977;0.47093" values="hidden;visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.31977;0.47093" values="0;1;0"/></g><g class="queue-fill" opacity="0" visibility="hidden" data-v="5" data-t="2"><rect x="142.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="162.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="0;1"/></g></g>
+<g class="fl-value"><text x="231.9" y="1267.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="6" data-t="없음">없음<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="1;0"/></text><text x="231.9" y="1267.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="6" data-t="1">1<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="0;1"/></text></g>
+<g class="fl-value"><text x="231.9" y="1293.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="7" data-t="없음">없음<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="1;0"/></text><text x="231.9" y="1293.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="7" data-t="1">1<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.47093" values="0;1"/></text></g>
+<g class="fl-value"><text x="231.9" y="1319.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="8" data-t="0">0<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;1" values="visible;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;1" values="1;1"/></text></g>
+<g class="fl-value"><text x="254.4" y="1512.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="9" data-t="없음">없음<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;1" values="visible;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;1" values="1;1"/></text></g>
+<g class="fl-value"><text x="254.4" y="1538.1" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="10" data-t="없음">없음<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;1" values="visible;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;1" values="1;1"/></text></g>
+<g class="fl-value"><text x="240.4" y="1965.8" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="11" data-t="0">0<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.62209" values="visible;hidden"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.62209" values="1;0"/></text><text x="240.4" y="1965.8" class="value" text-anchor="end" opacity="0" visibility="hidden" data-v="11" data-t="1">1<animate attributeName="visibility" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.62209" values="hidden;visible"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.62209" values="0;1"/></text></g>
+<g class="fl-packet p1-0" opacity="0" fill="var(--color-data-category-on-1)"><circle r="10" fill="var(--color-data-category-1)" opacity="0.2"/><circle r="4.5" fill="var(--color-data-category-1)" stroke="var(--color-data-category-outline-1)" stroke-width="1.75"/><g><rect x="-26.9" y="-38" width="53.8" height="26" rx="8" fill="var(--color-data-category-1)" stroke="var(--color-data-category-outline-1)" stroke-width="1.75"/><text x="0" y="-20" class="chip">작성 중</text><animateTransform attributeName="transform" type="translate" dur="8.6s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.0814;0.15116;0.1686;1" values="26.9 42;26.9 42;25.8 26.4;25.8 8;25.8 8"/></g><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.0814;0.1686" values="0;1;0"/><animateMotion dur="8.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.0814;0.1686;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-0" xlink:href="#p-0"/></animateMotion></g>
+<g class="fl-packet p3-0" opacity="0" fill="var(--color-data-category-on-1)"><circle r="10" fill="var(--color-data-category-1)" opacity="0.2"/><circle r="4.5" fill="var(--color-data-category-1)" stroke="var(--color-data-category-outline-1)" stroke-width="1.75"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.23256;0.31977" values="0;1;0"/><animateMotion dur="8.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.23256;0.31977;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-1" xlink:href="#p-1"/></animateMotion></g>
+<g class="fl-packet p5-0" opacity="0" fill="var(--color-data-category-on-1)"><circle r="10" fill="var(--color-data-category-1)" opacity="0.2"/><circle r="4.5" fill="var(--color-data-category-1)" stroke="var(--color-data-category-outline-1)" stroke-width="1.75"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.38372;0.47093" values="0;1;0"/><animateMotion dur="8.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.38372;0.47093;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-3" xlink:href="#p-3"/></animateMotion></g>
+<g class="fl-packet p7-0" opacity="0" fill="var(--color-data-category-on-1)"><circle r="10" fill="var(--color-data-category-1)" opacity="0.2"/><circle r="4.5" fill="var(--color-data-category-1)" stroke="var(--color-data-category-outline-1)" stroke-width="1.75"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.53488;0.62209" values="0;1;0"/><animateMotion dur="8.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.53488;0.62209;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-5" xlink:href="#p-5"/></animateMotion></g>
+<g class="fl-packet p9-0" opacity="0" fill="var(--color-data-category-on-4)"><circle r="10" fill="var(--color-data-category-4)" opacity="0.2"/><circle r="4.5" fill="var(--color-data-category-4)" stroke="var(--color-data-category-outline-4)" stroke-width="1.75"/><animate attributeName="opacity" dur="8.6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.68605;0.77326" values="0;1;0"/><animateMotion dur="8.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.68605;0.77326;1" keySplines="0 0 1 1;0 0 1 1;0 0 1 1" keyPoints="0;0;1;1"><mpath href="#p-7" xlink:href="#p-7"/></animateMotion></g>
+<g class="fl-pills"><g id="l-0" class="fl-edge"><g class="fl-pill"><rect x="88.9" y="67" width="60.7" height="18" rx="9" class="pill a10"/><text x="119.3" y="80.7" class="edgelabel a11">주문·작업</text></g></g><g id="l-1" class="fl-edge"><g class="fl-pill"><rect x="175.4" y="312" width="60.7" height="18" rx="9" class="pill a12"/><text x="205.7" y="325.7" class="edgelabel a13">함께 확정</text></g></g><g id="l-2" class="fl-edge quiet a6"><g class="fl-pill"><rect x="204.7" y="125" width="35.9" height="18" rx="9" class="pill "/><text x="222.6" y="138.7" class="edgelabel ">취소</text></g></g><g id="l-3" class="fl-edge"><g class="fl-pill"><rect x="100.6" y="1011.4" width="60.7" height="18" rx="9" class="pill a14"/><text x="131" y="1025.1" class="edgelabel a15">작업 획득</text></g></g><g id="l-4" class="fl-edge quiet a6"><g class="fl-pill"><rect x="180.4" y="1069.4" width="46.8" height="18" rx="9" class="pill "/><text x="203.8" y="1083.1" class="edgelabel ">재획득</text></g></g><g id="l-5" class="fl-edge"><g class="fl-pill"><rect x="72.4" y="1599.4" width="57.4" height="18" rx="9" class="pill a16"/><text x="101" y="1613.1" class="edgelabel a17">API 호출</text></g></g><g id="l-6" class="fl-edge quiet a6"><g class="fl-pill"><rect x="183.4" y="1800.1" width="60.7" height="18" rx="9" class="pill "/><text x="213.7" y="1813.8" class="edgelabel ">다시 요청</text></g></g><g id="l-7" class="fl-edge"><g class="fl-pill"><rect x="195.2" y="1396.4" width="38.1" height="18" rx="9" class="pill a18"/><text x="214.3" y="1410.1" class="edgelabel a19">ACK</text></g></g><g id="l-8" class="fl-edge quiet a6"><g class="fl-pill"><rect x="192.4" y="1579.4" width="38.1" height="18" rx="9" class="pill "/><text x="211.4" y="1593.1" class="edgelabel ">ACK</text></g></g></g>
+</g>
+<g class="fl-still" transform="translate(0 0)">
+<g id="still-g-0" class="fl-group" data-id="database"><rect x="46" y="496.7" width="248.7" height="550.7" rx="8" class="frame-box fl-stroke "/><text x="64" y="516.1" class="frame">같은 DB 파일</text></g>
+<g id="still-g-1" class="fl-group" data-id="workers"><rect x="32" y="1127.4" width="276.7" height="632.7" rx="8" class="frame-box fl-stroke "/><text x="52.4" y="1146.8" class="frame">처리 워커</text></g>
+
+<g id="still-n-0" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="주문 요청" data-id="request"><rect x="120.4" y="16" width="100" height="47" rx="8" class="fl-stroke sa0"/><text x="170.4" y="44.9" class="label" text-anchor="middle">주문 요청</text></g>
+<g id="still-n-1" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="쓰기 트랜잭션" data-id="transaction"><rect x="82.4" y="147" width="176" height="161" rx="8" class="fl-stroke sa0"/><text x="170.4" y="175.9" class="label" text-anchor="middle">쓰기 트랜잭션</text><rect x="92.4" y="194" width="156" height="104" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-1-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="100.4" y="214.7" class="row">미확정 주문</text><text x="100.4" y="240.7" class="row">미확정 작업</text></g><g id="still-n-1-c1" opacity="0" visibility="hidden" class="fl-layer sa2"><text x="100.4" y="214.7" class="row">미확정 주문</text><text x="100.4" y="240.7" class="row">미확정 작업</text><rect x="100.4" y="255" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="113.6" y="266" class="tag" text-anchor="middle">취소</text><text x="131.8" y="266.7" class="row">미확정 변경을 모두</text><text x="100.4" y="286.7" class="row">취소</text></g></g>
+<g id="still-n-2" class="fl-node fl-shape-store" tabindex="0" role="img" aria-label="저장된 데이터" data-id="records"><path d="M82.4 705.4 a 88 12 0 0 1 176 0 v 167 a 88 12 0 0 1 -176 0 z" class="fl-stroke sa0"/><path d="M82.4 705.4 a 88 12 0 0 0 176 0" fill="none" class="fl-stroke sa0"/><text x="170.4" y="734.3" class="label" text-anchor="middle">저장된 데이터</text><rect x="92.4" y="752.4" width="156" height="110" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-2-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="100.4" y="773.1" class="row">주문</text><text x="100.4" y="799.1" class="row">처리 중</text><text x="100.4" y="825.1" class="row">ACK 완료</text></g><g id="still-n-2-c1" opacity="0" visibility="hidden" class="fl-layer sa2"><text x="100.4" y="773.1" class="row">주문</text><text x="100.4" y="799.1" class="row">처리 중</text><text x="100.4" y="825.1" class="row">ACK 완료</text><rect x="100.4" y="839.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-5)" fill-opacity="0.15"/><text x="113.6" y="850.4" class="tag" text-anchor="middle">만료</text><text x="131.8" y="851.1" class="row">만료돼도 처리 중 유지</text></g></g>
+<g id="still-n-3" class="fl-node fl-shape-queue" tabindex="0" role="img" aria-label="대기 작업" data-id="shipping"><rect x="120.4" y="924.4" width="100" height="67" rx="8" class="fl-stroke sa0"/><rect x="142.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="162.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="182.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><text x="170.4" y="953.3" class="label" text-anchor="middle">대기 작업</text></g>
+<g id="still-n-4" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="워커 A" data-id="worker-a"><rect x="73.9" y="1199.4" width="176" height="193" rx="8" class="fl-stroke sa0"/><text x="161.9" y="1228.3" class="label" text-anchor="middle">워커 A</text><rect x="83.9" y="1246.4" width="156" height="136" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-4-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="91.9" y="1267.1" class="row">마지막 작업</text><text x="91.9" y="1293.1" class="row">처리 권한</text><text x="91.9" y="1319.1" class="row">거절된 ACK</text></g><g id="still-n-4-c1" opacity="0" visibility="hidden" class="fl-layer sa2"><text x="91.9" y="1267.1" class="row">마지막 작업</text><text x="91.9" y="1293.1" class="row">처리 권한</text><text x="91.9" y="1319.1" class="row">거절된 ACK</text><rect x="91.9" y="1333.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="105.1" y="1344.4" class="tag" text-anchor="middle">중단</text><text x="123.3" y="1345.1" class="row">ACK 없이 중단</text></g><g id="still-n-4-c2" opacity="0" visibility="hidden" class="fl-layer sa2"><text x="91.9" y="1267.1" class="row">마지막 작업</text><text x="91.9" y="1293.1" class="row">처리 권한</text><text x="91.9" y="1319.1" class="row">거절된 ACK</text><rect x="91.9" y="1333.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="105.1" y="1344.4" class="tag" text-anchor="middle">중단</text><text x="123.3" y="1345.1" class="row">ACK 없이 중단</text><rect x="91.9" y="1359.4" width="26.4" height="14" rx="4" fill="var(--color-data-category-3)" fill-opacity="0.15"/><text x="105.1" y="1370.4" class="tag" text-anchor="middle">거부</text><text x="123.3" y="1371.1" class="row">이전 권한 ACK 거부</text></g></g>
+<g id="still-n-5" class="fl-node fl-shape-box" tabindex="0" role="img" aria-label="워커 B" data-id="worker-b"><rect x="96.4" y="1444.4" width="176" height="115" rx="8" class="fl-stroke sa0"/><text x="184.4" y="1473.3" class="label" text-anchor="middle">워커 B</text><rect x="106.4" y="1491.4" width="156" height="58" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-5-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="114.4" y="1512.1" class="row">마지막 작업</text><text x="114.4" y="1538.1" class="row">처리 권한</text></g></g>
+<g id="still-n-6" class="fl-node fl-shape-external" tabindex="0" role="img" aria-label="외부 API" data-id="api"><rect x="82.4" y="1878.1" width="176" height="109" rx="8" class="fl-stroke ext sa0"/><text x="170.4" y="1907" class="label" text-anchor="middle">외부 API</text><text x="170.4" y="1927.8" class="sub" text-anchor="middle">모의 함수</text><rect x="92.4" y="1945.1" width="156" height="32" rx="6" opacity="0" class="fl-card sa3"/><g id="still-n-6-c0" opacity="0" visibility="hidden" class="fl-layer sa1"><text x="100.4" y="1965.8" class="row">호출 횟수</text></g></g>
+<g id="still-e-0" class="fl-edge "><defs><marker id="still-fl-arrow-0" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-0" d="M 153.7 63 L 153.7 94.7 Q 153.7 101, 147.4 101 L 147.4 101 Q 141 101, 141 107.3 L 141 147" class="fl-path" marker-end="url(#still-fl-arrow-0)"/></g>
+<g id="still-e-1" class="fl-edge "><defs><marker id="still-fl-arrow-1" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><defs><clipPath id="still-fl-cut-1" clipPathUnits="userSpaceOnUse"><path d="M 139.7 292 h 46.7 v 417.4 h -46.7 Z M 158.6 353.5 h 3.5 v 9.8 h -3.5 Z" clip-rule="evenodd"/></clipPath></defs><path id="still-p-1" d="M 170.4 308 L 170.4 341 Q 170.4 346, 165.4 346 L 165.4 346 Q 160.4 346, 160.4 351 L 160.4 550.4 Q 160.4 552.7, 158 552.7 L 158 552.7 Q 155.7 552.7, 155.7 555 L 155.7 693.4" class="fl-path" marker-end="url(#still-fl-arrow-1)" clip-path="url(#still-fl-cut-1)"/></g>
+<g id="still-e-2" class="fl-edge quiet  "><defs><marker id="still-fl-arrow-2" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-2" d="M 199.7 147 L 199.7 107.3 Q 199.7 101, 193.4 101 L 193.4 101 Q 187 101, 187 94.7 L 187 63" class="fl-path dashed" marker-end="url(#still-fl-arrow-2)"/></g>
+<g id="still-e-3" class="fl-edge "><defs><marker id="still-fl-arrow-3" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-3" d="M 153.7 991.4 L 153.7 1001.6 Q 153.7 1007.4, 159.5 1007.4 L 159.5 1007.4 Q 165.4 1007.4, 165.4 1013.2 L 165.4 1199.4" class="fl-path" marker-end="url(#still-fl-arrow-3)"/></g>
+<g id="still-e-4" class="fl-edge quiet  "><defs><marker id="still-fl-arrow-4" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-4" d="M 187 991.4 L 187 1001.6 Q 187 1007.4, 181.2 1007.4 L 181.2 1007.4 Q 175.4 1007.4, 175.4 1013.2 L 175.4 1161.4 Q 175.4 1183.4, 197.4 1183.4 L 243.9 1183.4 Q 265.9 1183.4, 265.9 1205.4 L 265.9 1406.4 Q 265.9 1428.4, 243.9 1428.4 L 192.4 1428.4 Q 184.4 1428.4, 184.4 1436.4 L 184.4 1444.4" class="fl-path" marker-end="url(#still-fl-arrow-4)"/></g>
+<g id="still-e-5" class="fl-edge "><defs><marker id="still-fl-arrow-5" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><defs><clipPath id="still-fl-cut-5" clipPathUnits="userSpaceOnUse"><path d="M 52.4 1376.4 h 116 v 517.7 h -116 Z M 139.3 1857.2 h 3.5 v 9.8 h -3.5 Z" clip-rule="evenodd"/></clipPath></defs><path id="still-p-5" d="M 132.5 1392.4 L 132.5 1400.4 Q 132.5 1408.4, 124.5 1408.4 L 90.4 1408.4 Q 68.4 1408.4, 68.4 1430.4 L 68.4 1573.4 Q 68.4 1595.4, 90.4 1595.4 L 130.4 1595.4 Q 152.4 1595.4, 152.4 1617.4 L 152.4 1846.4 Q 152.4 1852.1, 146.7 1852.1 L 146.7 1852.1 Q 141 1852.1, 141 1857.8 L 141 1878.1" class="fl-path" marker-end="url(#still-fl-arrow-5)" clip-path="url(#still-fl-cut-5)"/></g>
+<g id="still-e-6" class="fl-edge quiet  "><defs><marker id="still-fl-arrow-6" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-6" d="M 155 1559.4 L 155 1567.4 Q 155 1575.4, 163 1575.4 L 166.7 1575.4 Q 178.4 1575.4, 178.4 1587.1 L 178.4 1851.4 Q 178.4 1862.1, 189 1862.1 L 191.7 1862.1 Q 199.7 1862.1, 199.7 1870.1 L 199.7 1878.1" class="fl-path" marker-end="url(#still-fl-arrow-6)"/></g>
+<g id="still-e-7" class="fl-edge "><defs><marker id="still-fl-arrow-7" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-7" d="M 191.2 1392.4 L 191.2 1405.4 Q 191.2 1418.4, 178.2 1418.4 L 101.4 1418.4 Q 79.4 1418.4, 79.4 1440.4 L 79.4 1563.4 Q 79.4 1585.4, 101.4 1585.4 L 140.4 1585.4 Q 162.4 1585.4, 162.4 1607.4 L 162.4 1840.1 Q 162.4 1862.1, 140.4 1862.1 L 38 1862.1 Q 16 1862.1, 16 1840.1 L 16 1110.4 Q 16 1103.4, 23 1103.4 L 23 1103.4 Q 30 1103.4, 30 1096.4 L 30 378 Q 30 356, 52 356 L 148.4 356 Q 170.4 356, 170.4 378 L 170.4 693.4" class="fl-path dashed" marker-end="url(#still-fl-arrow-7)"/></g>
+<g id="still-e-8" class="fl-edge quiet  "><defs><marker id="still-fl-arrow-8" viewBox="0 0 5 5" refX="4" refY="2.5" markerWidth="5" markerHeight="5" orient="auto-start-reverse" overflow="visible"><path class="fl-arrowhead" d="M 1.1 0.25 L 4 2.5 L 1.1 4.75 Z" stroke-width="1"/></marker></defs><path id="still-p-8" d="M 213.7 1559.4 L 213.7 1567.4 Q 213.7 1575.4, 205.7 1575.4 L 201 1575.4 Q 188.4 1575.4, 188.4 1588.1 L 188.4 1830.1 Q 188.4 1852.1, 210.4 1852.1 L 302.7 1852.1 Q 324.7 1852.1, 324.7 1830.1 L 324.7 1110.4 Q 324.7 1103.4, 317.7 1103.4 L 317.7 1103.4 Q 310.7 1103.4, 310.7 1096.4 L 310.7 378 Q 310.7 356, 288.7 356 L 202.4 356 Q 180.4 356, 180.4 378 L 180.4 550.4 Q 180.4 552.7, 182.7 552.7 L 182.7 552.7 Q 185 552.7, 185 555 L 185 693.4" class="fl-path dashed" marker-end="url(#still-fl-arrow-8)"/></g>
+<g class="fl-value"><text x="240.4" y="214.7" class="value" text-anchor="end" opacity="1" data-v="0" data-t="0">0</text></g>
+<g class="fl-value"><text x="240.4" y="240.7" class="value" text-anchor="end" opacity="1" data-v="1" data-t="0">0</text></g>
+<g class="fl-value"><text x="240.4" y="773.1" class="value" text-anchor="end" opacity="1" data-v="2" data-t="3">3</text></g>
+<g class="fl-value"><text x="240.4" y="799.1" class="value" text-anchor="end" opacity="1" data-v="3" data-t="0">0</text></g>
+<g class="fl-value"><text x="240.4" y="825.1" class="value" text-anchor="end" opacity="1" data-v="4" data-t="1">1</text></g>
+<g class="fl-value"><g class="queue-fill" opacity="1" data-v="5" data-t="2"><rect x="142.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/><rect x="162.4" y="965.4" width="16" height="14" rx="4" class="fl-queue-slot"/></g></g>
+<g class="fl-value"><text x="231.9" y="1267.1" class="value" text-anchor="end" opacity="1" data-v="6" data-t="1">1</text></g>
+<g class="fl-value"><text x="231.9" y="1293.1" class="value" text-anchor="end" opacity="1" data-v="7" data-t="1">1</text></g>
+<g class="fl-value"><text x="231.9" y="1319.1" class="value" text-anchor="end" opacity="1" data-v="8" data-t="0">0</text></g>
+<g class="fl-value"><text x="254.4" y="1512.1" class="value" text-anchor="end" opacity="1" data-v="9" data-t="없음">없음</text></g>
+<g class="fl-value"><text x="254.4" y="1538.1" class="value" text-anchor="end" opacity="1" data-v="10" data-t="없음">없음</text></g>
+<g class="fl-value"><text x="240.4" y="1965.8" class="value" text-anchor="end" opacity="1" data-v="11" data-t="1">1</text></g>
+
+<g class="fl-pills"><g id="still-l-0" class="fl-edge"><g class="fl-pill"><rect x="88.9" y="67" width="60.7" height="18" rx="9" class="pill "/><text x="119.3" y="80.7" class="edgelabel ">주문·작업</text></g></g><g id="still-l-1" class="fl-edge"><g class="fl-pill"><rect x="175.4" y="312" width="60.7" height="18" rx="9" class="pill "/><text x="205.7" y="325.7" class="edgelabel ">함께 확정</text></g></g><g id="still-l-2" class="fl-edge quiet "><g class="fl-pill"><rect x="204.7" y="125" width="35.9" height="18" rx="9" class="pill "/><text x="222.6" y="138.7" class="edgelabel ">취소</text></g></g><g id="still-l-3" class="fl-edge"><g class="fl-pill"><rect x="100.6" y="1011.4" width="60.7" height="18" rx="9" class="pill "/><text x="131" y="1025.1" class="edgelabel ">작업 획득</text></g></g><g id="still-l-4" class="fl-edge quiet "><g class="fl-pill"><rect x="180.4" y="1069.4" width="46.8" height="18" rx="9" class="pill "/><text x="203.8" y="1083.1" class="edgelabel ">재획득</text></g></g><g id="still-l-5" class="fl-edge"><g class="fl-pill"><rect x="72.4" y="1599.4" width="57.4" height="18" rx="9" class="pill "/><text x="101" y="1613.1" class="edgelabel ">API 호출</text></g></g><g id="still-l-6" class="fl-edge quiet "><g class="fl-pill"><rect x="183.4" y="1800.1" width="60.7" height="18" rx="9" class="pill "/><text x="213.7" y="1813.8" class="edgelabel ">다시 요청</text></g></g><g id="still-l-7" class="fl-edge"><g class="fl-pill"><rect x="195.2" y="1396.4" width="38.1" height="18" rx="9" class="pill "/><text x="214.3" y="1410.1" class="edgelabel ">ACK</text></g></g><g id="still-l-8" class="fl-edge quiet "><g class="fl-pill"><rect x="192.4" y="1579.4" width="38.1" height="18" rx="9" class="pill "/><text x="211.4" y="1593.1" class="edgelabel ">ACK</text></g></g></g>
+</g>
+</svg>

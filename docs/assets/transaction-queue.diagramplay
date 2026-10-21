@@ -1,0 +1,94 @@
+diagramplay
+title "주문 저장부터 작업 처리까지"
+subtitle "격리된 DB 실행 기록 재생 · 외부 API는 모의 함수 · 재생 시간은 설명용"
+width wide
+pace 650ms
+
+box request "주문 요청"
+box transaction "쓰기 트랜잭션" {
+  value pending-orders "미확정 주문" from=0
+  value pending-jobs "미확정 작업" from=0
+}
+group database "같은 DB 파일" {
+  store records "저장된 데이터" {
+    value db-orders "주문" from=0
+    value db-leased "처리 중" from=0
+    value db-acked "ACK 완료" from=0
+  }
+  queue shipping "대기 작업" slots=3
+}
+group workers "처리 워커" {
+  box worker-a "워커 A" {
+    value job-a "마지막 작업" from=없음
+    value fence-a "처리 권한" from=없음
+    value rejected "거절된 ACK" from=0
+  }
+  box worker-b "워커 B" {
+    value job-b "마지막 작업" from=없음
+    value fence-b "처리 권한" from=없음
+  }
+}
+external api "외부 API" "모의 함수" {
+  value api-calls "호출 횟수" from=0
+}
+
+request -> transaction "주문·작업"
+transaction -> records "함께 확정"
+transaction -> request "취소" dashed quiet
+shipping -> worker-a "작업 획득"
+shipping -> worker-b "재획득" quiet
+worker-a -> api "API 호출"
+worker-b -> api "다시 요청" quiet
+worker-a -> records "ACK" dashed
+worker-b -> records "ACK" dashed quiet
+
+
+scene "함께 확정 · 1건 처리" mode=loop set="db-orders=0, pending-orders=0, pending-jobs=0, shipping=0, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 700ms
+  request -> transaction "작성 중" time=750ms tone=blue set="db-orders=0, pending-orders=3, pending-jobs=3, shipping=0, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 550ms
+  transaction -> records time=750ms tone=blue set="db-orders=3, pending-orders=0, pending-jobs=0, shipping=3, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 550ms
+  shipping -> worker-a time=750ms tone=blue set="db-orders=3, pending-orders=0, pending-jobs=0, shipping=2, db-leased=1, db-acked=0, job-a=1, fence-a=1, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 550ms
+  worker-a -> api time=750ms tone=blue set="db-orders=3, pending-orders=0, pending-jobs=0, shipping=2, db-leased=1, db-acked=0, job-a=1, fence-a=1, job-b=없음, fence-b=없음, api-calls=1, rejected=0"
+  wait 550ms
+  worker-a -> records time=750ms tone=green set="db-orders=3, pending-orders=0, pending-jobs=0, shipping=2, db-leased=0, db-acked=1, job-a=1, fence-a=1, job-b=없음, fence-b=없음, api-calls=1, rejected=0"
+  wait 550ms
+  wait 1400ms
+
+scene "확정 전 취소" mode=loop set="db-orders=0, pending-orders=0, pending-jobs=0, shipping=0, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 700ms
+  request -> transaction "작성 중" time=750ms tone=blue set="db-orders=0, pending-orders=3, pending-jobs=3, shipping=0, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 550ms
+  transaction -> request time=750ms tone=red set="db-orders=0, pending-orders=0, pending-jobs=0, shipping=0, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  show transaction "미확정 변경을 모두 취소" tag="취소" tone=red
+  wait 550ms
+  wait 1400ms
+
+scene "중단 · 재전달 · 이전 ACK 거부" mode=loop set="db-orders=0, pending-orders=0, pending-jobs=0, shipping=0, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 700ms
+  request -> transaction "작성 중" time=750ms tone=blue set="db-orders=0, pending-orders=1, pending-jobs=1, shipping=0, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 550ms
+  transaction -> records time=750ms tone=blue set="db-orders=1, pending-orders=0, pending-jobs=0, shipping=1, db-leased=0, db-acked=0, job-a=없음, fence-a=없음, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 550ms
+  shipping -> worker-a time=750ms tone=blue set="db-orders=1, pending-orders=0, pending-jobs=0, shipping=0, db-leased=1, db-acked=0, job-a=1, fence-a=1, job-b=없음, fence-b=없음, api-calls=0, rejected=0"
+  wait 550ms
+  worker-a -> api time=750ms tone=blue set="db-orders=1, pending-orders=0, pending-jobs=0, shipping=0, db-leased=1, db-acked=0, job-a=1, fence-a=1, job-b=없음, fence-b=없음, api-calls=1, rejected=0"
+  wait 550ms
+  light worker-a
+  show worker-a "ACK 없이 중단" tag="중단" tone=red
+  wait 550ms
+  light records
+  show records "만료돼도 처리 중 유지" tag="만료" tone=orange
+  wait 550ms
+  shipping -> worker-b time=750ms tone=blue set="db-orders=1, pending-orders=0, pending-jobs=0, shipping=0, db-leased=1, db-acked=0, job-a=1, fence-a=1, job-b=1, fence-b=2, api-calls=1, rejected=0"
+  wait 550ms
+  worker-a -> records "이전 권한" time=750ms tone=red set="db-orders=1, pending-orders=0, pending-jobs=0, shipping=0, db-leased=1, db-acked=0, job-a=1, fence-a=1, job-b=1, fence-b=2, api-calls=1, rejected=1"
+  show worker-a "이전 권한 ACK 거부" tag="거부" tone=red
+  wait 550ms
+  worker-b -> api time=750ms tone=orange set="db-orders=1, pending-orders=0, pending-jobs=0, shipping=0, db-leased=1, db-acked=0, job-a=1, fence-a=1, job-b=1, fence-b=2, api-calls=2, rejected=1"
+  wait 550ms
+  worker-b -> records time=750ms tone=green set="db-orders=1, pending-orders=0, pending-jobs=0, shipping=0, db-leased=0, db-acked=1, job-a=1, fence-a=1, job-b=1, fence-b=2, api-calls=2, rejected=1"
+  wait 550ms
+  wait 1400ms
