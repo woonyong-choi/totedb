@@ -18,13 +18,16 @@ with db.begin() as txn:
 
 ## 작동 방식
 
-[움직이는 실행 예시](../assets/transaction-queue.html)에서 주문 저장, 커밋 전 취소, 워커 중단 장면을 고른다. 큐에 남은 작업 수와 워커 A·B가 받은 작업, 처리 번호가 어떻게 바뀌는지 볼 수 있다.
+[움직이는 실행 예시: 넓은 화면](../assets/transaction-queue.html)과 [좁은 화면](../assets/transaction-queue-narrow.html)에서 주문 저장, 커밋 전 취소, 워커 중단 장면을 고른다. 큐에 남은 작업 수와 워커 A·B가 받은 작업, 처리 번호가 어떻게 바뀌는지 볼 수 있다.
 
 아래 그림은 워커가 작업을 가져오고 ACK를 보낼 때 상태가 어떻게 바뀌는지 보여 준다.
 
-![워커가 작업을 가져와 ACK하면 완료로 표시하고 기한이 지난 작업은 다른 워커가 다시 가져올 수 있다](../assets/queue-lifecycle.svg)
+<picture>
+<source media="(max-width: 600px)" srcset="../assets/queue-lifecycle-narrow.svg" width="321.2" height="297">
+<img src="../assets/queue-lifecycle.svg" alt="워커가 작업을 가져와 ACK하면 완료로 표시하고 기한이 지난 작업은 다른 워커가 다시 가져올 수 있다" width="100%">
+</picture>
 
-[상태 경로 재생 열기](../assets/queue-lifecycle.html)
+[상태 경로 재생: 넓은 화면](../assets/queue-lifecycle.html)과 [좁은 화면](../assets/queue-lifecycle-narrow.html)
 
 `get`으로 작업을 받고 ACK로 완료를 알린다. 그림의 대기, 처리 중, 완료는 각각 내부 상태 `READY`, `LEASED`, `ACKED`에 해당한다.
 

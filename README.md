@@ -9,9 +9,12 @@
 
 ---
 
-![주문과 작업을 같은 트랜잭션으로 저장하고 워커가 작업을 받아 ACK를 보냅니다](docs/assets/transaction-queue.svg)
+<picture>
+<source media="(max-width: 999px)" srcset="docs/assets/transaction-queue-narrow.svg" width="340.7" height="2003.1">
+<img src="docs/assets/transaction-queue.svg" alt="주문과 작업을 같은 트랜잭션으로 저장하고 워커가 작업을 받아 ACK를 보냅니다" width="100%">
+</picture>
 
-[시나리오 선택하기](docs/assets/transaction-queue.html)
+[시나리오 선택하기: 넓은 화면](docs/assets/transaction-queue.html) · [좁은 화면](docs/assets/transaction-queue-narrow.html)
 
 주문을 저장하면서 큐에 작업을 등록하고, 워커가 그 작업을 처리하는 흐름입니다. 재생 화면에서 정상 처리, 롤백, 워커 중단 후 재전달 과정을 선택할 수 있습니다.
 
