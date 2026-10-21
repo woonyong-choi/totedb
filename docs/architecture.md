@@ -186,7 +186,7 @@ manifest는 이번 기록 집합이지 전체 도달 페이지의 무결성 증�
 
 ### 그림 원본과 재생성
 
-이 문서의 그림과 큐 그림은 같은 이름의 `docs/assets/*.diagramplay` 7개가 수정 원본이며 SVG와 HTML은 생성물이다. `storage-index-locator.diagramplay`는 이 생성 대상이 아니다. 본문의 `<picture>`는 600px 이하에서 `-narrow.svg`를 고른다. `<source>`의 폭·높이는 해당 SVG의 `viewBox`와 맞추며 출력 크기가 달라지면 함께 갱신한다. 실제 표시 글자 크기는 삽입 폭에 따라 달라진다. SVG를 지우면 본문이 깨지고 HTML을 지우면 재생 링크가 깨진다. trace와 `.torso`는 실행 관측 원자료로 보존하며 그림 생성으로 덮어쓰지 않는다.
+이 문서의 그림과 큐 그림은 같은 이름의 `docs/assets/*.diagramplay` 7개가 수정 원본이며 SVG와 HTML은 생성물이다. `storage-index-locator.diagramplay`는 이 생성 대상이 아니다. 이 문서와 큐 상태 그림의 `<picture>`는 600px 이하에서 `-narrow.svg`를 고른다. README 큐 그림은 800px 화면의 실제 GitHub 본문 폭 702px에서 기본 배치의 필드 글자가 약 8px로 추정돼, 1000px 미만에서 좁은 배치를 고른다. `<source>`의 폭·높이는 해당 SVG의 `viewBox`와 맞추며 출력 크기가 달라지면 함께 갱신한다. 실제 표시 글자 크기는 삽입 폭에 따라 달라진다. SVG를 지우면 본문이 깨지고 HTML을 지우면 재생 링크가 깨진다. trace와 `.torso`는 실행 관측 원자료로 보존하며 그림 생성으로 덮어쓰지 않는다.
 
 기존 의존성을 갖춘 DiagramPlay 소스 `0f35b9b1c400355e769f8302a3f3f348a07d69f5`와 Node.js `26.9.0`을 사용한다. `DIAGRAMPLAY_DIR`은 해당 커밋의 깨끗한 소스 작업본 경로다. 저장소 루트에서 [그림 생성기](../tools/render-figures.mjs)를 실행한다. 생성기는 도구 커밋과 추적 파일 상태를 검사하고 22개를 같은 조건으로 두 번 생성한다. 바이트가 모두 같을 때만 파일을 저장하고 SHA-256 목록을 출력한다.
 

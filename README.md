@@ -10,7 +10,7 @@
 ---
 
 <picture>
-<source media="(max-width: 600px)" srcset="docs/assets/transaction-queue-narrow.svg" width="340.7" height="2003.1">
+<source media="(max-width: 999px)" srcset="docs/assets/transaction-queue-narrow.svg" width="340.7" height="2003.1">
 <img src="docs/assets/transaction-queue.svg" alt="주문과 작업을 같은 트랜잭션으로 저장하고 워커가 작업을 받아 ACK를 보냅니다" width="100%">
 </picture>
 
