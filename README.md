@@ -1,4 +1,4 @@
-<h1 align="center">ToteDB</h1>
+<h1 align="center">StreamLite</h1>
 
 <p align="center">
   애플리케이션에 내장해 사용하는 SQL 데이터베이스입니다.<br>
@@ -6,6 +6,10 @@
 </p>
 
 <p align="center"><a href="https://pypi.org/project/totedb/"><img src="https://img.shields.io/pypi/v/totedb" alt="PyPI 버전"></a> <a href="https://github.com/woonyong-choi/totedb/actions/workflows/ci.yml"><img src="https://github.com/woonyong-choi/totedb/actions/workflows/ci.yml/badge.svg" alt="CI"></a> <a href="https://github.com/woonyong-choi/totedb/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT 라이선스"></a></p>
+
+StreamLite는 기존 ToteDB의 새 제품명입니다. 현재 배포·설치 이름과 Python import는 `totedb`, C API는 `tote_*`, 공유 라이브러리는 `libtotedb`를 유지합니다. 아래의 ToteDB 0.2.0 표기와 실측 결과는 당시 배포·측정 이름입니다.
+
+SQL·영속 이벤트 스트림·ACK와 실제 다중 writer를 결합하는 [리뉴얼 구조](docs/design/streamlite.md)는 제안 단계입니다. 현재 배포판은 단일 writer이며, 독립 소비자별 재생 스트림과 다중 writer가 구현됐다는 뜻은 아닙니다.
 
 ---
 
@@ -156,6 +160,7 @@ SQL 조회·갱신과 JOIN·집계·서브쿼리를 지원합니다. C와 Python
 
 ## 문서
 
+- [StreamLite 리뉴얼 구조](docs/design/streamlite.md)에서 현재 구현과 목표, 성능·안전 검증의 경계를 확인하세요.
 - [아키텍처](docs/architecture.md)에서 전체 구조와 저장·게시·복구 원리를 확인하세요.
 - [주문 저장과 작업 등록을 한 트랜잭션으로 처리하기](docs/design/transaction-queue.md)에서 큐의 동작과 보장 경계를 읽을 수 있습니다.
 - [데이터](docs/data.md)는 값·바인딩·저장 형식과 큐 테이블을 설명합니다.
