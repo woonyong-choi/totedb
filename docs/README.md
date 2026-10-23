@@ -28,3 +28,4 @@ ToteDB를 사용하거나 내부 구현을 수정할 때 참고하는 공개 문
 - [Python 코딩 규칙](convention/python-style.md): 바인딩과 Python 도구의 구현 규칙
 - [폴더 구조 규칙](convention/project-structure.md): 구현·시험·문서·산출물의 배치
 - [출처와 기여 경계](attribution.md): 현재 코드·외부 구성 요소와 옛 팀 기여의 구분, 참고·재사용 이력의 미확인 범위
+- [개발 선택과 검증의 기록](development-report.md): 초기 원형부터 제품·저장·SQL·큐·실험 선택의 이유와 검증·철회·미해결
